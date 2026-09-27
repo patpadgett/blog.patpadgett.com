@@ -419,7 +419,7 @@ html.turned .burst{animation-delay:.3s}
 .refs li,.cite{scroll-margin-top:22vh}
 .refs li{padding:2px 6px;margin-left:-6px}
 @keyframes hl-swipe{from{background-size:0 100%}}
-.refs li:target,.body a.cite:target{background:linear-gradient(100deg,#ff0 0 96%,transparent 96%) no-repeat 0 0/100% 100%;animation:hl-swipe .55s cubic-bezier(.2,.8,.2,1) both}
+.refs li:target,.body a.cite:target{background:linear-gradient(100deg,#ff0 0 93%,rgba(255,255,0,0) 97%) no-repeat 0 0/100% 100%;animation:hl-swipe .55s cubic-bezier(.2,.8,.2,1) both}
 .body a.cite:target{animation-duration:.4s}
 @keyframes cite-wash{0%{transform:scaleX(0);opacity:1}28%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
 .body p:has(.cite:target){position:relative;isolation:isolate}
@@ -427,22 +427,24 @@ html.turned .burst{animation-delay:.3s}
 .body>p:first-of-type:has(.cite:target)::before{inset:0}
 .clip{display:none}
 @supports (anchor-name:--c) and (position-area:top) and (transition-behavior:allow-discrete){
-  .clip{position:fixed;position-area:top span-right;position-try-fallbacks:flip-block,flip-inline,flip-block flip-inline;position-visibility:anchors-visible;
-    margin:0 0 12px 0;z-index:40;isolation:isolate;box-sizing:border-box;width:max-content;max-width:min(300px,calc(100vw - 32px));padding:12px 16px 12px;
+  .clip{position:fixed;position-area:top;position-try-fallbacks:position-area(top span-right),position-area(top span-left),flip-block,position-area(bottom span-right),position-area(bottom span-left);position-visibility:anchors-visible;
+    margin:0 0 2px 0;z-index:40;isolation:isolate;box-sizing:border-box;width:max-content;max-width:min(320px,calc(100vw - 32px));padding:14px 18px 13px;
     background:#fff url(/assets/grain.jpg) center/300px;border:2px solid #000;box-shadow:5px 6px 0 #000;
-    font:700 14px/1.35 Nunito,sans-serif;color:#000;text-align:left;white-space:normal;
-    opacity:0;transform:translateY(8px) rotate(-5deg) scale(.94);transform-origin:20% 100%;
+    font:700 15px/1.35 Nunito,sans-serif;color:#000;text-align:left;white-space:normal;
+    opacity:0;transform:translateY(8px) rotate(-5deg) scale(.94);transform-origin:50% 100%;
     transition:opacity .18s ease,transform .36s cubic-bezier(.2,1.5,.35,1),display .36s allow-discrete}
-  .body a.cite:hover+.clip,.body a.cite:focus-visible+.clip,.clip:hover,.clip:focus-within{display:block;opacity:1;transform:rotate(-1.5deg)}
+  .body a.cite:hover+.clip,.body a.cite:focus-visible+.clip,.clip:hover,.clip:focus-within{display:block;opacity:1;transform:rotate(-2deg)}
+  /* one clipping at a time: a keyboard-focused number yields while the pointer is on another */
+  .body:has(a.cite:hover) a.cite:not(:hover):focus-visible+.clip:not(:hover,:focus-within){display:none;opacity:0}
   @starting-style{.body a.cite:hover+.clip,.body a.cite:focus-visible+.clip,.clip:hover,.clip:focus-within{opacity:0;transform:translateY(8px) rotate(-5deg) scale(.94)}}
   /* the tape */
-  .clip::before{content:"";position:absolute;left:50%;top:-11px;width:62px;height:20px;transform:translateX(-50%) rotate(-3deg);background:rgba(255,232,110,.78);border:1px solid rgba(0,0,0,.18);mix-blend-mode:multiply;z-index:2}
+  .clip::before{content:"";position:absolute;left:50%;top:-11px;width:68px;height:22px;transform:translateX(-50%) rotate(-3deg);background:rgba(255,232,110,.78);border:1px solid rgba(0,0,0,.18);mix-blend-mode:multiply;z-index:2}
   /* the bridge: keeps the hover alive while the pointer crosses the gap to the clipping */
   .clip::after{content:"";position:absolute;inset:-14px -8px;z-index:-1}
   .clip b{display:block;font:900 11px/1 Nunito,sans-serif;text-transform:uppercase;letter-spacing:.1em;color:#d00;margin-bottom:6px}
   .clip a{display:inline-block;padding:4px 0;color:#000;text-decoration:underline;text-decoration-color:#d00;text-decoration-thickness:2px;text-underline-offset:3px}
   .clip a:hover{background:#ff0}
-  .clip small{display:block;margin-top:4px;color:#555;font:500 12px/1 Plex,monospace}
+  .clip small{display:block;margin-top:5px;color:#444;font:500 13px/1 Plex,monospace}
   .clip .backref{display:none}
 }
 @media print{.clip{display:none!important}}
