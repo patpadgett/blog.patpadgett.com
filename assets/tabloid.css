@@ -36,7 +36,7 @@ nav.top a:hover,nav.top a[aria-current]{background:#fff}
 
 /* hero */
 .hero{padding:0 var(--g);position:relative;margin-top:44px}
-@media (min-width:821px){.home>.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start;margin-top:36px}.home>.hero .pic{grid-column:1;grid-row:1/6;aspect-ratio:auto;height:100%;min-height:360px;max-height:min(560px,calc(100vh - 380px));width:100%;min-width:0}.home>.hero .pic img{position:absolute;inset:0;width:100%;height:100%}.home>.hero h1{margin-top:0;font-size:clamp(40px,5vw,80px);grid-column:2;grid-row:1}.home>.hero p,.home>.hero .k,.home>.hero .hero__act{grid-column:2}.home>.hero .burst{right:auto;left:-22px;top:-8px;width:150px;height:150px;padding:28px 24px}.home>.hero .k{display:inline-flex;width:auto}}
+@media (min-width:821px){.home>.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start;margin-top:36px}.home>.hero .pic{grid-column:1;grid-row:1/6;aspect-ratio:auto;height:100%;min-height:360px;max-height:min(560px,calc(100vh - 380px));width:100%;min-width:0}.home>.hero .pic img{position:absolute;inset:0;width:100%;height:100%;filter:contrast(1.3) saturate(1.3)}.home>.hero h1{margin-top:0;font-size:clamp(40px,5vw,80px);grid-column:2;grid-row:1}.home>.hero p,.home>.hero .k,.home>.hero .hero__act{grid-column:2}.home>.hero .burst{right:auto;left:-22px;top:-8px;width:150px;height:150px;padding:28px 24px}.home>.hero .k{display:inline-flex;width:auto}}
 .hero .pic{position:relative;aspect-ratio:16/6;overflow:visible;border:5px solid #000;background:#000}
 .hero .pic a{overflow:hidden}.hero .pic img{width:100%;height:100%;object-fit:cover;object-position:50% 22%}
 .hero h1{font:400 clamp(40px,7vw,110px)/.85 Bangers,cursive;letter-spacing:.01em;text-transform:uppercase;color:#000;margin:22px 0 10px -.03em;text-wrap:balance;max-width:16ch}
@@ -67,7 +67,7 @@ nav.top a:hover,nav.top a[aria-current]{background:#fff}
 .post--next:has(.stamp)::after{display:none}
 .post--next .k{max-width:100%}
 .post--next{padding-top:22px}
-.post .th img{width:100%;height:100%;object-fit:cover}
+.post .th img{width:100%;height:100%;object-fit:cover;filter:contrast(1.3) saturate(1.3)}
 .post h2{margin:0;font:400 clamp(24px,2.4vw,36px)/.9 Bangers,cursive;text-transform:uppercase;text-wrap:balance}
 .post h2 a{text-decoration:none}
 .post h2 a:hover{color:#d00}
@@ -169,7 +169,7 @@ nav.top a:hover,nav.top a[aria-current]{background:#fff}
 @media (max-width:820px){.sheet .hero .pic{aspect-ratio:21/9;max-height:22vh;width:100%}.sheet figure.hero{width:100%}.sheet h1{font-size:clamp(34px,10vw,44px)!important}.sheet .dek{margin-bottom:14px;font-size:15px!important}}
 .sheet--about{position:relative}
 .filephoto{float:right;width:min(38%,300px);margin:6px 8px 18px 40px;padding:10px 10px 12px;background:#fff;border:3px solid #000;box-shadow:5px 5px 0 #000;transform:rotate(2deg)}
-.filephoto img{border:2px solid #000}
+.filephoto img{border:2px solid #000;filter:contrast(1.1)}
 .filephoto figcaption{margin:10px 0 0;font:400 14px/1.4 Archivo,sans-serif;text-wrap:pretty}
 .filephoto figcaption b{display:block;width:max-content;margin:0 0 6px;font:900 11px/1 Nunito,sans-serif;text-transform:uppercase;letter-spacing:.1em;background:#d00;color:#fff;padding:4px 6px}
 .sheet--about .body{max-width:none}
@@ -407,3 +407,42 @@ html.turned .burst{animation-delay:.3s}
   @view-transition{navigation:none}
   .hero h1,.sheet .lede h1,.post,.box,.coming,.coupon,.theme,.psychic,.more>h2,.refs,.pn,.post h2,.coming h2,.box .boxh,.theme h2,.post .th,.post .th img{animation:none!important}
 }
+
+/* ============================================================================================
+   THE CLIPPING (overdrive round two, 2026-09-27)
+   Hover, focus or tab to a citation number and the reference is taped to the page beside it, so
+   you never leave the sentence. Jumping to the references list draws a highlighter across the
+   entry; the return arrow washes the paragraph you left. CSS anchor positioning, @starting-style,
+   :target keyframes; no script. Browsers without anchor positioning keep the plain jump.
+   ============================================================================================ */
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+.refs li,.cite{scroll-margin-top:22vh}
+.refs li{padding:2px 6px;margin-left:-6px}
+@keyframes hl-swipe{from{background-size:0 100%}}
+.refs li:target,.body a.cite:target{background:linear-gradient(100deg,#ff0 0 96%,transparent 96%) no-repeat 0 0/100% 100%;animation:hl-swipe .55s cubic-bezier(.2,.8,.2,1) both}
+.body a.cite:target{animation-duration:.4s}
+@keyframes cite-wash{0%{transform:scaleX(0);opacity:1}28%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
+.body p:has(.cite:target){position:relative;isolation:isolate}
+.body p:has(.cite:target)::before{content:"";position:absolute;inset:-6px -10px;background:#ff0;z-index:-1;opacity:0;transform-origin:0 50%;animation:cite-wash 2.4s cubic-bezier(.2,.8,.2,1) both}
+.body>p:first-of-type:has(.cite:target)::before{inset:0}
+.clip{display:none}
+@supports (anchor-name:--c) and (position-area:top) and (transition-behavior:allow-discrete){
+  .clip{position:fixed;position-area:top span-right;position-try-fallbacks:flip-block,flip-inline,flip-block flip-inline;position-visibility:anchors-visible;
+    margin:0 0 12px 0;z-index:40;isolation:isolate;box-sizing:border-box;width:max-content;max-width:min(300px,calc(100vw - 32px));padding:12px 16px 12px;
+    background:#fff url(/assets/grain.jpg) center/300px;border:2px solid #000;box-shadow:5px 6px 0 #000;
+    font:700 14px/1.35 Nunito,sans-serif;color:#000;text-align:left;white-space:normal;
+    opacity:0;transform:translateY(8px) rotate(-5deg) scale(.94);transform-origin:20% 100%;
+    transition:opacity .18s ease,transform .36s cubic-bezier(.2,1.5,.35,1),display .36s allow-discrete}
+  .body a.cite:hover+.clip,.body a.cite:focus-visible+.clip,.clip:hover,.clip:focus-within{display:block;opacity:1;transform:rotate(-1.5deg)}
+  @starting-style{.body a.cite:hover+.clip,.body a.cite:focus-visible+.clip,.clip:hover,.clip:focus-within{opacity:0;transform:translateY(8px) rotate(-5deg) scale(.94)}}
+  /* the tape */
+  .clip::before{content:"";position:absolute;left:50%;top:-11px;width:62px;height:20px;transform:translateX(-50%) rotate(-3deg);background:rgba(255,232,110,.78);border:1px solid rgba(0,0,0,.18);mix-blend-mode:multiply;z-index:2}
+  /* the bridge: keeps the hover alive while the pointer crosses the gap to the clipping */
+  .clip::after{content:"";position:absolute;inset:-14px -8px;z-index:-1}
+  .clip b{display:block;font:900 11px/1 Nunito,sans-serif;text-transform:uppercase;letter-spacing:.1em;color:#d00;margin-bottom:6px}
+  .clip a{display:inline-block;padding:4px 0;color:#000;text-decoration:underline;text-decoration-color:#d00;text-decoration-thickness:2px;text-underline-offset:3px}
+  .clip a:hover{background:#ff0}
+  .clip small{display:block;margin-top:4px;color:#555;font:500 12px/1 Plex,monospace}
+  .clip .backref{display:none}
+}
+@media print{.clip{display:none!important}}
