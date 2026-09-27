@@ -30,7 +30,7 @@
 <p>The switch doesn't give a damn about your rate plan. It records the A-number, B-number, start time, duration, cell site, trunk group, cause code, and a few dozen other fields in a proprietary binary structure.</p>
 <p>Billing needs somebody to translate that thing before it can rate it, which is where mediation comes in.</p>
 <p>Collection means pulling files from 130 switches over whatever they support: FTP[2], X.25[3] on the old ones, a vendor-specific push. It runs on a schedule, and you verify every file in the sequence and scream when a number is missing. The call already happened. That gap is unbilled revenue until somebody gets its record.</p>
-<p>Then you parse the binary. Release 17 added a field and shifted everything after it by two bytes, and nobody told you. Two bytes! Plenty of room to fuck up your afternoon.</p>
+<p>Then you parse the binary. Release 17 added a field and shifted everything after it by two bytes, and nobody told you. Plenty of room to fuck up your afternoon.</p>
 <p>Reconciliation means counting what came in against what went out at <em>every</em> stage, then explaining every difference. You don't get to shrug at the leftovers.</p>
 <p>Over fourteen years I recovered tens of millions of dollars finding that shit. Mangled headers, truncated tails, sequence gaps, records rejected into an error queue nobody watched. It was hex dumps[4] and &quot;why did this file stop at byte 48,201?&quot; I am proud of that work, even if I mostly remember staring at hex dumps.</p>
 <p>And I still want to look in that fucking error queue.</p>
