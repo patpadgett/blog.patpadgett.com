@@ -49,7 +49,7 @@
 <p class="k hot"><span><time datetime="2026-09-25">September 25, 2026</time></span><span>No. 003</span><span>2 min read</span></p>
 <h1>Never post twice. Yes, even when I run the damned thing twice.</h1>
 <p class="dek">grime95.com posts daily fiction to a website, Facebook and Instagram. Posting was easy. Keeping a retry from posting the same damned thing again took some work.</p>
-<figure class="hero"><div class="pic"><img src="/assets/img/never-post-twice.jpg" srcset="/assets/img/never-post-twice-240.jpg 240w, /assets/img/never-post-twice-480.jpg 480w, /assets/img/never-post-twice-600.jpg 600w, /assets/img/never-post-twice-780.jpg 780w, /assets/img/never-post-twice.jpg 1200w" sizes="(min-width:821px) 240px, 100vw" alt="A person handles a white frosted cake inside a cardboard box beside another cake and metal trays." width="1200" height="800" fetchpriority="high"></div><figcaption><b>File photo</b>Dramatization. No python was harmed.</figcaption></figure>
+<figure class="hero"><div class="pic"><a class="print-open" href="/assets/img/never-post-twice.jpg" aria-label="See the whole photo"><img src="/assets/img/never-post-twice.jpg" srcset="/assets/img/never-post-twice-240.jpg 240w, /assets/img/never-post-twice-480.jpg 480w, /assets/img/never-post-twice-600.jpg 600w, /assets/img/never-post-twice-780.jpg 780w, /assets/img/never-post-twice.jpg 1200w" sizes="(min-width:821px) 240px, 100vw" alt="A person handles a white frosted cake inside a cardboard box beside another cake and metal trays." width="1200" height="800" fetchpriority="high"></a></div><figcaption><b>File photo</b>Dramatization. No python was harmed.</figcaption></figure>
 </header>
 <article class="body">
 <p>You want a script that posts something once a day, forty lines should do it. Then you get to spend the next week figuring out what happens when those forty lines half-work.</p>
@@ -76,6 +76,13 @@
 <div class="tail"><div class="tags"><span>python</span><span>cron</span><span>meta-graph-api</span><span>idempotency</span><span>grime95</span></div><span class="byline">&ndash; Pat</span></div>
 <nav class="pn" aria-label="Adjacent stories"><a href="/posts/what-billing-mediation-is/"><b>Previous exclusive</b><span>Billing mediation: somebody has to find the damned money</span></a><div class="pn--next"><b>Next issue · September 28</b><span>Two hundred and fifty percent. Yes, folks, it was Perl.</span><p><a class="rss-btn" href="/index.xml">Get it by RSS</a> <a class="rss-how" href="/about/#rss">What is RSS?</a></p></div></nav>
 </main>
+<dialog class="print" id="print" aria-label="The whole photo">
+<div class="print__in">
+<div class="print__bar"><p class="print__k"><b>File photo</b>Uncropped. Straight off the wire.</p><button class="print__close" type="button" autofocus>Close<small>Esc</small></button></div>
+<figure class="print__fig"><span class="print__frame"><img src="/assets/img/never-post-twice.jpg" srcset="/assets/img/never-post-twice-240.jpg 240w, /assets/img/never-post-twice-480.jpg 480w, /assets/img/never-post-twice-600.jpg 600w, /assets/img/never-post-twice-780.jpg 780w, /assets/img/never-post-twice.jpg 1200w" sizes="(min-width:1240px) 1200px, 100vw" alt="" width="1200" height="800" loading="lazy" decoding="async"></span>
+<figcaption><b>Photo desk</b>A person handles a white frosted cake inside a cardboard box beside another cake and metal trays. Dramatization; no python was harmed.</figcaption></figure>
+</div>
+</dialog>
 
 <footer>
 <div class="foot__l">
@@ -102,5 +109,19 @@ var SHARED='header.masthead,.brand a,.brand small,nav.top,.home>.hero .pic,.home
 function kind(a){var t=[];if(!a||!a.from)return t;var f=new URL(a.from.url).pathname,n=new URL(a.entry.url).pathname;if(f.indexOf('/posts/')===0&&n.indexOf('/posts/')===0)t.push('flip');if(a.navigationType==='traverse'&&a.from.index>a.entry.index)t.push('back');return t}
 addEventListener('pageswap',function(e){var vt=e.viewTransition;if(!vt)return;kind(e.activation).forEach(function(t){vt.types.add(t)});[].forEach.call(document.querySelectorAll(SHARED),function(el){var r=el.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)el.style.viewTransitionName='none'})});
 addEventListener('pagereveal',function(e){[].forEach.call(document.querySelectorAll(SHARED),function(el){el.style.viewTransitionName=''});if(e.viewTransition){document.documentElement.classList.add('turned');if(window.navigation)kind(navigation.activation).forEach(function(t){e.viewTransition.types.add(t)})}});
+/* the whole photo: the story picture lifts out of its frame into a full-screen print and settles back */
+var d=document.getElementById('print'),t=document.querySelector('.print-open'),im=d&&d.querySelector('img');
+if(d&&t&&im&&d.showModal){var h=document.documentElement,busy=false;
+function warm(){im.loading='eager'}
+t.addEventListener('pointerenter',warm);t.addEventListener('focus',warm);t.addEventListener('touchstart',warm,{passive:true});
+function turn(dir,fn){h.classList.add('lit','lit--'+dir);var done=function(){h.classList.remove('lit--'+dir);if(dir==='shut')h.classList.remove('lit');busy=false};
+if(rm||!document.startViewTransition){fn();done();return}
+var vt=document.startViewTransition(fn);vt.finished.then(done,done)}
+t.addEventListener('click',function(e){e.preventDefault();if(busy||d.open)return;busy=true;warm();
+var ready=im.decode?im.decode().catch(function(){}):Promise.resolve(),soon=new Promise(function(r){setTimeout(r,450)});
+Promise.race([ready,soon]).then(function(){turn('open',function(){d.showModal()})})});
+function shut(){if(!d.open||busy)return;busy=true;turn('shut',function(){d.close()})}
+d.addEventListener('click',function(e){if(!e.target.closest('.print__k,figcaption'))shut()});
+d.addEventListener('cancel',function(e){e.preventDefault();shut()});}
 })();</script>
 </body></html>

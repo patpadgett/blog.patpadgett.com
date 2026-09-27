@@ -446,3 +446,53 @@ html.turned .burst{animation-delay:.3s}
   .clip .backref{display:none}
 }
 @media print{.clip{display:none!important}}
+
+/* ============================================================================================
+   THE WHOLE PHOTO (2026-09-27)
+   Click the story picture and it lifts out of its frame into a full-screen print on a light table,
+   uncropped, with the photo desk's description under it. Native <dialog> (focus trap, Esc, backdrop);
+   the lift is a same-document view transition; without script the link opens the JPEG itself.
+   html.lit is on while the print is out or in flight; lit--open / lit--shut name the direction.
+   ============================================================================================ */
+.lede .pic .print-open{cursor:zoom-in}
+.print{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:#fff;overflow:auto;overscroll-behavior:contain}
+.print::backdrop{background:radial-gradient(ellipse 75% 60% at 50% 42%,rgba(255,248,225,.14),rgba(255,248,225,0) 72%) #1a1816}
+.print[open]{display:grid}
+.print__in{display:grid;grid-template-rows:auto minmax(0,1fr);gap:12px;box-sizing:border-box;min-height:100%;padding:14px clamp(14px,3vw,32px) 16px;cursor:zoom-out}
+.print__bar{display:flex;justify-content:space-between;align-items:center;gap:12px 20px;flex-wrap:wrap;cursor:default}
+.print__k{margin:0;font:900 11px/1.6 Nunito,sans-serif;text-transform:uppercase;letter-spacing:.12em;color:#ff0}
+.print__k b{display:inline-block;background:#fff;color:#000;padding:4px 7px;margin-right:8px;line-height:1}
+.print__close{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;background:#ff0;color:#000;border:3px solid #000;font:900 13px/1 Nunito,sans-serif;text-transform:uppercase;letter-spacing:.1em;cursor:pointer}
+.print__close small{font:500 11px/1 Plex,monospace;letter-spacing:.08em;color:#333;border:1px solid #333;padding:2px 4px;border-radius:3px}
+.print__close:hover{background:#fff}
+.print__close:focus-visible{outline:4px solid #ff0;outline-offset:4px}
+.print__fig{margin:0;min-height:0;display:grid;grid-template-rows:auto auto;grid-template-columns:minmax(0,max-content);align-content:center;justify-content:center;justify-items:start;gap:34px;padding:15px 15px 0}
+.print__frame{display:block;min-height:0;max-width:100%;line-height:0;border:5px solid #000;box-shadow:0 0 0 15px #ece7dc,0 30px 50px -8px rgba(0,0,0,1),0 10px 18px rgba(0,0,0,.75);background:#000}
+.print__frame img{display:block;width:auto;height:auto;max-width:min(1200px,calc(100vw - 2*clamp(14px,3vw,32px) - 40px));max-height:calc(100dvh - 240px)}
+.print figcaption{margin:0 0 0 -15px;max-width:min(100%,72ch);font:400 15px/1.5 Archivo,sans-serif;color:#efefef;text-wrap:pretty;cursor:default;display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 12px;align-items:start}
+.print figcaption b{display:inline-block;justify-self:start;font:900 11px/1 Nunito,sans-serif;text-transform:uppercase;letter-spacing:.1em;background:#ff0;color:#000;padding:5px 7px;margin-top:2px;white-space:nowrap}
+@media (max-width:640px){.print__in{padding:10px 14px 14px}.print__frame{box-shadow:0 0 0 8px #ece7dc,0 18px 30px -10px rgba(0,0,0,.95),0 6px 10px rgba(0,0,0,.6)}.print__frame img{max-width:calc(100vw - 28px - 26px);max-height:calc(100dvh - 250px)}.print figcaption{font-size:14px;grid-template-columns:1fr;gap:6px;margin-left:-8px;max-width:calc(100% + 8px)}.print__fig{gap:22px;padding:8px 8px 0}.print__k{max-width:22ch}}
+@media (max-height:520px){.print__k{display:none}.print__in{padding:8px 12px 10px;gap:8px}.print__fig{gap:10px}.print__frame img{max-height:calc(100dvh - 130px)}.print figcaption{font-size:13px}}
+html:has(.print[open]){overflow:hidden}
+/* the lift: only the photo travels; everything else on the page is one sheet that dims, so nothing
+   prints across the picture in flight. The slot's picture is the source of the open, the print the
+   source of the close. */
+html.lit :is(header.masthead,.brand a,.brand small,nav.top,.lede .pic,.lede h1,.lede .k,.sheet>.body){view-transition-name:none}
+html:has(.print[open]) .lede .pic img{visibility:hidden;view-transition-name:none}
+.print[open] .print__frame img{view-transition-name:photo}
+.print[open] .print__in{view-transition-name:print}
+html.lit::view-transition-group(print){z-index:10}
+html.lit::view-transition-group(photo){animation-name:-ua-view-transition-group-anim-photo,press-mat;animation-duration:.5s;animation-timing-function:cubic-bezier(.5,0,.15,1);animation-fill-mode:both}
+@keyframes press-mat{from{box-shadow:0 0 0 5px #000,0 0 0 5px #ece7dc,0 0 0 0 rgba(0,0,0,0)}to{box-shadow:0 0 0 5px #000,0 0 0 20px #ece7dc,0 30px 50px -8px rgba(0,0,0,1)}}
+@keyframes press-mat-off{from{box-shadow:0 0 0 5px #000,0 0 0 20px #ece7dc,0 30px 50px -8px rgba(0,0,0,1)}to{box-shadow:0 0 0 5px #000,0 0 0 5px #ece7dc,0 0 0 0 rgba(0,0,0,0)}}
+html.lit::view-transition-old(photo),html.lit::view-transition-new(photo){animation:none;opacity:1;object-fit:cover;object-position:50% 25%;mix-blend-mode:normal}
+html.lit--open::view-transition-old(photo){display:none}
+html.lit--shut::view-transition-new(photo){display:none}
+html.lit--open::view-transition-old(root){animation:.14s ease-out both press-fade-out}
+html.lit--open::view-transition-new(root){animation:.14s ease-out both press-fade-in}
+html.lit--open::view-transition-new(print){animation:.22s ease-out .3s both press-fade-in}
+html.lit--shut::view-transition-group(photo){animation-name:-ua-view-transition-group-anim-photo,press-mat-off;animation-duration:.42s}
+html.lit--shut::view-transition-old(print){animation:.1s ease-in both press-fade-out}
+html.lit--shut::view-transition-old(root){animation:.16s ease-in .24s both press-fade-out}
+html.lit--shut::view-transition-new(root){animation:.16s ease-out .24s both press-fade-in}
+@media print{.print{display:none!important}}

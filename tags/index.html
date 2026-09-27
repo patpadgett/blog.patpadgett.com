@@ -71,5 +71,19 @@ var SHARED='header.masthead,.brand a,.brand small,nav.top,.home>.hero .pic,.home
 function kind(a){var t=[];if(!a||!a.from)return t;var f=new URL(a.from.url).pathname,n=new URL(a.entry.url).pathname;if(f.indexOf('/posts/')===0&&n.indexOf('/posts/')===0)t.push('flip');if(a.navigationType==='traverse'&&a.from.index>a.entry.index)t.push('back');return t}
 addEventListener('pageswap',function(e){var vt=e.viewTransition;if(!vt)return;kind(e.activation).forEach(function(t){vt.types.add(t)});[].forEach.call(document.querySelectorAll(SHARED),function(el){var r=el.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)el.style.viewTransitionName='none'})});
 addEventListener('pagereveal',function(e){[].forEach.call(document.querySelectorAll(SHARED),function(el){el.style.viewTransitionName=''});if(e.viewTransition){document.documentElement.classList.add('turned');if(window.navigation)kind(navigation.activation).forEach(function(t){e.viewTransition.types.add(t)})}});
+/* the whole photo: the story picture lifts out of its frame into a full-screen print and settles back */
+var d=document.getElementById('print'),t=document.querySelector('.print-open'),im=d&&d.querySelector('img');
+if(d&&t&&im&&d.showModal){var h=document.documentElement,busy=false;
+function warm(){im.loading='eager'}
+t.addEventListener('pointerenter',warm);t.addEventListener('focus',warm);t.addEventListener('touchstart',warm,{passive:true});
+function turn(dir,fn){h.classList.add('lit','lit--'+dir);var done=function(){h.classList.remove('lit--'+dir);if(dir==='shut')h.classList.remove('lit');busy=false};
+if(rm||!document.startViewTransition){fn();done();return}
+var vt=document.startViewTransition(fn);vt.finished.then(done,done)}
+t.addEventListener('click',function(e){e.preventDefault();if(busy||d.open)return;busy=true;warm();
+var ready=im.decode?im.decode().catch(function(){}):Promise.resolve(),soon=new Promise(function(r){setTimeout(r,450)});
+Promise.race([ready,soon]).then(function(){turn('open',function(){d.showModal()})})});
+function shut(){if(!d.open||busy)return;busy=true;turn('shut',function(){d.close()})}
+d.addEventListener('click',function(e){if(!e.target.closest('.print__k,figcaption'))shut()});
+d.addEventListener('cancel',function(e){e.preventDefault();shut()});}
 })();</script>
 </body></html>
