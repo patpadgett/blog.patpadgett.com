@@ -8,7 +8,7 @@
 *{box-sizing:border-box}
 :root{--g:clamp(14px,2.2vw,28px);--red:#d00;--yel:#ff0;--ink:#000}
 html{background:#ddd;-webkit-text-size-adjust:100%;scrollbar-color:#d00 #ff0}
-body{margin:0;overflow-x:clip;font:400 18px/1.6 Archivo,system-ui,sans-serif;color:#000;overflow-x:hidden}
+body{margin:0;overflow-x:clip;font:400 18px/1.6 Archivo,system-ui,sans-serif;color:#000}
 ::selection{background:#ff0;color:#000}
 a{color:inherit;text-underline-offset:4px;text-decoration-thickness:2px}
 main:focus{outline:4px solid #d00;outline-offset:-4px}
@@ -38,7 +38,7 @@ nav.top a:hover,nav.top a[aria-current]{background:#fff}
 .hero{padding:0 var(--g);position:relative;margin-top:44px}
 @media (min-width:821px){.home>.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px;align-items:start;margin-top:36px}.home>.hero .pic{grid-column:1;grid-row:1/6;aspect-ratio:auto;height:100%;min-height:360px;max-height:min(560px,calc(100vh - 380px));width:100%;min-width:0}.home>.hero .pic img{position:absolute;inset:0;width:100%;height:100%}.home>.hero h1{margin-top:0;font-size:clamp(40px,5vw,80px);grid-column:2;grid-row:1}.home>.hero p,.home>.hero .k,.home>.hero .hero__act{grid-column:2}.home>.hero .burst{right:auto;left:-22px;top:-8px;width:150px;height:150px;padding:28px 24px}.home>.hero .k{display:inline-flex;width:auto}}
 .hero .pic{position:relative;aspect-ratio:16/6;overflow:visible;border:5px solid #000;background:#000}
-.hero .pic a{overflow:hidden}.hero .pic img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;filter:contrast(1.3) saturate(1.3)}
+.hero .pic a{overflow:hidden}.hero .pic img{width:100%;height:100%;object-fit:cover;object-position:50% 22%}
 .hero h1{font:400 clamp(40px,7vw,110px)/.85 Bangers,cursive;letter-spacing:.01em;text-transform:uppercase;color:#000;margin:22px 0 10px -.03em;text-wrap:balance;max-width:16ch}
 .hero h1 a{text-decoration:none}
 .hero h1 a:hover{color:#d00}
@@ -67,7 +67,7 @@ nav.top a:hover,nav.top a[aria-current]{background:#fff}
 .post--next:has(.stamp)::after{display:none}
 .post--next .k{max-width:100%}
 .post--next{padding-top:22px}
-.post .th img{width:100%;height:100%;object-fit:cover;filter:contrast(1.3) saturate(1.3)}
+.post .th img{width:100%;height:100%;object-fit:cover}
 .post h2{margin:0;font:400 clamp(24px,2.4vw,36px)/.9 Bangers,cursive;text-transform:uppercase;text-wrap:balance}
 .post h2 a{text-decoration:none}
 .post h2 a:hover{color:#d00}
@@ -160,7 +160,7 @@ nav.top a:hover,nav.top a[aria-current]{background:#fff}
 
 /* post page */
 .sheet{padding:clamp(16px,3vw,32px) clamp(20px,4vw,48px) clamp(20px,4vw,48px);max-width:960px;margin:0 auto}
-@media (min-width:821px){.sheet .lede{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:0 24px;align-items:start;max-width:682px}.sheet .lede h1{font-size:clamp(40px,4.4vw,60px)}.sheet .lede>.k,.sheet .lede>h1,.sheet .lede>.dek{grid-column:1}.sheet .lede>.dek{margin-bottom:0}.sheet .lede>figure.hero{grid-column:2;grid-row:1/4;margin:0;align-self:start}.sheet .lede .hero .pic{aspect-ratio:3/4;max-height:none}.sheet .lede .hero .pic img{object-position:50% 0}}
+@media (min-width:821px){.sheet .lede{display:grid;grid-template-columns:240px minmax(0,1fr);gap:0 28px;align-items:start;max-width:682px}.sheet .lede h1{font-size:clamp(40px,4.4vw,60px)}.sheet .lede>.k,.sheet .lede>h1{grid-column:2}.sheet .lede>.dek{grid-column:1/-1;margin:20px 0 0;max-width:none}.sheet .lede>figure.hero{grid-column:1;grid-row:1/3;margin:0;align-self:start}.sheet .lede .hero .pic{aspect-ratio:4/3;max-height:none}.sheet .lede .hero .pic img{object-position:50% 25%}}
 .sheet .lede{margin-bottom:24px}
 @media (min-width:821px){.sheet>.lede,.sheet>.body,.sheet>.tail,.sheet>.pn,.sheet>h1,.sheet>.dek,.sheet>.k{margin-left:auto;margin-right:auto}.sheet>.body,.sheet>.tail,.sheet>.pn{max-width:682px}}
 .sheet .hero{padding:0;margin:0 0 14px}
@@ -169,7 +169,7 @@ nav.top a:hover,nav.top a[aria-current]{background:#fff}
 @media (max-width:820px){.sheet .hero .pic{aspect-ratio:21/9;max-height:22vh;width:100%}.sheet figure.hero{width:100%}.sheet h1{font-size:clamp(34px,10vw,44px)!important}.sheet .dek{margin-bottom:14px;font-size:15px!important}}
 .sheet--about{position:relative}
 .filephoto{float:right;width:min(38%,300px);margin:6px 8px 18px 40px;padding:10px 10px 12px;background:#fff;border:3px solid #000;box-shadow:5px 5px 0 #000;transform:rotate(2deg)}
-.filephoto img{border:2px solid #000;filter:contrast(1.1)}
+.filephoto img{border:2px solid #000}
 .filephoto figcaption{margin:10px 0 0;font:400 14px/1.4 Archivo,sans-serif;text-wrap:pretty}
 .filephoto figcaption b{display:block;width:max-content;margin:0 0 6px;font:900 11px/1 Nunito,sans-serif;text-transform:uppercase;letter-spacing:.1em;background:#d00;color:#fff;padding:4px 6px}
 .sheet--about .body{max-width:none}
@@ -257,11 +257,13 @@ footer .fine{font:400 13px/1.5 Archivo,sans-serif;text-transform:none;letter-spa
   .body>p:first-of-type::first-letter{font-size:2.9em}
   .sheet .hero .pic{aspect-ratio:4/3}
 }
-/* reveal: cards and boxes land on the stand as they scroll in */
-.side{overflow:hidden}.pre{opacity:0;transform:translateY(14px) rotate(-.6deg)}
+/* reveal fallback (no scroll-driven animations): cards land on the stand as they scroll in */
+@supports not (animation-timeline:view()){
+.pre{opacity:0;transform:translateY(14px) rotate(-.6deg)}
 .pre:focus-within{opacity:1;transform:none}
 .pre.in{opacity:1;transform:none;transition:opacity .35s ease-out,transform .45s ease-out}
 .post.pre.in:has(h2 a:hover){transform:translate(-2px,-2px)}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.pre{opacity:1;transform:none}}
 @media print{.wrap{border:0;background:#fff}.masthead,nav,.burst,footer,.pn,.more{display:none}}
 
@@ -279,3 +281,129 @@ footer .fine{font:400 13px/1.5 Archivo,sans-serif;text-transform:none;letter-spa
 @media (min-width:821px){.home>.hero{margin-top:40px}}
 .tagdir__lbl{font:900 13px/1 Nunito,sans-serif;text-transform:uppercase;letter-spacing:.1em;align-self:center;margin-right:6px}
 .sheet figure.hero figcaption b{display:block;width:max-content;margin:0 0 4px}
+
+/* ============================================================
+   PRESS RUN (overdrive, 2026-09-27)
+   Two gestures. Navigation = the page turns: the picture you tapped
+   shrinks in place into the story's photo slot, the headline flies
+   with it as one piece of type and registers on landing, the masthead
+   shortens, the white sheet rises from under. Story to story turns the
+   whole leaf. Scroll = ink registering: boxes land on the stand as they
+   arrive and their headlines snap the cyan/magenta plates true. Photos
+   are screened at build time by halftone.py, one render per display
+   size and density, so the rosette is real dots and not moire. Shared
+   pieces are never crossfaded at two sizes (that reads as a misprint):
+   one copy, scaled. Everything degrades to the plain page; reduced
+   motion turns it all off.
+   ============================================================ */
+:root{--cyan:#00aeef;--mag:#e6007e}
+
+/* --- 1. the page turns -------------------------------------- */
+@view-transition{navigation:auto}
+header.masthead{view-transition-name:mast}
+.brand a{view-transition-name:brand}
+.brand small{view-transition-name:ticker}
+nav.top{view-transition-name:nav}
+/* the picture is the shared piece; its frame (border, sticker, caption strip) is named so it leaves the
+   root snapshot and only shows at the ends, drawn over the picture as on the page. in flight the border is
+   the photo group's spread shadow. the frame's fill is clear so it never papers over the picture */
+.hero .pic{background:transparent}
+.home>.hero .pic{view-transition-name:frame}
+.home>.hero .pic img{view-transition-name:photo}
+.home>.hero h1{view-transition-name:headline}
+.sheet .lede .pic{view-transition-name:frame}
+.sheet .lede .pic img{view-transition-name:photo}
+.sheet .lede h1{view-transition-name:headline}
+.sheet .lede .k{view-transition-name:kick}
+.sheet>.body{view-transition-name:sheet}
+/* the phone shows the same crop on both pages, so the frame simply travels */
+@media (max-width:820px){.sheet .lede .hero .pic{aspect-ratio:16/9;max-height:none}}
+
+::view-transition{pointer-events:none;background:linear-gradient(to right,#ddd calc(100% - 3px),#000 0) left top/calc((100% - min(1280px,100%))/2 + 3px) 100% no-repeat,linear-gradient(to left,#ddd calc(100% - 3px),#000 0) right top/calc((100% - min(1280px,100%))/2 + 3px) 100% no-repeat,url(/assets/grain.jpg) center top/600px repeat #fff}
+@media (min-width:1300px){::view-transition{background:linear-gradient(#ddd,#ddd) top/100% 24px no-repeat,linear-gradient(#000,#000) center 24px/min(1280px,100%) 3px no-repeat,linear-gradient(to right,#ddd calc(100% - 3px),#000 0) left top/calc((100% - 1280px)/2 + 3px) 100% no-repeat,linear-gradient(to left,#ddd calc(100% - 3px),#000 0) right top/calc((100% - 1280px)/2 + 3px) 100% no-repeat,url(/assets/grain.jpg) center 27px/600px repeat #fff}}
+::view-transition-group(*){animation-duration:.42s;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
+::view-transition-group(brand){z-index:23}
+::view-transition-group(nav){z-index:22}
+::view-transition-group(ticker){z-index:21}
+::view-transition-group(mast){z-index:20}
+::view-transition-group(headline){z-index:14}
+::view-transition-group(kick){z-index:14}
+::view-transition-group(photo){z-index:12;box-shadow:0 0 0 5px #000;background:#000}
+::view-transition-group(frame){z-index:13}
+::view-transition-old(frame),::view-transition-new(frame){inline-size:100%;block-size:100%}
+::view-transition-old(frame){animation:.07s ease-in both press-fade-out}
+::view-transition-new(frame){animation:.16s ease-out .3s both press-fade-in}
+::view-transition-group(sheet){z-index:5}
+/* shared type and the red band: one copy, the incoming one, scaled from the old box to the new */
+::view-transition-old(brand),::view-transition-old(nav),::view-transition-old(headline),::view-transition-old(mast){display:none}
+::view-transition-new(brand),::view-transition-new(nav),::view-transition-new(headline),::view-transition-new(mast){animation:none;opacity:1}
+/* both headlines break the same way, so fitting the incoming type to the box height keeps the glyph size continuous */
+::view-transition-new(headline){inline-size:auto;block-size:100%}
+::view-transition-new(mast){inline-size:100%;block-size:100%;object-fit:cover;object-position:50% 0}
+/* the wordmark's glyphs hang past its 44px line box, so it is anchored on its centre or it rides down */
+::view-transition-new(brand){inset-block-start:50%;translate:0 -50%}
+::view-transition-new(brand):only-child,::view-transition-new(nav):only-child,::view-transition-new(headline):only-child,::view-transition-new(mast):only-child{animation:.24s ease-out .12s both press-fade-in}
+/* the picture: one copy, the one rendered at the larger size so the dots stay solid (the old one opening
+   a story, the new one coming back), fitted to the shrinking or growing box; the other copy only takes
+   over in the last hundred milliseconds, dot on dot */
+::view-transition-image-pair(photo){overflow:clip}
+::view-transition-old(photo),::view-transition-new(photo){inline-size:100%;block-size:100%;object-fit:cover;object-position:50% 25%;mix-blend-mode:normal}
+::view-transition-old(photo){animation:none;opacity:1}
+::view-transition-new(photo){animation:.12s ease-out .3s both press-fade-in}
+html:active-view-transition-type(back)::view-transition-old(photo){animation:.12s ease-in both press-fade-out}
+html:active-view-transition-type(back)::view-transition-new(photo){animation:none;opacity:1}
+::view-transition-new(photo):only-child{animation:.24s ease-out .12s both press-fade-in}
+/* the sticker is part of the front page's frame snapshot: it goes with the frame in the first tenth of a second
+   and slaps back on (its own slap keyframes) once the front page has landed. the price strip and the story's
+   red kicker drop on the way out and print on the way in. */
+::view-transition-old(ticker),::view-transition-old(kick){animation:.05s ease-in both press-fade-out}
+::view-transition-new(ticker),::view-transition-new(kick){animation:.2s ease-out .16s both press-fade-in}
+@keyframes press-fade-in{from{opacity:0}}
+@keyframes press-fade-out{to{opacity:0}}
+/* the rest of the old page is gone before the new page has any ink on it: no text over text */
+::view-transition-old(root){animation:.06s ease-in both press-drop}
+::view-transition-new(root){animation:.26s ease-out .14s both press-rise}
+@keyframes press-drop{to{opacity:0;transform:translateY(6px)}}
+@keyframes press-rise{from{opacity:0;transform:translateY(14px)}}
+/* the white sheet rises from under the lede; going back it drops away first */
+::view-transition-new(sheet){animation:.46s cubic-bezier(.2,.8,.2,1) .12s both press-sheet-in}
+::view-transition-old(sheet){animation:.06s ease-in both press-sheet-out}
+@keyframes press-sheet-in{from{transform:translateY(96px);opacity:0}45%{opacity:1}}
+@keyframes press-sheet-out{to{transform:translateY(20px);opacity:0}}
+/* story to story: the masthead holds and the leaf turns under it. the old leaf is fully gone before the new lands. */
+html:active-view-transition-type(flip) :is(.brand a,nav.top,.brand small,.lede .pic,.lede .pic img,.lede h1,.lede .k,.sheet>.body){view-transition-name:none}
+html:active-view-transition-type(flip)::view-transition-old(mast){display:block;animation:none;opacity:1}
+html:active-view-transition-type(flip)::view-transition-new(mast){display:none}
+html:active-view-transition-type(flip)::view-transition-old(root){animation:.24s cubic-bezier(.5,0,.75,0) both press-leaf-out;transform-origin:0 100%}
+html:active-view-transition-type(flip)::view-transition-new(root){animation:.4s cubic-bezier(.2,.8,.2,1) .22s both press-leaf-in;transform-origin:100% 100%}
+html:active-view-transition-type(flip):active-view-transition-type(back)::view-transition-old(root){animation-name:press-leaf-out-back;transform-origin:100% 100%}
+html:active-view-transition-type(flip):active-view-transition-type(back)::view-transition-new(root){animation-name:press-leaf-in-back;transform-origin:0 100%}
+@keyframes press-leaf-out{30%{opacity:1}to{transform:translateX(-44%) rotate(-2.4deg);opacity:0}}
+@keyframes press-leaf-in{from{transform:translateX(44%) rotate(1.8deg);opacity:0}35%{opacity:1}}
+@keyframes press-leaf-out-back{30%{opacity:1}to{transform:translateX(44%) rotate(2.4deg);opacity:0}}
+@keyframes press-leaf-in-back{from{transform:translateX(-44%) rotate(-1.8deg);opacity:0}35%{opacity:1}}
+
+/* --- 2. ink registering --------------------------------------- */
+/* the lead headline prints off-register and snaps true. on a cold load, right away; after a page turn it
+   flies in off-register and registers on landing, and the sticker slaps on once the page has settled */
+.hero h1,.sheet .lede h1{animation:press-register .6s cubic-bezier(.2,.8,.2,1) .1s both}
+html.turned :is(.hero h1,.sheet .lede h1){animation-delay:.42s}
+html.turned .burst{animation-delay:.3s}
+@keyframes press-register{from{text-shadow:-5px 0 0 var(--cyan),5px 0 0 var(--mag)}55%{text-shadow:-1px 0 0 var(--cyan),1px 0 0 var(--mag)}to{text-shadow:0 0 0 transparent,0 0 0 transparent}}
+@supports (animation-timeline:view()){
+  /* below the fold, every box lands on the stand as it scrolls in */
+  .post,.box,.coming,.coupon,.theme,.psychic,.more>h2,.refs,.pn{animation:press-land linear backwards;animation-timeline:view();animation-range:entry 0% cover 35%}
+  @keyframes press-land{from{opacity:0;transform:translateY(34px) rotate(-.7deg) scale(1.015)}45%{opacity:1}to{opacity:1;transform:none}}
+  /* their headlines come in off-register and snap true */
+  .post h2,.coming h2,.box .boxh,.theme h2,.more>h2{animation:press-register-scroll linear backwards;animation-timeline:view();animation-range:entry 0% cover 40%}
+  @keyframes press-register-scroll{from{text-shadow:-6px 0 0 var(--cyan),6px 0 0 var(--mag)}65%{text-shadow:-1px 0 0 var(--cyan),1px 0 0 var(--mag)}to{text-shadow:0 0 0 transparent,0 0 0 transparent}}
+  /* the photo plate is off by a hair too, then seats itself in its frame */
+  .post .th{animation:press-plate-scroll linear backwards;animation-timeline:view();animation-range:entry 0% cover 40%}
+  @keyframes press-plate-scroll{from{filter:drop-shadow(-5px 0 0 var(--cyan)) drop-shadow(5px 0 0 var(--mag))}65%{filter:drop-shadow(-1px 0 0 var(--cyan)) drop-shadow(1px 0 0 var(--mag))}to{filter:none}}
+  .post .th img{animation:press-seat-scroll linear backwards;animation-timeline:view();animation-range:entry 0% cover 35%}
+  @keyframes press-seat-scroll{from{transform:translate(-7%,0) scale(1.08)}}
+}
+@media (prefers-reduced-motion:reduce){
+  @view-transition{navigation:none}
+  .hero h1,.sheet .lede h1,.post,.box,.coming,.coupon,.theme,.psychic,.more>h2,.refs,.pn,.post h2,.coming h2,.box .boxh,.theme h2,.post .th,.post .th img{animation:none!important}
+}
