@@ -2,64 +2,497 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel><title>Weekly Padgett</title><link>https://blog.patpadgett.com/</link><description>Stories from thirty years of telecom billing mediation, Unix, corkscrew, bass guitar, Indonesian music, and whatever else Pat Padgett could not shut up about.</description><language>en-us</language>
 <atom:link href="https://blog.patpadgett.com/index.xml" rel="self" type="application/rss+xml"/>
-<item><title>Never post twice. Yes, even when I run the damned thing twice.</title><link>https://blog.patpadgett.com/posts/never-post-twice/</link><guid>https://blog.patpadgett.com/posts/never-post-twice/</guid>
-<pubDate>Fri, 25 Sep 2026 12:00:00 -0400</pubDate><description>grime95.com posts daily fiction to a website, Facebook and Instagram. Posting was easy. Keeping a retry from posting the same damned thing again took some work.</description>
-<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/never-post-twice.jpg" alt="A person handles a white frosted cake inside a cardboard box beside another cake and metal trays."></p><p>You want a script that posts something once a day, forty lines should do it. Then you get to spend the next week figuring out what happens when those forty lines half-work.</p>
-<p>I run grime95.com[1], a serialized fiction site publishing one fictional small-town booking record every day at noon Eastern. Each goes to a static site (a GitHub Pages[2] repo), a Facebook Page, and Instagram. Cron[3] does it. Twenty percent of that script took eighty percent of the thought, most of it about what could go wrong.</p>
-<p>My billing mediation habit kicks in here, because I've spent a lot of time reconciling things and I want a ledger I can check. I used SQLite[4], one row per (entry, channel). Status: <code>pending | success | uncertain</code>.</p>
-<p>Three statuses, because sometimes I genuinely don't know what happened.</p>
-<p>When a POST to Meta's Graph API[5] throws, you don't know whether the post exists. Maybe it completed and the response disappeared. Maybe the token expired and nothing happened. Instagram takes two calls, create a container and publish it, so it can half-happen. A leftover container expires on its own, but isn't easily distinguished from one that published.</p>
-<p>POSTs get exactly one attempt. An exception marks the row <code>uncertain</code>, and the script stops touching that (entry, channel) pair. On the next run, GETs retry freely. Reading is idempotent, so I can keep looking without posting another copy.</p>
-<p>Every channel adapter gets a <code>checkpoint</code> callback. The instant it has a remote ID, it calls that callback.</p>
-<p>Verification can fail. The process can get killed. The ledger already knows a post with that ID exists, so the next run sees <code>remote_id</code> and doesn't repost. Instagram checkpoints even the container ID as <code>container:&lt;id&gt;</code> before publishing. Half-done counts as something I want written down.</p>
-<p>About 480 lines of Python. Standard library plus Pillow[6] for image checks. I wrote it in an afternoon and I'm proud of the thing. Getting the failure states right took the week after.</p>
-<p>I don't want to babysit it every day at noon.</p>
+<item><title>RSS still works. Let the damned reader remember.</title><link>https://blog.patpadgett.com/posts/rss-still-works/</link><guid>https://blog.patpadgett.com/posts/rss-still-works/</guid>
+<pubDate>Mon, 28 Sep 2026 12:00:00 -0400</pubDate><description>grime95 and this blog have RSS feeds, folks. Two real addresses, no invented subscriber army, and one author who still has to write the next entry.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/rss-still-works.jpg" alt="A curved roller conveyor carrying a metal tray stands in a wood-paneled office beside a wicker basket."></p><p>I can give you a page address and hope you remember to come back, or I can give you a feed address and let your reader remember. For a site publishing a fictional booking every day, I'd rather not assign you homework.</p>
+<p>The grime95 feed is <a href="https://grime95.com/feed.xml">feed.xml</a>[1]. This blog's feed is <a href="https://blog.patpadgett.com/index.xml">index.xml</a>[2]. Both are RSS[3] files in the published site snapshots. Neither needs Facebook or Instagram to decide whether a new entry deserves to appear in front of you, and you don't have to keep touring the website just because you liked something you read there.</p>
+<p>Meanwhile, this blog's published feed snapshot contains the old &quot;Awesome Setup&quot; entry and an About item.</p>
+<p>The format works. There's just very little in it. I can admire the plumbing all I want, but it cannot cure an author who doesn't publish. Shit. Apparently I can deliver a looooong silence quite efficiently.</p>
 <h2>References</h2>
 <ol>
-<li>grime95.com: https://grime95.com/</li>
-<li>GitHub Pages: https://pages.github.com/</li>
-<li>Cron: https://en.wikipedia.org/wiki/Cron</li>
-<li>SQLite: https://www.sqlite.org/</li>
-<li>Meta's Graph API: https://developers.facebook.com/docs/graph-api/</li>
-<li>Pillow: https://pillow.readthedocs.io/en/stable/</li>
+<li>grime95 RSS feed: https://grime95.com/feed.xml</li>
+<li>Blog RSS feed: https://blog.patpadgett.com/index.xml</li>
+<li>RSS: https://en.wikipedia.org/wiki/RSS</li>
 </ol>
 ]]></content:encoded></item>
-<item><title>Billing mediation: somebody has to find the damned money</title><link>https://blog.patpadgett.com/posts/what-billing-mediation-is/</link><guid>https://blog.patpadgett.com/posts/what-billing-mediation-is/</guid>
-<pubDate>Wed, 23 Sep 2026 12:00:00 -0400</pubDate><description>Fourteen years between the switch and the bill, finding missing money in binary records. What telecom mediation does, and why two bytes can ruin your day.</description>
-<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/what-billing-mediation-is.jpg" alt="A kneeling person holds a dustpan beside scattered debris beneath a desk with reel-to-reel equipment."></p><p>You hear &quot;billing mediation[1]&quot; and probably picture me spending fourteen years looking at invoices. I understand, but there is a looooong way to go before an invoice exists, and I worked in the middle where a phone company either makes its money or quietly loses it.</p>
-<p>The switch doesn't give a damn about your rate plan. It records the A-number, B-number, start time, duration, cell site, trunk group, cause code, and a few dozen other fields in a proprietary binary structure.</p>
-<p>Billing needs somebody to translate that thing before it can rate it, which is where mediation comes in.</p>
-<p>Collection means pulling files from 130 switches over whatever they support: FTP[2], X.25[3] on the old ones, a vendor-specific push. It runs on a schedule, and you verify every file in the sequence and scream when a number is missing. The call already happened. That gap is unbilled revenue until somebody gets its record.</p>
-<p>Then you parse the binary. Release 17 added a field and shifted everything after it by two bytes, and nobody told you. Plenty of room to fuck up your afternoon.</p>
-<p>Reconciliation means counting what came in against what went out at <em>every</em> stage, then explaining every difference. You don't get to shrug at the leftovers.</p>
-<p>Over fourteen years I recovered tens of millions of dollars finding that shit. Mangled headers, truncated tails, sequence gaps, records rejected into an error queue nobody watched. It was hex dumps[4] and &quot;why did this file stop at byte 48,201?&quot; I am proud of that work, even if I mostly remember staring at hex dumps.</p>
-<p>And I still want to look in that fucking error queue.</p>
+<item><title>What mediation taught me about people (not that kind of mediation)</title><link>https://blog.patpadgett.com/posts/what-mediation-taught-me-about-people/</link><guid>https://blog.patpadgett.com/posts/what-mediation-taught-me-about-people/</guid>
+<pubDate>Mon, 21 Sep 2026 12:00:00 -0400</pubDate><description>Fourteen years reconciling billing records at Sprint taught me to check what I know before assigning blame. Applying that to myself is the interesting part.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/what-mediation-taught-me-about-people.jpg" alt="A person wearing a red foam pointing hand holds continuous paper above printers with long sheets hanging down."></p><p>You can have two systems reporting success and still have a disagreement about what happened. I spent fourteen years at Sprint[1] reconciling network elements, mediation[2], and billing, including repairing damaged CDR[3] files that otherwise would have gone unbilled.</p>
+<p>Years of investigating discrepancies did make me suspicious of the first convenient explanation. Especially the one where somebody else caused absolutely everything and I emerge looking wonderful.</p>
+<p>I don't expect people to hand me a complete transaction log before I treat them fairly.</p>
+<p>If I didn't receive a reply, I know that much. I can't tell why from that alone, any more than I know every condition around somebody missing a commitment. I still care about boundaries and follow-through, I just don't need to invent a motive to go with it.</p>
+<p>Before I demand somebody else's account, I'd like to remember to check how much of my own I actually observed. Yes, Pat. You too.</p>
+<h2>References</h2>
+<ol>
+<li>Sprint: https://en.wikipedia.org/wiki/Sprint_Corporation</li>
+<li>mediation: https://en.wikipedia.org/wiki/Telecommunications_mediation</li>
+<li>CDR: https://en.wikipedia.org/wiki/Call_detail_record</li>
+</ol>
+]]></content:encoded></item>
+<item><title>One master resume. The attachments don&#x27;t get a vote.</title><link>https://blog.patpadgett.com/posts/one-master-resume/</link><guid>https://blog.patpadgett.com/posts/one-master-resume/</guid>
+<pubDate>Wed, 16 Sep 2026 12:00:00 -0400</pubDate><description>My resume facts live in Markdown. Tailored PDF and Word files come out, keywords get checked, and a file on disk does not count as a job application, folks.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/one-master-resume.jpg" alt="A crib filled with envelopes stands beside a desk with a computer, printer, and person handling papers."></p><p>Which copy of your resume has the correct date? The company-specific PDF[1] has the better sentence, the Word[2] file has the date correction, and the next application starts from whichever attachment you can find. You now have several slightly different careers to maintain.</p>
+<p>I would rather maintain one. My resume facts live in <code>master/MASTER_RESUME.md</code>, and I generate the PDF and Word document from there.</p>
+<p>That's the design documented in the resume directory's README. I'm describing what it's supposed to do here; I haven't claimed every generated file passed a fresh test today.</p>
+<p>The master holds employment history and accomplishments, different role summaries, skills, and education. It can be looooong, because you aren't supposed to send the whole thing.</p>
+<p>There are four documented technical profiles: billing mediation, DevOps[3], IT operations, and software engineering. The employers and dates stay put, and so does the meaning of a result. I can choose an accomplishment for an application without moving its number to a different employer and inventing myself a career.</p>
+<p>The documented workflow starts with saving the job description under <code>jd/</code>. Then comes <code>ats_check.py</code>. The README describes a compatibility score and a keyword comparison against the posting. It can flag missing vocabulary, although I haven't got a tiny hiring manager living in Python[4].</p>
+<p>A missing keyword gives me something to check. If I've done the work and the master doesn't say so, I can add truthful wording there. If I haven't done it, the gap stays.</p>
+<p>After a master edit, the base versions get rebuilt. I'd still inspect the actual exports before sending them, including text order and page count. The renderer hasn't necessarily read our README.</p>
+<p>Refusing to hand-edit an export feels fussy when it's just one word. But I've got enough attachments already, I don't need another one with its own idea of when I worked somewhere. I'll fix the master.</p>
+<h2>References</h2>
+<ol>
+<li>PDF: https://en.wikipedia.org/wiki/PDF</li>
+<li>Word: https://en.wikipedia.org/wiki/Microsoft_Word</li>
+<li>DevOps: https://en.wikipedia.org/wiki/DevOps</li>
+<li>Python: https://www.python.org/</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Starting over at 47. The work didn&#x27;t disappear, folks.</title><link>https://blog.patpadgett.com/posts/starting-over-at-47/</link><guid>https://blog.patpadgett.com/posts/starting-over-at-47/</guid>
+<pubDate>Sun, 13 Sep 2026 12:00:00 -0400</pubDate><description>Job hunting at 47 means making a long career readable without rewriting it. Why I keep one master resume and send a smaller, truthful version of it.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/starting-over-at-47.jpg" alt="A person maneuvers a tall filing cabinet through a doorway beside a kitchen table holding a typewriter."></p><p>Looking for work at 47 gets called &quot;starting over,&quot; and I have a small objection. Twenty-five years of work didn't disappear because I opened an application form.</p>
+<p>I know what a production system is. Getting that work into a document that makes sense to somebody with a vacancy, though... there I am again, trying to fit it into those little boxes.</p>
+<p>Most recent employer here. Previous employer there. Somewhere farther down, fourteen years of billing mediation[1] at Sprint[2], the experience most relevant to what I want now. The chronology is accurate. It just puts the useful part halfway down the page.</p>
+<p>At Sprint I spent fourteen years on Tier III support and root cause analysis[3], with on-call escalation across billing mediation platforms. I designed and led development of an EDR routing application that saved $2 million annually compared with a vendor solution. I'd like you to see that near the beginning of a mediation application, even though the calendar says something else happened afterward.</p>
+<p>At Jabil[4] I built release pipelines and automated configuration. At Raymond James[5] I worked on Linux[6] administration and releases in Capital Markets. Those jobs show what I can bring <em>back</em> to mediation, and I can explain that without burying the domain under a wall of tool names.</p>
+<p>Handing you every detail gives you an unpaid editing assignment. I am the one looking for work here, probably shouldn't start by assigning you some.</p>
+<p>My master resume keeps the information. I pull out what helps you evaluate me for this particular job. Two pages is the editing target I'm aiming for. That's my choice rather than some recruiting law. Anything that merely proves I've been here a long time can stay in the master.</p>
+<p>The archive has 74 files. There's room.</p>
 <h2>References</h2>
 <ol>
 <li>billing mediation: https://en.wikipedia.org/wiki/Telecommunications_mediation</li>
-<li>FTP: https://www.rfc-editor.org/rfc/rfc959</li>
-<li>X.25: https://en.wikipedia.org/wiki/X.25</li>
-<li>hex dumps: https://en.wikipedia.org/wiki/Hex_dump</li>
+<li>Sprint: https://en.wikipedia.org/wiki/Sprint_Corporation</li>
+<li>root cause analysis: https://en.wikipedia.org/wiki/Root_cause_analysis</li>
+<li>Jabil: https://www.jabil.com/</li>
+<li>Raymond James: https://en.wikipedia.org/wiki/Raymond_James_Financial</li>
+<li>Linux: https://en.wikipedia.org/wiki/Linux</li>
 </ol>
 ]]></content:encoded></item>
-<item><title>Twenty-five years of corkscrew. All 291 damned lines.</title><link>https://blog.patpadgett.com/posts/corkscrew-twenty-five-years/</link><guid>https://blog.patpadgett.com/posts/corkscrew-twenty-five-years/</guid>
-<pubDate>Mon, 21 Sep 2026 12:00:00 -0400</pubDate><description>I wrote 291 lines of C to get SSH through a corporate proxy in 2000. Linux distributions kept shipping it. Modern analysis has some things to tell me.</description>
-<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/corkscrew-twenty-five-years.jpg" alt="A person handles coiled sausages in a metal container beside a computer monitor and keyboard."></p><p>I wrote corkscrew[1] in an afternoon. A quarter century later I'm still discussing it, although I would have preferred to be discussing something other than its stack buffer overflow.</p>
-<p>In 2000 I was behind a corporate HTTP proxy that let port 443 out and nothing else. I wanted SSH access to my own machine at home. The proxy spoke HTTP CONNECT[2], SSH spoke a raw TCP stream, and OpenSSH[3] had this option nobody seemed to use, <code>ProxyCommand</code>. I wrote the thing to sit between them.</p>
-<p>291 lines of C. Debian[4], Ubuntu, Red Hat, CentOS, FreeBSD and Cygwin have packaged it. Linux Magazine and 2600 reviewed it. It has a Wikipedia article. An afternoon's work has an encyclopedia entry now. I certainly didn't expect that.</p>
-<p>I recently had the source put through GCC[5] static analysis, AddressSanitizer[6], UndefinedBehaviorSanitizer, and a loopback mock proxy sending deliberately hostile responses. I wanted to know what 26-year-old C looks like under modern tooling, and, well... it looks like 26-year-old C. Fuck.</p>
-<p>The big finding is a stack buffer overflow reachable from the proxy. The response handler does a <code>read()</code> into a 4096-byte buffer, doesn't add a terminator, and hands it to <code>sscanf()</code> with unbounded <code>%s</code>. Send 4096 non-whitespace bytes and you get a write one byte past the buffer. No code execution was demonstrated. A hostile proxy can still corrupt the client's stack, and I do not particularly enjoy typing that about my software.</p>
-<p>The framing bug bothers me more, because I can't blame a typo. The code treats the first <code>read()</code> as the whole proxy response, and on a 200 it throws all of it away. If headers and the first bytes of the SSH greeting arrive in the same segment, the greeting goes with them. And with fragmented headers it tries to parse <code>HTTP/1.</code> and exits.</p>
-<p>It worked for 25 years because proxies almost always send headers in their own packet. I wrote that assumption into the thing, and now I get to look at it again.</p>
-<p>The rest I'd leave alone. But those damned buffers need terminators.</p>
+<item><title>The CAGE code. Five characters, folks.</title><link>https://blog.patpadgett.com/posts/the-cage-code/</link><guid>https://blog.patpadgett.com/posts/the-cage-code/</guid>
+<pubDate>Wed, 09 Sep 2026 12:00:00 -0400</pubDate><description>VimOps became a registered federal vendor with CAGE code 8PMQ9. That identifies the business, folks. It does not mean the government reviewed my software.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/the-cage-code.jpg" alt="A blank rectangular sign hangs across a doorway opening onto a hallway with chairs and overhead lights."></p><p>Those five characters next to VimOps on my resume, 8PMQ9, are our CAGE code[1]. It fits the history of becoming a registered federal vendor[2] into considerably less space than this explanation is going to take.</p>
+<p>It identifies an entity. A contracting officer still has to decide whether I'm the best person for a job, and I still need a proposal with a reasonable price and proof I've met a particular requirement.</p>
+<p>I'm not claiming VimOps's registration is active on whatever day you're reading this. My resume establishes the registered-vendor history and CAGE code. Current status requires a current lookup. I'd want that lookup for anybody waving a vendor number around in a proposal, too.</p>
+<p>I can pick a really good font and make the code bigger, but somebody is still going to ask for those answers. I'd better have them ready.</p>
+<h2>References</h2>
+<ol>
+<li>CAGE code: https://cage.dla.mil</li>
+<li>registered federal vendor: https://sam.gov</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Local SEO for one truck. ONE truck, folks.</title><link>https://blog.patpadgett.com/posts/seo-for-a-plumber/</link><guid>https://blog.patpadgett.com/posts/seo-for-a-plumber/</guid>
+<pubDate>Sun, 06 Sep 2026 12:00:00 -0400</pubDate><description>Our imaginary plumber has one truck. Let&#x27;s get the local information right, ask for honest reviews, and build a page that earns a useful phone call.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/seo-for-a-plumber.jpg" alt="A person stands behind a pickup truck carrying pipes, with a large propeller secured above its cab."></p><p>The plumber in this example is imaginary. There's one truck and an owner who does the work within a service area somebody can actually drive. I haven't taken a client case study and conveniently left the name off.</p>
+<p>Before I touch the website, I want to know which jobs the owner wants and where that truck can reasonably go. A map covered in target towns looks ambitious. It can also describe a working day that requires teleportation, which is a little outside the scope of working on the damned website.</p>
+<p>Google[1]'s <a href="https://support.google.com/business/answer/7091">local ranking guidance</a>[2] describes relevance, distance, and prominence. Complete, accurate information helps Google understand the business. You cannot fuck with geography in the settings menu and make one truck equally close to every household in the county.</p>
+<p>If customers don't come to the business address, Google's <a href="https://support.google.com/business/answer/9157481">service-area guidance</a>[3] says to remove the address from the public profile and use a service area. Doing paperwork at home does not make your kitchen a storefront, and I am not publishing somebody's kitchen as a customer reception area because a citation checklist wants an address.</p>
+<p>I would start with a strong home page that doubles as the main service page. Say what the plumber does and where. Explain how to request work and what happens after the call. I'd rather people could find that without hunting around.</p>
+<p>I want the phone number readable and usable on a phone, and I'd test where the inquiry form goes. People should know what response to expect. I'd answer the common questions that affect whether somebody should call before writing a giant essay around a search phrase.</p>
+<p>My first revision would follow the calls the owner has to turn down. If the page keeps bringing in work outside the service area, fix that language before buying more attention.</p>
+<p>That truck still has to get there.</p>
+<h2>References</h2>
+<ol>
+<li>Google: https://www.google.com</li>
+<li>local ranking guidance: https://support.google.com/business/answer/7091</li>
+<li>service-area guidance: https://support.google.com/business/answer/9157481</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Splunk versus ELK. Put the holy war down, folks.</title><link>https://blog.patpadgett.com/posts/splunk-vs-elk/</link><guid>https://blog.patpadgett.com/posts/splunk-vs-elk/</guid>
+<pubDate>Mon, 31 Aug 2026 12:00:00 -0400</pubDate><description>I used Splunk at Raymond James and ELK at Sprint and Jabil. Let&#x27;s count the operating labor and retention bill before anybody starts worshipping a logo.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/splunk-vs-elk.jpg" alt="One person kneels among cables beneath computer desks while another stands beside a parking meter and office chair."></p><p>Before you pick a side in the Splunk[1] versus ELK[2] argument, tell me who has to keep the damned thing running. And who gets the bill.</p>
+<p>I implemented Splunk log analysis at Raymond James[3] and ELK at Sprint[4] and Jabil[5]. That doesn't make me qualified to announce which one every company on earth should buy, although apparently that has never stopped anybody from having an opinion.</p>
+<p>Splunk is commercial software, with pricing that varies by product and agreement. Its published pricing information includes workload and ingest approaches. I'd get a quote for what we're actually going to run, because somebody will confidently repeat a price per unit they remember as though it were a law of physics.</p>
+<p>Meanwhile, ELK means Elasticsearch[6], Logstash[7] and Kibana[8], and self-managing that stack does not make the expenses disappear. Compute and storage cost money. Retention costs money. Recovery testing and the people operating the cluster cost money (yes, even when those people already work here). Subscription features, support and hosted offerings need their own comparison. Calling ELK free leaves the budget unfinished before we even get to the licensing argument.</p>
+<p>I want to compare both tools with the same data and access requirements, and count the engineering hours spent maintaining ingestion pipelines and fixing capacity problems. Leaving payroll out does make the software invoice look prettier.</p>
+<p>For an acceptance test, I'd give an ordinary operator an unfamiliar failure and a limited time range, and see whether they can find the affected work. The vendor engineer has already practiced the demonstration. I want something our operator can investigate with, and enough budget to keep it working.</p>
+<p>Then let the poor fuck get back to work.</p>
+<h2>References</h2>
+<ol>
+<li>Splunk: https://www.splunk.com</li>
+<li>ELK: https://www.elastic.co/elastic-stack</li>
+<li>Raymond James: https://www.raymondjames.com</li>
+<li>Sprint: https://en.wikipedia.org/wiki/Sprint_Corporation</li>
+<li>Jabil: https://www.jabil.com</li>
+<li>Elasticsearch: https://www.elastic.co/elasticsearch</li>
+<li>Logstash: https://www.elastic.co/logstash</li>
+<li>Kibana: https://www.elastic.co/kibana</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Small programs survive. Their bugs do too.</title><link>https://blog.patpadgett.com/posts/small-programs-survive/</link><guid>https://blog.patpadgett.com/posts/small-programs-survive/</guid>
+<pubDate>Wed, 26 Aug 2026 12:00:00 -0400</pubDate><description>Corkscrew fits in 291 lines, folks. That helps me understand it. It does not excuse losing your bytes or pretending proxy credentials are encrypted.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/small-programs-survive.jpg" alt="A person presses a pipe wrench against a metal box on a wooden desk beside a computer."></p><p>You can fit a Base64[1] encoder, connection setup, argument handling and a relay loop into 291 lines of C[2]. That is the reviewed <code>corkscrew.c</code> -- 291 lines, and I can inspect the whole damned thing without trying to remember which service owns which part of a request.</p>
+<p>The security review found memory corruption and authentication lifetime errors, and it found tunnel framing failures too. All in my little file. I could inspect those defects easily enough, but being able to read them did not magically repair shit.</p>
+<p>I need to be able to hold enough of the program in my head to establish that it's correct. An explicit state machine[3] might be longer than my loop, and still be easier to follow because the assumptions are written down.</p>
+<p>I like having 291 lines. But if an intact byte stream takes another page of C in the next version, I'll write the damned page.</p>
+<h2>References</h2>
+<ol>
+<li>Base64: https://www.rfc-editor.org/rfc/rfc4648.html</li>
+<li>C (programming language): https://en.wikipedia.org/wiki/C_(programming_language)</li>
+<li>state machine: https://en.wikipedia.org/wiki/Finite-state_machine</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Exit codes are an API. Yes, that little integer.</title><link>https://blog.patpadgett.com/posts/exit-codes-are-an-api/</link><guid>https://blog.patpadgett.com/posts/exit-codes-are-an-api/</guid>
+<pubDate>Wed, 19 Aug 2026 12:00:00 -0400</pubDate><description>Corkscrew reported success without establishing a tunnel. Fix the damned status, but don&#x27;t pretend OpenSSH just copies its ProxyCommand&#x27;s return code.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/exit-codes-are-an-api.jpg" alt="A person holds a green circular paddle beside a striped barrier, with a car facing a brick wall."></p><p>You connect to a proxy, it accepts your connection, and then it closes before sending any status. Corkscrew[1] reported success anyway, with exit status zero recorded in the audit. Nothing had established a tunnel, but there was the little integer telling the caller everything was fine.</p>
+<p>The code took a <code>break</code> out of the loop and reached <code>exit(0)</code>[2]. By then, the program hadn't preserved <em>why</em> the loop ended, so the final line couldn't tell a failed setup from anything else.</p>
+<p>Standard error is for giving the operator enough context to investigate. Status is the machine-readable result for the caller. I want both. Writing a beautiful explanation of the failure doesn't excuse sending the machine the wrong answer (the machine wasn't admiring your prose anyway).</p>
+<p>OpenSSH[3] still speaks SSH over the stream. An empty stream can't complete an SSH handshake because the helper gave itself a passing grade.</p>
+<p>The <a href="https://man.openbsd.org/ssh_config#ProxyCommand">ProxyCommand documentation</a>[4] describes a command that reads standard input and writes standard output. In the ordinary pipe-based path in <a href="https://github.com/openssh/openssh-portable/blob/master/sshconnect.c">OpenSSH's source</a>[5], the client creates pipes, starts the helper and attaches those pipes as its connection. It does not wait for the helper's final exit status as a CONNECT success check before beginning SSH.</p>
+<p>OpenSSH's documented exit status is the remote command's exit status, or 255 if an error occurred. The helper doesn't get to choose that number. It doesn't promise to pass through the ProxyCommand's numeric status. An arbitrary nonzero helper exit doesn't mean SSH returns that same value.</p>
+<p>I can't fix this by replacing every zero with one, either. A relay can reach a normal end of stream, and calling an ordinary disconnection a failure would just annoy a different set of people. I need to preserve why the loop ended before I choose the damned integer.</p>
+<h2>References</h2>
+<ol>
+<li>Corkscrew: https://github.com/bryanpkc/corkscrew</li>
+<li>exit(0): https://man7.org/linux/man-pages/man3/exit.3.html</li>
+<li>OpenSSH: https://www.openssh.com/</li>
+<li>ProxyCommand documentation: https://man.openbsd.org/ssh_config#ProxyCommand</li>
+<li>OpenSSH's source: https://github.com/openssh/openssh-portable/blob/master/sshconnect.c</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Base64 and signed chars: four wrong damned slashes</title><link>https://blog.patpadgett.com/posts/base64-and-signed-chars/</link><guid>https://blog.patpadgett.com/posts/base64-and-signed-chars/</guid>
+<pubDate>Sat, 15 Aug 2026 12:00:00 -0400</pubDate><description>The corkscrew audit turned three credential bytes into four wrong slashes. An unsigned destination can&#x27;t fix a signed shift after the fact, folks.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/base64-and-signed-chars.jpg" alt="A person holds an egg carton beneath a meat grinder beside eggs, a bowl, and a desktop computer."></p><p>The corkscrew[1] Base64[2] test takes three bytes, hexadecimal <code>75 3a ff</code>, and the audit harness spits out <code>////</code> where Python[3]'s Base64 encoder produces <code>dTr/</code>. UndefinedBehaviorSanitizer[4] also reports a left shift of negative value <code>-1</code>.</p>
+<p>With undefined behavior we have <em>lost</em> the portable guarantee C gives us. Change the compiler or optimization setting, or run on another target, and we may get something else wrong entirely. This is one observed outcome, with a sanitizer diagnostic explaining why the operation is invalid. It doesn't tell us what negative shifts will always produce.</p>
+<p>Meanwhile, the input pointer is <code>char *</code>, and the shift happens before the result gets to the accumulator. Here is the relevant shape from the reviewed source:</p>
+<pre><code class="language-c">unsigned int tmp;
+/* src is char * */
+tmp |= *src++ &lt;&lt; (24 - 8 * i);
+</code></pre>
+<p>Declaring the destination unsigned cannot change the expression that was already evaluated. Sorry, the variable has no time machine. The input undergoes integer promotion before shifting, and on the audited platform that high-bit byte was read as a negative <code>char</code> value. Left-shifting that negative signed value is undefined behavior under the C rules relevant to this code.</p>
+<p>Plain <code>char</code> is a distinct type, and its signedness is implementation-defined. It is not shorthand for an unsigned octet, however much we'd enjoy that convenience. Read <a href="https://en.cppreference.com/w/c/language/arithmetic_types.html">the arithmetic-type reference</a>[5] alongside the <a href="https://en.cppreference.com/w/c/language/operator_arithmetic.html">shift rules</a>[6]. The declaration can look perfectly respectable while the expression is doing something goddamn invalid.</p>
+<p>The repair needs unsigned input bytes and explicitly unsigned intermediate arithmetic. Changing <code>src</code> to <code>unsigned char *</code> doesn't finish the explanation: narrow unsigned types can still promote to signed <code>int</code> before the shift. So I still have to check the promoted type, even after I've changed the pointer. It's a small expression, and there's quite a bit in there I need to get right.</p>
+<h2>References</h2>
+<ol>
+<li>corkscrew: https://github.com/bryanpkc/corkscrew</li>
+<li>Base64: https://www.rfc-editor.org/rfc/rfc4648.html</li>
+<li>Python: https://www.python.org/</li>
+<li>UndefinedBehaviorSanitizer: https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html</li>
+<li>the arithmetic-type reference: https://en.cppreference.com/w/c/language/arithmetic_types.html</li>
+<li>shift rules: https://en.cppreference.com/w/c/language/operator_arithmetic.html</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Autotools in 2026: don&#x27;t delete the damned build</title><link>https://blog.patpadgett.com/posts/autotools-in-2026/</link><guid>https://blog.patpadgett.com/posts/autotools-in-2026/</guid>
+<pubDate>Mon, 10 Aug 2026 12:00:00 -0400</pubDate><description>Corkscrew&#x27;s build machinery looks like clutter until somebody needs it. What&#x27;s source, what ships, and why deleting generated files isn&#x27;t a packaging plan.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/autotools-in-2026.jpg" alt="A person holds a chain above a cardboard box containing a wooden workbench and metal vise."></p><p>You look at corkscrew[1]'s build files in 2026 and wonder why one little C[2] program needs all this shit.</p>
+<p>Corkscrew began in 2000. That's 26 years of accommodating other people's machines, which is a looooong time to assume everybody's computer looks like yours. The program is small, but it comes with <code>configure.ac</code>, <code>configure</code>, <code>Makefile.am</code>, <code>Makefile.in</code>, <code>aclocal.m4</code>, configuration templates, helper scripts.</p>
+<p>Generated files can belong in a release tarball without having to live in Git[3]. A source checkout can reasonably require <code>autoreconf</code> and documented maintainer dependencies. The release tarball should normally bring the generated configure script and Makefile templates with it, along with the required helper files. That way configure-and-make doesn't require Autoconf[4] and Automake[5] on the user's machine. They came to build corkscrew, and I'd rather they didn't have to reconstruct my fucking laptop to do it.</p>
+<p>Packagers need control over installation paths and compiler flags, too. I'd preserve <code>prefix</code> and <code>DESTDIR</code>, and respect the toolchain's flags instead of hardcoding my local installation. Cross-compilation needs actual testing, even with <code>configure</code> sitting right there.</p>
+<p>If object files, binaries, <code>config.log</code>, configured Makefiles are tracked, I'd remove those machine-specific products from version control. I'd still check what belongs in the release archive before taking a broom to everything that looks generated.</p>
+<p>The audit directly compiled ordinary and sanitizer binaries with GCC[6]. Its report also says the audit environment's process guard blocked the normal configure route. We hit an environment limitation there, so I can't use that result to say the repository's Autotools build is broken.</p>
+<p>I can't say the build works from that result either. Native Autotools and other operating systems are explicitly unverified. We still have tests to run before I'd make those claims.</p>
 <h2>References</h2>
 <ol>
 <li>corkscrew: https://en.wikipedia.org/wiki/Corkscrew_(program)</li>
-<li>HTTP CONNECT: https://www.rfc-editor.org/rfc/rfc9110.html#name-connect</li>
-<li>OpenSSH: https://www.openssh.com/</li>
-<li>Debian: https://www.debian.org/</li>
+<li>C: https://en.wikipedia.org/wiki/C_(programming_language)</li>
+<li>Git: https://git-scm.com/</li>
+<li>Autoconf: https://www.gnu.org/software/autoconf/</li>
+<li>Automake: https://www.gnu.org/software/automake/</li>
 <li>GCC: https://gcc.gnu.org/</li>
-<li>AddressSanitizer: https://clang.llvm.org/docs/AddressSanitizer.html</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Idempotency: can I run the damned thing again?</title><link>https://blog.patpadgett.com/posts/idempotency-for-sysadmins/</link><guid>https://blog.patpadgett.com/posts/idempotency-for-sysadmins/</guid>
+<pubDate>Mon, 03 Aug 2026 12:00:00 -0400</pubDate><description>Your script worked once. Wonderful. Now lose the terminal and run it again. Ansible, shell scripts, and ledgers make different promises about what happens next.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/idempotency-for-sysadmins.jpg" alt="A person holds a toilet seat above numerous seats stacked on a toilet, with tools on the tiled floor."></p><p>Your script worked once, but can you run it again after losing the terminal?</p>
+<p>Idempotency[1] means repeating an operation has the same intended effect as performing it once. The program can execute again and emit another log line. It can talk to the network too. What it cannot do is keep changing the state it promised to control just because you asked twice.</p>
+<p>&quot;Append this setting&quot; tells it to do something. Keep running that and you can collect duplicate lines. &quot;This setting must have this value&quot; gives the program a condition to inspect, which is considerably more useful to me than counting how many commands ran.</p>
+<p>The <a href="https://docs.ansible.com/ansible/latest/reference_appendices/glossary.html">Ansible glossary</a>[2] describes idempotency through the changes needed to reach the desired state. Putting a task in a playbook does not get it a certificate. You still have to write the thing properly.</p>
+<p>Wrap an append command in <code>ansible.builtin.shell</code>[3] and it is still an append command. Set <code>changed_when: false</code> and you've changed the reporting while the command keeps doing exactly what it did before. The duplicate lines do not give a fuck what the report says.</p>
+<p>A <code>creates</code> guard helps if the existence of that file really proves the operation finished. But if the file can exist after partial initialization, you have a problem. Write the marker too early and a failed setup becomes a permanent no-op.</p>
+<p>I would test an empty target and a correct target, then try a partly configured target to see which assumptions fall apart there. The correct one needs that second run, too. I'd want to see what happens when the terminal goes away and nobody is sitting there keeping track of where the script got to.</p>
+<h2>References</h2>
+<ol>
+<li>Idempotency: https://en.wikipedia.org/wiki/Idempotence</li>
+<li>Ansible glossary: https://docs.ansible.com/ansible/latest/reference_appendices/glossary.html</li>
+<li>ansible.builtin.shell: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/shell_module.html</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Logs are for the poor bastard awake at 3 a.m.</title><link>https://blog.patpadgett.com/posts/logs-are-for-3am/</link><guid>https://blog.patpadgett.com/posts/logs-are-for-3am/</guid>
+<pubDate>Fri, 31 Jul 2026 12:00:00 -0400</pubDate><description>Tell me what failed, what might already have happened, and what I can safely do next. At 3 a.m., I do not want to go spelunking through your source code.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/logs-are-for-3am.jpg" alt="A person sits on a patchwork-covered bed holding continuous paper trailing from a printer beside a computer."></p><p>If your error message[1] only makes sense with the source code[2] open, you have left the person awake at 3 a.m. some homework.</p>
+<p>Here's an invented bad message:</p>
+<pre><code class="language-text">ERROR process_item failed
+</code></pre>
+<p>I'd ask for something more like this in a review:</p>
+<pre><code class="language-text">BLOCKED stage=publish item=example-17 reason=verification_timeout
+Local output was replaced; public readback did not confirm it.
+Check the configured public URL and deployment mapping before retrying.
+</code></pre>
+<p>I made that example up; it isn't a transcript from one of my systems. The local output changed, but we don't know the remote result yet. At least now somebody has something to check before repeating a write and hoping for the best. That's what I'd want if I were the poor bastard trying to get back to bed.</p>
+<h2>References</h2>
+<ol>
+<li>error message: https://en.wikipedia.org/wiki/Error_message</li>
+<li>source code: https://en.wikipedia.org/wiki/Source_code</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Cron started the command. What the hell else did you expect?</title><link>https://blog.patpadgett.com/posts/cron-is-not-a-scheduler/</link><guid>https://blog.patpadgett.com/posts/cron-is-not-a-scheduler/</guid>
+<pubDate>Sat, 25 Jul 2026 12:00:00 -0400</pubDate><description>Cron starts commands when the clock matches, folks. Dates, missed days, overlapping runs, and whether anything actually published are still our damned problem.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/cron-is-not-a-scheduler.jpg" alt="A desk holds an alarm clock, chicken drumstick, and service bell, with a computer and typewriter behind."></p><p>Putting the publisher in cron[1] still leaves a fair amount for us to do.</p>
+<p>Cron is a scheduler. Any suggestion otherwise is unfair to cron, which matches a clock against a schedule and starts a command. It doesn't know yesterday's story remains unpublished or that the previous invocation is still working. A successful process exit might have produced precisely fuck-all of what you expected, and cron wouldn't know that either.</p>
+<p>The grime95[2] publisher has a particularly fun wrinkle: the fiction has dates. A booking dated in 1995 is story content. I appreciate 1995 as much as the next dinosaur, but we're not trying to publish something back into it.</p>
+<p>The publisher README separates <code>posting_date</code> from the fictional date. Missing scheduling dates get skipped with a diagnostic. An explicitly malformed arrest-level scheduling date is an error. We can't just borrow another date because it looks convenient sitting over there.</p>
+<p>The README's recovery behavior differs from my earlier publishing post, so I'd be careful about copying that. This documented variant selects a date and allows deliberate past-date replay. It explicitly says there is no automatic backlog publishing. I'm discussing that contract here; I haven't established that my earlier description matches whatever is installed now.</p>
+<p>Traditional cron doesn't keep a durable queue[3] of scheduled invocations while the host is off. Miss the minute and ordinary cron doesn't wake up later and work out which business work you meant to recover.</p>
+<p>In the documented grime95 interface, you start with an explicit date and a dry run[4], inspect the selection, <em>then</em> authorize publication. I'd keep that calendar argument visible in the command and the logs. It belongs in any recovery note too, since the next person needs to know which yesterday I meant.</p>
+<p>Before enabling the schedule, I'd deliberately miss a run and rehearse recovery. I'd want to be able to explain which date publishes next before leaving it alone.</p>
+<h2>References</h2>
+<ol>
+<li>cron: https://en.wikipedia.org/wiki/Cron</li>
+<li>grime95: https://grime95.com/</li>
+<li>durable queue: https://en.wikipedia.org/wiki/Message_queue</li>
+<li>dry run: https://en.wikipedia.org/wiki/Dry_run_(testing)</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Atomic rename. Read the damned small print.</title><link>https://blog.patpadgett.com/posts/atomic-rename/</link><guid>https://blog.patpadgett.com/posts/atomic-rename/</guid>
+<pubDate>Wed, 22 Jul 2026 12:00:00 -0400</pubDate><description>Unix rename can publish a finished file or claim a queue item. Durability, replacement, NFS, and mounts still get a vote, folks.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/atomic-rename.jpg" alt="A person wearing a bathrobe holds a fish above an open filing cabinet drawer in an office."></p><p>You can avoid a pleasing amount of machinery by moving a filename. There's some small print I'd want to read before getting carried away with it.</p>
+<p>The <a href="https://man7.org/linux/man-pages/man2/rename.2.html">rename(2) manual</a>[1] says replacing an existing destination is atomic. Another process accessing that destination doesn't encounter an intermediate missing pathname.</p>
+<p>But you have to finish writing before you rename it. Keep appending afterward and readers can see incomplete content through the final name. Rename doesn't freeze the inode[2], and it certainly doesn't read your payload and decide whether you did a good job. That would be a considerably larger syscall.</p>
+<p>I'd create a unique temporary file right in the destination directory, with restrictive permissions from the start. Write it, check every operation, set the intended final metadata, then replace the destination. Staging alongside the destination also keeps me from accidentally putting the temporary file on a different filesystem.</p>
+<p>Atomic visibility tells you what another reader can observe while the system is running. I'd still need to check durability to know what survives power loss, however beautiful the filename looks right now.</p>
+<p>For a Linux[3] local-filesystem publication pattern requiring crash persistence, the usual sequence includes syncing the completed temporary file and renaming it. Then comes syncing the containing directory. The entry is part of what you're trying to preserve. The <a href="https://man7.org/linux/man-pages/man2/fsync.2.html">fsync(2) manual</a>[4] explicitly distinguishes syncing a file from syncing its directory.</p>
+<p>If a sync fails, I don't want success printed just because I can still see the filename. No shit, it's there <em>now</em>. The filesystem and storage have to support whatever durability claim we're making. I'd rather deal with the inconvenient error while it's in front of me.</p>
+<h2>References</h2>
+<ol>
+<li>rename(2) manual: https://man7.org/linux/man-pages/man2/rename.2.html</li>
+<li>inode: https://en.wikipedia.org/wiki/Inode</li>
+<li>Linux: https://www.kernel.org/</li>
+<li>fsync(2) manual: https://man7.org/linux/man-pages/man2/fsync.2.html</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Reading hex dumps: quit guessing at the damned bytes</title><link>https://blog.patpadgett.com/posts/reading-hex-dumps/</link><guid>https://blog.patpadgett.com/posts/reading-hex-dumps/</guid>
+<pubDate>Fri, 17 Jul 2026 12:00:00 -0400</pubDate><description>Corrupt how, folks? Protect the original, establish the format, follow record lengths, check byte order, and find the first boundary that actually breaks.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/reading-hex-dumps.jpg" alt="A person holds a pink strip across a vinyl record beneath a magnifying lamp on a cluttered workbench."></p><p>Your parser[1] says &quot;corrupt file,&quot; and you would like it to be a little more fucking specific.</p>
+<p>I'd protect the original and make a working copy before poking around. I'd record the file size and a cryptographic hash[2], and keep the source filename and transfer context somewhere outside the copy I'm examining. I want to know what arrived and where it came from before deciding what's wrong with it.</p>
+<p>The editor has a save button, which is also a very convenient way to help the damage along.</p>
+<pre><code class="language-sh">od -Ax -tx1 -v -N 64 suspect.bin
+</code></pre>
+<p>In <a href="https://man7.org/linux/man-pages/man1/od.1.html">od(1)</a>[3], <code>-Ax</code> prints hexadecimal[4] offsets and <code>-tx1</code> prints individual bytes in hexadecimal. The <code>-v</code> keeps repeated lines from disappearing behind an asterisk. <code>-N 64</code> limits this first look. That is 64 bytes. There's a whole file I haven't seen yet.</p>
+<p>I follow the offset column rather than those convincing little display rows. Sixteen bytes across means somebody chose a sixteen-byte display width. It doesn't tell us that somebody else designed sixteen-byte records, however neatly they seem to line up on the screen.</p>
+<p>A parser out of alignment can make everything afterward look broken. I'd look for the first boundary where the file and format disagree. The last error in a thousand-line report has had plenty of opportunity to inherit somebody else's problem.</p>
+<p>If recovery is justified, I'd preserve the rejected suffix and document exactly which complete records I accepted. I'd keep what I could establish separate from what I couldn't. Padding missing payload with zeros would give me a longer file, sure, but I'd still be missing the fact that was supposed to be there.</p>
+<h2>References</h2>
+<ol>
+<li>parser: https://en.wikipedia.org/wiki/Parsing</li>
+<li>cryptographic hash: https://en.wikipedia.org/wiki/Cryptographic_hash_function</li>
+<li>od(1): https://man7.org/linux/man-pages/man1/od.1.html</li>
+<li>hexadecimal: https://en.wikipedia.org/wiki/Hexadecimal</li>
+</ol>
+]]></content:encoded></item>
+<item><title>select() loops: ready does not mean done, folks</title><link>https://blog.patpadgett.com/posts/select-loops-and-why-they-bite/</link><guid>https://blog.patpadgett.com/posts/select-loops-and-why-they-bite/</guid>
+<pubDate>Sat, 11 Jul 2026 12:00:00 -0400</pubDate><description>The corkscrew audit found ordinary socket-relay mistakes hiding behind a small loop. Short writes, signals, descriptor limits, and a timeout that never quits.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/select-loops-and-why-they-bite.jpg" alt="A person holds a long sandwich extending through a door mail slot beside office computers."></p><p>Corkscrew[1]'s relay job is to copy standard input to a socket, copy the socket to standard output, and stop when everybody is finished talking. You can explain it that quickly and still fuck up most of the implementation.</p>
+<p>I want the evidence straight. The audit reproduced handshake framing failures. Reading the source turned up ignored partial writes and missing signal handling, along with an unchecked descriptor limit. Those cases were not dynamically reproduced. I take the source findings seriously, but I'm not going to call them successful attacks.</p>
+<p>The <a href="https://man7.org/linux/man-pages/man2/select.2.html">select(2) manual</a>[2] describes readiness. A readable socket might have some bytes, or it might be at EOF. A writable descriptor does not promise that whatever enormous write you feel like handing it will finish without blocking. That's a fairly important bit of the damned promise.</p>
+<p>A write-all helper keeps you from forgetting the unwritten suffix. It still leaves the scheduling to us. For a reliable duplex relay I would use nonblocking I/O[3] with separate pending buffers for each direction. The readiness requests would depend on what those buffers actually need.</p>
+<p>I'd read only while the corresponding output buffer has room, and watch for writability only when something is queued. When the buffer fills, I'd stop accepting input in that direction. That is backpressure[4], and it keeps a slow reader from turning your small program into an unbounded memory allocation.</p>
+<p>The <a href="https://man7.org/linux/man-pages/man2/write.2.html">write(2) contract</a>[5] allows a successful call to write fewer bytes than requested. A positive result tells you how many bytes went through. I want to see what the loop does with the bytes still waiting.</p>
+<h2>References</h2>
+<ol>
+<li>Corkscrew: https://en.wikipedia.org/wiki/Corkscrew_(program)</li>
+<li>select(2) manual: https://man7.org/linux/man-pages/man2/select.2.html</li>
+<li>nonblocking I/O: https://en.wikipedia.org/wiki/Asynchronous_I/O</li>
+<li>backpressure: https://en.wikipedia.org/wiki/Flow_control_(data)</li>
+<li>write(2) contract: https://man7.org/linux/man-pages/man2/write.2.html</li>
+</ol>
+]]></content:encoded></item>
+<item><title>The error queue is unfinished accounting. Go get it.</title><link>https://blog.patpadgett.com/posts/the-error-queue/</link><guid>https://blog.patpadgett.com/posts/the-error-queue/</guid>
+<pubDate>Sat, 04 Jul 2026 12:00:00 -0400</pubDate><description>Your parser rejected the record. Fine. Somebody still has to find out what happened to the usage, folks. An error directory is not a finished accounting job.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/the-error-queue.jpg" alt="A person adjusts white bedding around paper envelopes in a bassinet beside a desk lamp and computer."></p><p>Your parser[1] rejected a record, the pipeline kept moving, and you would like to call that handled.</p>
+<p>The software did its job, but the usage is still sitting there waiting for somebody to figure out what the hell happens next. An error queue[2] is a reasonable place to put something that cannot proceed, as long as somebody remembers to go back to it.</p>
+<p>I'd keep the original rejection time separate from the latest attempt time. Reset its age on every retry and the oldest problem becomes permanently new. Accounting is still fucked, but look at those fresh dates.</p>
+<p>When reviewing the queue, I want a decision about the oldest unresolved item. It may have to stay open, with an owner and a next action. I'm glad that newer record retried successfully, but I'm still looking at the old bastard.</p>
+<h2>References</h2>
+<ol>
+<li>parser: https://en.wikipedia.org/wiki/Parsing</li>
+<li>error queue: https://en.wikipedia.org/wiki/Dead_letter_queue</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Sequence numbers are a promise. Read the damned promise.</title><link>https://blog.patpadgett.com/posts/sequence-numbers-are-a-promise/</link><guid>https://blog.patpadgett.com/posts/sequence-numbers-are-a-promise/</guid>
+<pubDate>Sat, 27 Jun 2026 12:00:00 -0400</pubDate><description>A bigger sequence number does not mean your missing file arrived, folks. Gaps, repeats and resets need explanations that survive the next restart.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/sequence-numbers-are-a-promise.jpg" alt="A person stands on a wooden ladder, reaching toward shelves of files beside an office desk."></p><p>You have a bigger sequence number[1] than you had before, and you're ready to delete the earlier file. I'd hang on to it a little longer.</p>
+<p>I want to know who issued the number, what it counts, and when it can start over. Without those answers, comparing two numbers gives me very little evidence that everything earlier arrived.</p>
+<p>I would keep the missing range separately from the highest number observed. A single high-water mark cannot tell you both how far you've gotten and which holes remain. Let a newer file automatically close an older gap and you've declared success without learning a goddamn thing about the file you couldn't find.</p>
+<p>Record counts need the same care. You can have a complete file sequence made of incomplete files, or a complete file with rejected records[2]. Sequence continuity proves one property of the transfer; there's still accounting to check. The numbers can line up beautifully while I'm still looking for the damned records.</p>
+<h2>References</h2>
+<ol>
+<li>sequence number: https://www.rfc-editor.org/rfc/rfc1982.html</li>
+<li>records: https://en.wikipedia.org/wiki/Record_(computer_science)</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Keroncong and Portuguese ghosts</title><link>https://blog.patpadgett.com/posts/keroncong-and-portuguese-ghosts/</link><guid>https://blog.patpadgett.com/posts/keroncong-and-portuguese-ghosts/</guid>
+<pubDate>Wed, 24 Jun 2026 12:00:00 -0400</pubDate><description>Listen to the cak and cuk, folks. Keroncong carries Portuguese traces, but Indonesian musicians made the music. Kampung Tugu, Bengawan Solo, and knowing when to shut up.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/keroncong-and-portuguese-ghosts.jpg" alt="A seated person wearing oven mitts holds a bass guitar beside two small stringed instruments and a floor fan."></p><p>If you play bass, listen to keroncong[1] with the little plucked instruments in mind, and leave your own damned strings alone for a minute. The singer may be holding a phrase while those players keep making little decisions underneath it. You could miss the whole thing waiting for somebody to get loud.</p>
+<p>Keroncong developed through encounters between Portuguese-influenced music and local musicians in the Indonesian archipelago. Small plucked string instruments are part of that history. Indonesian musicians changed it rather than preserving a finished European genre.</p>
+<p>Cak and cuk are small ukulele[2]-family instruments, with contrasting rhythmic jobs in a common keroncong ensemble. They aren't just doubling the same strum. Their parts work against and around each other, so listening to one in isolation can leave you wondering why the pair feels so active. I keep wanting to hear what each one is doing.</p>
+<p>That gets my producer brain going. Stacking copies of a part can make an arrangement bigger without giving me much more to hear. Two distinct parts can make more audible movement than several layers doing the same damned job, and the writing separates them before panning or equalization[3] gets involved. I can't just fuck with the controls afterward and expect that to finish an arrangement whose parts don't work together.</p>
+<p>Those little plucked parts make me want to fill the gaps with bass notes. But the gaps are already doing work, and I'd like to be able to sing the part I'm about to step on before I interrupt it. Which means leaving the bass alone a little longer.</p>
+<h2>References</h2>
+<ol>
+<li>keroncong: https://en.wikipedia.org/wiki/Kroncong</li>
+<li>ukulele: https://en.wikipedia.org/wiki/Ukulele</li>
+<li>equalization: https://en.wikipedia.org/wiki/Equalization_(audio)</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Protest music in Bahasa Indonesia: the bass doesn&#x27;t get to take all the credit</title><link>https://blog.patpadgett.com/posts/protest-music-in-bahasa/</link><guid>https://blog.patpadgett.com/posts/protest-music-in-bahasa/</guid>
+<pubDate>Sun, 21 Jun 2026 12:00:00 -0400</pubDate><description>Iwan Fals, Efek Rumah Kaca, .Feast, Navicula, and Homicide were not waiting for my bass drop. Putting Ledakan Pemuda&#x27;s Korupsi beside Indonesian protest music.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/protest-music-in-bahasa.jpg" alt="A crouching person adjusts a mixing console beside a large speaker cabinet and a microphone on the floor."></p><p>I produced <em>Korupsi</em> by Ledakan Pemuda, an Indonesian protest-dubstep[1] album. Before you let me get too pleased with myself, Indonesian protest music was around long before I opened a recording session.</p>
+<p>Iwan Fals[2] is central to any short account of Indonesian popular music and social criticism. His songs addressed ordinary people's lives and the conduct of power during the New Order[3] period. &quot;Surat Buat Wakil Rakyat&quot; addresses the people's representatives in its title.</p>
+<p>That interests me as a writer because anger gets vague awfully fast in a song. Everything's broken, everybody's guilty, and the singer is very upset about <em>something</em>. Fine, but what the fuck are we talking about? I still don't know what the complaint is. Naming the relationship between a citizen and a representative gives me something I can recognize in the complaint.</p>
+<p>I can claim the production on <em>Korupsi</em>, and I'm proud of that work. Dubstep gives protest low-frequency weight and repetition. There's also that contrast between a sparse passage and an impact, which gives me plenty to work with without pretending I invented dissent.</p>
+<p>And those tools can get in the way. Distortion makes a voice sound furious, but it can make the words harder to understand. A drop gets people excited, and that excitement may have fuck all to do with what the preceding verse said. I have to admit that instead of congratulating myself every time the bass arrives, much as I enjoy that part.</p>
+<p>I want the arrangement to help the statement reach the listener. I can spend all the time I want fucking with the bass knob, the words still need to get through.</p>
+<h2>References</h2>
+<ol>
+<li>protest-dubstep: https://en.wikipedia.org/wiki/Dubstep</li>
+<li>Iwan Fals: https://en.wikipedia.org/wiki/Iwan_Fals</li>
+<li>New Order: https://en.wikipedia.org/wiki/New_Order_(Indonesia)</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Filipino rap: yes, the words you don&#x27;t understand count too</title><link>https://blog.patpadgett.com/posts/filipino-rap/</link><guid>https://blog.patpadgett.com/posts/filipino-rap/</guid>
+<pubDate>Wed, 17 Jun 2026 12:00:00 -0400</pubDate><description>Francis M, Andrew E., Gloc-9, and FlipTop give you different ways into Filipino hip-hop. Keep the original audio handy, folks. The translation can&#x27;t do everything.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/filipino-rap.jpg" alt="A seated person presses a stethoscope against an open notebook beside headphones, cassette cases, and a water glass."></p><p>If you hear a rapper switch languages halfway through a verse, don't sit there waiting for them to pick one. They already picked the words they wanted, and you and I get to figure out why.</p>
+<p>Taglish[1] is the mixing of Tagalog[2] and English. That gives Filipino rappers choices that an English-only transcription can hide completely. A phrase changes rhythm, gets more formal, or suddenly sounds like it's meant for somebody else. Sometimes you hear the switch happen. Sometimes people are just talking the way they talk, and I'm the one making a big production out of it.</p>
+<p>An English phrase inside Tagalog might sound ordinary. Or official, intimate, boastful, ridiculous. The switch doesn't come with a permanent emotional label attached. The speaker and the audience supply that, and recognizing a word doesn't mean I get to overrule them. Though it's tempting when I finally recognize something.</p>
+<p>As a producer, I want to hear the mechanics. Different words give you different consonant clusters to work with, a borrowed phrase might squeeze an idea into less space, while another word gives you a vowel you can stretch. Switching languages can make a rhyme possible that wouldn't exist if the writer kept the whole passage in one language. I can hear that choice while I'm still working out what it means.</p>
+<p>The Philippines has many languages. Filipino hip-hop[3] reaches beyond Tagalog and English, and these nationally visible names can't stand in for every regional scene. Calling every record from the country Taglish would get me into trouble pretty quickly.</p>
+<p>Try following the language changes in one passage with a reliable explanation, then play the audio again without reading. Does the switch sound like a change in attitude now, rather than just vocabulary?</p>
+<h2>References</h2>
+<ol>
+<li>Taglish: https://en.wikipedia.org/wiki/Taglish</li>
+<li>Tagalog: https://en.wikipedia.org/wiki/Tagalog_language</li>
+<li>Filipino hip-hop: https://en.wikipedia.org/wiki/Pinoy_hip_hop</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Vietnamese rap: yes, you can listen without knowing everything</title><link>https://blog.patpadgett.com/posts/vietnamese-rap/</link><guid>https://blog.patpadgett.com/posts/vietnamese-rap/</guid>
+<pubDate>Fri, 12 Jun 2026 12:00:00 -0400</pubDate><description>Suboi, Den Vau, and Rap Viet give you somewhere to start. Bring your ears, folks. An English translation is not the whole damned record.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/vietnamese-rap.jpg" alt="Headphones, a microphone, audio equipment, and trailing paper strips cover a table near an open window."></p><p>Suboi[1] rapped for Barack Obama[2] during his visit to Vietnam in 2016, and I'll bet one of those names got your attention faster than the other.</p>
+<p>That's the problem with opening there. An American reader recognizes the president, watches his reaction, and somehow the musician becomes the person who did a thing near somebody famous. The exchange happened, the video is public, and <a href="https://time.com/4347331/vietnam-rapper-suboi-obama-hip-hop/">TIME reported it</a>[3]. I'd rather listen to her records.</p>
+<p>Suboi and Đen Vâu[4], often written Den Vau without the diacritics, are useful names for an English-speaking listener to start with. I wouldn't make them opposing teams, though, or expect two accessible artists to explain an entire country's hip-hop. That's a looooong way to stretch two names.</p>
+<p>Den's delivery makes me listen to the space around a line. I enjoy hearing somebody rap fast, but I'm not keeping a damned scoreboard. Sometimes a phrase lands plainly and grabs me, sometimes he leaves me waiting for the next thought. I like hearing a familiar word arrive somewhere I wasn't expecting it too.</p>
+<p>That's how I listen. I can notice a pause without catching the local reference, and I can't judge all the writing the way a native speaker would. I can tell you something caught my ear even when I don't know every reason it works. I'm allowed to enjoy it without promoting myself to expert halfway through the verse.</p>
+<p>I like listening once without reading, then bringing up the original lyric and a translation. A short phrase may need several English words, or a compact rhyme turns into an explanation. I can't blame the rapper for that flat English paragraph. The translation may have delivered the subject and lost the timing that made it music.</p>
+<p>Then I'll play it again, especially once I've figured out what one line is doing.</p>
+<h2>References</h2>
+<ol>
+<li>Suboi: https://en.wikipedia.org/wiki/Suboi</li>
+<li>Barack Obama: https://en.wikipedia.org/wiki/Barack_Obama</li>
+<li>TIME reported it: https://time.com/4347331/vietnam-rapper-suboi-obama-hip-hop/</li>
+<li>Đen Vâu: https://en.wikipedia.org/wiki/%C4%90en_V%C3%A2u</li>
+</ol>
+]]></content:encoded></item>
+<item><title>K-pop is engineered. That isn&#x27;t an insult, folks.</title><link>https://blog.patpadgett.com/posts/kpop-as-an-engineering-product/</link><guid>https://blog.patpadgett.com/posts/kpop-as-an-engineering-product/</guid>
+<pubDate>Fri, 05 Jun 2026 12:00:00 -0400</pubDate><description>Clean vocal handoffs, songwriting camps, years of training, and shareholders. I respect the engineering in K-pop. I still want to know who gets to say no.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/kpop-as-an-engineering-product.jpg" alt="Audience members face an empty, illuminated stage with microphone stands, floor speakers, and a wooden stool."></p><p>You can admire how a K-pop[1] single is put together without deciding you want to hear it again. I like hearing those damned handoffs, one voice passing cleanly to another. A transition changes the texture instead of leaving you hanging around, and when the chorus comes back I have something to recognize.</p>
+<p>I spent fourteen years in billing mediation at Sprint[2]. That's a long time to develop opinions about several people needing to get their part right at the same time, so I have some appreciation for the work involved.</p>
+<p>When I call music engineered, I mean it as a compliment. Somebody had to coordinate all that work, and it seems pretty insulting to assume that somehow removes the people who did it. Somebody still has to sing and dance and make the result feel like a performance. You cannot hand an audience a delivery schedule and expect applause.</p>
+<p>The idol trainee system[3] puts the preparation right out where you can see it. Aspiring performers train in singing and dance, often for years, without a guarantee of debut. Arrangements vary by company and contract. This isn't one school with one curriculum, and every artist doesn't have the same experience.</p>
+<p>But young people put a great deal into this before knowing whether they will get the opportunity they're working toward. They can learn a great deal from training and still have very little bargaining power. I want to know who gets to say no. And who pays? What happens when somebody leaves? I don't need gossip about a particular performer to ask.</p>
+<p>I can't hear whether everybody got treated fairly just by listening to the finished record, however clean it sounds. I'd need to know what happened while they made it.</p>
+<p>I can appreciate a precisely made transition and learn something from it. I still don't want a singer to have to endure whatever it takes to deliver one. Sometimes it's the goddamn schedule that needs fixing.</p>
+<h2>References</h2>
+<ol>
+<li>K-pop: https://en.wikipedia.org/wiki/K-pop</li>
+<li>Sprint: https://en.wikipedia.org/wiki/Sprint_Corporation</li>
+<li>idol trainee system: https://en.wikipedia.org/wiki/Korean_idol</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Koplo and the kendang: let the drummer finish, nimrod</title><link>https://blog.patpadgett.com/posts/koplo-and-the-kendang/</link><guid>https://blog.patpadgett.com/posts/koplo-and-the-kendang/</guid>
+<pubDate>Tue, 02 Jun 2026 12:00:00 -0400</pubDate><description>Koplo puts the kendang in charge. East Java roots, the fight over dancing and dangdut, and why my bass doesn&#x27;t need to answer every damned drum fill.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/koplo-and-the-kendang.jpg" alt="A barrel drum, stool, amplifier, and bass guitar occupy a raised platform beside carved walls and rope barriers."></p><p>You can play a fast drum part and still go absolutely nowhere. Everybody's sweating and there's plenty happening, but I can't hear the song moving a damned inch.</p>
+<p>Koplo[1] is a good place to hear the difference. The kendang[2] can tell the band when to turn or hold back. It can give the floor another push too. Calling dangdut[3] koplo faster dangdut misses what interests me about it. I want to hear how the kendang directs everybody else, even more than I want the tempo number.</p>
+<p>Here's the bass player's temptation. The drummer adds a flourish, so we answer with a flourish, because apparently the world needs proof that we also brought fingers. Then we're both busy and the song gets crowded. I'd rather keep the bass figure legible while the kendang handles the fast information. And I have to let the drummer finish instead of answering every goddamn fill.</p>
+<h2>References</h2>
+<ol>
+<li>Koplo: https://en.wikipedia.org/wiki/Koplo</li>
+<li>kendang: https://en.wikipedia.org/wiki/Kendang</li>
+<li>dangdut: https://en.wikipedia.org/wiki/Dangdut</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Bass player first. Yes, the notes have to STOP.</title><link>https://blog.patpadgett.com/posts/bass-player-first/</link><guid>https://blog.patpadgett.com/posts/bass-player-first/</guid>
+<pubDate>Fri, 29 May 2026 12:00:00 -0400</pubDate><description>Bass player first, producer because somebody had to be. Jamerson, Kaye, Weymouth, and why your very impressive extra notes might need to get the hell out.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/bass-player-first.jpg" alt="A bass guitar lies in an open case beside an amplifier, drum kit, and black padded stool."></p><p>My <a href="https://patpadgett.com/">website</a>[1] says, &quot;Bass player[2] first. Producer because somebody had to be.&quot;</p>
+<p>I'm keeping that first sentence. If there's only room for one, I'd keep the bass player and delete the job titles. I like having a specific thing to do before we start deciding what to call me.</p>
+<p>So when somebody says &quot;just play the root[3],&quot; I have questions. Where does it start? Where does it stop? Ahead of the accent, right on it, a little behind? You've reduced the number of pitches. You haven't removed the part where somebody has to play the damned thing.</p>
+<p>I like that I can still cause this much trouble with one note.</p>
+<p>The end of the note is the bit I want to keep in my production thinking. The attack[4] gets your attention because your hand visibly does something. The release looks like you've quit working. Very impressive, Pat, you stopped!</p>
+<p>And then I have to remember to do it myself, instead of reaching for another note. LET THE FUCKING THING END.</p>
+<h2>References</h2>
+<ol>
+<li>website: https://patpadgett.com/</li>
+<li>Bass player: https://en.wikipedia.org/wiki/Bass_guitar</li>
+<li>root: https://en.wikipedia.org/wiki/Root_(chord)</li>
+<li>attack: https://en.wikipedia.org/wiki/Envelope_(music)</li>
+</ol>
+]]></content:encoded></item>
+<item><title>The SEO floor: check the damned deployed site</title><link>https://blog.patpadgett.com/posts/the-seo-floor/</link><guid>https://blog.patpadgett.com/posts/the-seo-floor/</guid>
+<pubDate>Sat, 23 May 2026 12:00:00 -0400</pubDate><description>Thirty checks for the technical floor beneath a static site: reachable pages, honest metadata, working assets, and verification against the deployed URLs.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/the-seo-floor.jpg" alt="A person lies across a desk, reaching toward a glass door beside a computer and stool."></p><p>Your static site can look lovely on your own computer while the copy people can actually reach has problems. That's the copy I want to check.</p>
+<p>I use a thirty-check floor. It won't make a dull page interesting or persuade a search engine to rank it. It catches publishing screwups, like a title copied from another project or a canonical[1] pointing at the wrong host. Or that social image sitting on disk that never got committed. These are basic SEO[2] checks.</p>
+<p>I use curl[3] for response codes and headers and fetch the source, then parse it for metadata and structured data[4]. A headless browser checks rendered content at the deployed URL, including image loading and interactions. Text can exist but stay hidden, controls can look finished and do fuck-all when clicked.</p>
+<p>That last request goes to the public hostname, after deployment.</p>
+<h2>References</h2>
+<ol>
+<li>canonical: https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls</li>
+<li>SEO: https://developers.google.com/search/docs/fundamentals/seo-starter-guide</li>
+<li>curl: https://curl.se/</li>
+<li>structured data: https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Eight arms, a hundred years of hiding, and now he needs a website</title><link>https://blog.patpadgett.com/posts/a-website-for-a-picture-book/</link><guid>https://blog.patpadgett.com/posts/a-website-for-a-picture-book/</guid>
+<pubDate>Sat, 16 May 2026 12:00:00 -0400</pubDate><description>Octavitin would rather stay under the bed. I gave him a website with a silent bell, a complete first chapter, and a leave button that means it.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/a-website-for-a-picture-book.jpg" alt="A brass bell with a knitted cover stands beside a wooden bed, with shoes underneath and books nearby."></p><p>I wrote a children's book about a nervous eight-armed creature who tidies socks under beds, and now you can invite him out on the internet.</p>
+<p>He has spent a hundred years practicing being invisible. One of his arms wants to wave hello. You put a century into your profession and one of your own appendages starts fucking with the job description. Poor guy.</p>
+<p>The book is <em>Octavitin: The Rules of Under</em>, an illustrated read-aloud for ages six to nine. It's finished and seeking a publisher. The <a href="https://octavitin.patpadgett.com/">website</a>[1] is one page, with the first chapter and a small interaction. There's a printable set of rules too.</p>
+<p>The interaction is a bell. Press it and you invite him out. You can also ask him to leave, and the second button matters just as much.</p>
+<p>There is no bell sound. The script changes the images and caption, along with the status message. The page promises no sudden sounds, and I mean it literally. I am not making your speaker ring at bedtime just because I drew a bell on a button.</p>
+<p>It moves focus[2], too. Invite him out and focus goes to the leave button. Send him away and it returns to the bell, without scrolling the page. A polite live region[3] carries the status text (polite being a useful quality in something hanging around a child's bedroom). If I tell a child they can withdraw the invitation, I had better put that control where they can find it without hunting through my interface.</p>
+<p>The footer says: &quot;Illustrations are author-directed concept art rendered with AI.&quot;</p>
+<p>Let the poor guy get back to his socks.</p>
+<h2>References</h2>
+<ol>
+<li>website: https://octavitin.patpadgett.com/</li>
+<li>focus: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus</li>
+<li>live region: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Generating grime95, without leaking tomorrow&#x27;s arrest</title><link>https://blog.patpadgett.com/posts/generating-grime95/</link><guid>https://blog.patpadgett.com/posts/generating-grime95/</guid>
+<pubDate>Mon, 11 May 2026 12:00:00 -0400</pubDate><description>A fake county, real HTML, and two files called content.json. How grime95 publishes daily bookings without handing you tomorrow&#x27;s story, folks.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/generating-grime95.jpg" alt="Handcuffs connect hanging folders to a filing cabinet beside a desk with a computer, folder, and stamp."></p><p>You can visit a fictional booking terminal stuck on Saturday, December 2, 1995 at <a href="https://grime95.com/">grime95.com</a>[1]. A new booking appears every day at noon Eastern, with a mugshot and charge sheet, plus an incident report. I've given Ponder County a damned filing system even though the county doesn't exist.</p>
+<p>The browser looks like a terminal. Underneath, it's flat HTML[2] on GitHub Pages[3], with Python[4] rendering the records before you ask for them. There's a private schedule and a public subset, and the builder makes pages from that subset. Most of the design is keeping those separate.</p>
+<p>The private release schedule stays outside the public web root. The publisher reads it and appends due records to the public site's <code>content.json</code>. The public one has the same filename, but it holds published data and feeds the builder, and it's the publisher's verification artifact. The browser doesn't load it.</p>
+<p>Generated <code>robots.txt</code>[5] disallows <code>/content.json</code>. That asks crawlers nicely; it doesn't make the file private. A file in the public web root is public even if you put a polite note beside it. Tomorrow's story stays in the private schedule.</p>
+<p>The builder doesn't choose today's record. It renders whatever you hand it. Its <code>today</code> value supplies sitemap dates and does nothing to gate releases. Feed it the private schedule and it can do its job perfectly while you leak the whole thing. Well, fuck.</p>
+<p>I covered the retry ledger in <a href="/posts/never-post-twice/">Never post twice</a>[6]. A successful Git push doesn't prove GitHub Pages is serving the new record, so the publisher checks the live site. The generated file can be sitting right there on disk while nobody can read it.</p>
+<p>Tomorrow's criminals have an appointment. They can wait.</p>
+<h2>References</h2>
+<ol>
+<li>grime95.com: https://grime95.com/</li>
+<li>HTML: https://developer.mozilla.org/en-US/docs/Web/HTML</li>
+<li>GitHub Pages: https://pages.github.com/</li>
+<li>Python: https://www.python.org/</li>
+<li>robots.txt: https://www.rfc-editor.org/rfc/rfc9309.html</li>
+<li>Never post twice: https://blog.patpadgett.com/posts/never-post-twice/</li>
+</ol>
+]]></content:encoded></item>
+<item><title>Why my sites are flat HTML. Yes, still.</title><link>https://blog.patpadgett.com/posts/why-flat-html/</link><guid>https://blog.patpadgett.com/posts/why-flat-html/</guid>
+<pubDate>Wed, 06 May 2026 12:00:00 -0400</pubDate><description>My sites ship HTML, CSS and a little JavaScript on GitHub Pages. The hosting bill is zero, folks. The maintenance isn&#x27;t. Generated files still count.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/why-flat-html.jpg" alt="Two people hold a sheet across a wooden counter beside a dismantled machine and scattered components."></p><p>My sites run on files.</p>
+<p>I have a personal hub, a work site, a music site, this blog, a site for my children's book, and grime95.com[1]. They look very different and do different jobs, but they all deliver HTML[2], CSS, images, and JavaScript where the page needs it. GitHub Pages[3] serves the files. There isn't an application framework or a CMS behind the page, and I don't have my own build server to babysit.</p>
+<p>The hosting bill is zero. Domain registration still costs money, unfortunately. Apparently having strong opinions about JavaScript doesn't get you out of that bill. Damned shame.</p>
+<p>Before somebody catches me with a Python script and declares the whole thing a fraud: some of the files are generated. There is a build step.</p>
+<p>The build happens <em>before</em> publication. You don't need Python working on my machine to read what it produced. GitHub Pages still has deployment machinery, too, so I haven't abolished computers. I've taken my own application runtime out of the request path.</p>
+<p>A generator can need repairs while yesterday's generated page keeps serving. My authoring environment can get out of date without taking the content down with it, and I want to keep those failures separate. I'd rather change a paragraph because I have something to change than because a dashboard grew another warning badge.</p>
+<p>My sites are <a href="https://patpadgett.com/">patpadgett.com</a>[4], <a href="https://work.patpadgett.com/">work</a>[5], <a href="https://music.patpadgett.com/">music</a>[6], <a href="https://blog.patpadgett.com/">blog</a>[7], <a href="https://octavitin.patpadgett.com/">Octavitin</a>[8], and <a href="https://grime95.com/">grime95</a>. They publish things to read, hear, or look at. Sending you a file works fine for that.</p>
+<h2>References</h2>
+<ol>
+<li>grime95.com: https://grime95.com/</li>
+<li>HTML: https://developer.mozilla.org/en-US/docs/Web/HTML</li>
+<li>GitHub Pages: https://pages.github.com/</li>
+<li>patpadgett.com: https://patpadgett.com/</li>
+<li>work: https://work.patpadgett.com/</li>
+<li>music: https://music.patpadgett.com/</li>
+<li>blog: https://blog.patpadgett.com/</li>
+<li>Octavitin: https://octavitin.patpadgett.com/</li>
 </ol>
 ]]></content:encoded></item>
 </channel></rss>

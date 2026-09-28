@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Logs are for the poor bastard awake at 3 a.m. · Weekly Padgett</title>
+<meta name="description" content="Tell me what failed, what might already have happened, and what I can safely do next. At 3 a.m., I do not want to go spelunking through your source code.">
+<link rel="canonical" href="https://blog.patpadgett.com/posts/logs-are-for-3am/">
+<link rel="alternate" type="application/rss+xml" title="Weekly Padgett" href="https://blog.patpadgett.com/index.xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#dd0000">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Weekly Padgett">
+<meta property="og:title" content="Logs are for the poor bastard awake at 3 a.m. · Weekly Padgett">
+<meta property="og:description" content="Tell me what failed, what might already have happened, and what I can safely do next. At 3 a.m., I do not want to go spelunking through your source code.">
+<meta property="og:url" content="https://blog.patpadgett.com/posts/logs-are-for-3am/">
+<meta property="og:image" content="https://blog.patpadgett.com/assets/og/logs-are-for-3am.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logs are for the poor bastard awake at 3 a.m. · Weekly Padgett">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Logs are for the poor bastard awake at 3 a.m. · Weekly Padgett">
+<meta name="twitter:description" content="Tell me what failed, what might already have happened, and what I can safely do next. At 3 a.m., I do not want to go spelunking through your source code.">
+<meta name="twitter:image" content="https://blog.patpadgett.com/assets/og/logs-are-for-3am.jpg">
+<link rel="preload" href="/assets/fonts/Bangers-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Nunito-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/tabloid.css">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.xml"}}]},"eagerness":"moderate"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Logs are for the poor bastard awake at 3 a.m.", "description": "Tell me what failed, what might already have happened, and what I can safely do next. At 3 a.m., I do not want to go spelunking through your source code.", "datePublished": "2026-07-31", "dateModified": "2026-07-31", "wordCount": 155, "keywords": "logging, operations, debugging, runbooks", "url": "https://blog.patpadgett.com/posts/logs-are-for-3am/", "image": "https://blog.patpadgett.com/assets/og/logs-are-for-3am.jpg", "mainEntityOfPage": "https://blog.patpadgett.com/posts/logs-are-for-3am/", "author": {"@type": "Person", "name": "Patrick Padgett", "url": "https://patpadgett.com"}, "publisher": {"@type": "Person", "name": "Patrick Padgett", "url": "https://patpadgett.com"}, "isPartOf": {"@type": "Blog", "name": "Weekly Padgett", "url": "https://blog.patpadgett.com/"}}</script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to the stories</a>
+<div class="wrap">
+<header class="masthead small">
+<p class="brand"><a href="/">Weekly Padgett</a></p>
+<nav class="top" aria-label="Site">
+<a href="/">All stories</a>
+<a href="/start-here/">Start here!</a>
+<a href="/tags/">Topics</a>
+<a href="/about/">About</a>
+<a href="/index.xml">RSS</a>
+</nav>
+</header>
+<main class="sheet" id="main" tabindex="-1">
+<header class="lede">
+<p class="k hot"><span><time datetime="2026-07-31">July 31, 2026</time></span><span>No. 039</span><span>1 min read</span></p>
+<h1>Logs are for the poor bastard awake at 3 a.m.</h1>
+<p class="dek">Tell me what failed, what might already have happened, and what I can safely do next. At 3 a.m., I do not want to go spelunking through your source code.</p>
+<figure class="hero"><div class="pic"><a class="print-open" href="/assets/img/logs-are-for-3am.jpg" aria-label="See the whole photo"><img src="/assets/img/logs-are-for-3am.jpg" srcset="/assets/img/logs-are-for-3am-240.jpg 240w, /assets/img/logs-are-for-3am-480.jpg 480w, /assets/img/logs-are-for-3am-600.jpg 600w, /assets/img/logs-are-for-3am-780.jpg 780w, /assets/img/logs-are-for-3am.jpg 1200w" sizes="(min-width:821px) 240px, 100vw" alt="A person sits on a patchwork-covered bed holding continuous paper trailing from a printer beside a computer." width="1200" height="1200" fetchpriority="high"></a></div><figcaption><b>File photo</b>Dramatization. No logging was harmed.</figcaption></figure>
+</header>
+<article class="body">
+<p>If your error message<a class="cite" id="cite-1" href="#ref-1" aria-label="Reference 1" aria-describedby="clip-1" style="anchor-name:--c1">[1]</a><span class="clip" id="clip-1" role="tooltip" style="position-anchor:--c1"><b>Ref. 1</b><a href="https://en.wikipedia.org/wiki/Error_message" rel="noopener">error message</a> <small>en.wikipedia.org</small></span> only makes sense with the source code<a class="cite" id="cite-2" href="#ref-2" aria-label="Reference 2" aria-describedby="clip-2" style="anchor-name:--c2">[2]</a><span class="clip" id="clip-2" role="tooltip" style="position-anchor:--c2"><b>Ref. 2</b><a href="https://en.wikipedia.org/wiki/Source_code" rel="noopener">source code</a> <small>en.wikipedia.org</small></span> open, you have left the person awake at 3 a.m. some homework.</p>
+<p>Here's an invented bad message:</p>
+<pre><code class="language-text">ERROR process_item failed
+</code></pre>
+<p>I'd ask for something more like this in a review:</p>
+<pre><code class="language-text">BLOCKED stage=publish item=example-17 reason=verification_timeout
+Local output was replaced; public readback did not confirm it.
+Check the configured public URL and deployment mapping before retrying.
+</code></pre>
+<p>I made that example up; it isn't a transcript from one of my systems. The local output changed, but we don't know the remote result yet. At least now somebody has something to check before repeating a write and hoping for the best. That's what I'd want if I were the poor bastard trying to get back to bed.</p>
+<section class="refs"><h2 id="references">References</h2>
+<ol>
+<li id="ref-1" value="1" tabindex="-1"><a href="https://en.wikipedia.org/wiki/Error_message" rel="noopener">error message</a> <small>en.wikipedia.org</small> <a class="backref" href="#cite-1" aria-label="Back to citation 1">&#8617;</a></li>
+<li id="ref-2" value="2" tabindex="-1"><a href="https://en.wikipedia.org/wiki/Source_code" rel="noopener">source code</a> <small>en.wikipedia.org</small> <a class="backref" href="#cite-2" aria-label="Back to citation 2">&#8617;</a></li>
+</ol>
+</section>
+</article>
+<div class="tail"><div class="tags"><span>logging</span><a href="/tags/operations/">operations</a><span>debugging</span><span>runbooks</span></div><span class="byline">&ndash; Pat</span></div>
+<nav class="pn" aria-label="Adjacent stories"><a href="/posts/cron-is-not-a-scheduler/"><b>Previous exclusive</b><span>Cron started the command. What the hell else did you expect?</span></a><a href="/posts/idempotency-for-sysadmins/"><b>Next exclusive</b><span>Idempotency: can I run the damned thing again?</span></a></nav>
+</main>
+<dialog class="print" id="print" aria-label="The whole photo">
+<div class="print__in">
+<div class="print__bar"><p class="print__k"><b>File photo</b>Uncropped. Straight off the wire.</p><button class="print__close" type="button" autofocus>Close<small>Esc</small></button></div>
+<figure class="print__fig"><span class="print__frame"><img src="/assets/img/logs-are-for-3am.jpg" srcset="/assets/img/logs-are-for-3am-240.jpg 240w, /assets/img/logs-are-for-3am-480.jpg 480w, /assets/img/logs-are-for-3am-600.jpg 600w, /assets/img/logs-are-for-3am-780.jpg 780w, /assets/img/logs-are-for-3am.jpg 1200w" sizes="(min-width:1240px) 1200px, 100vw" alt="" width="1200" height="1200" loading="lazy" decoding="async"></span>
+<figcaption><b>Photo desk</b>A person sits on a patchwork-covered bed holding continuous paper trailing from a printer beside a computer. Dramatization; no logging was harmed.</figcaption></figure>
+</div>
+</dialog>
+<section class="more" aria-label="Related stories"><h2>More on this beat</h2><div class="posts"><article class="post">
+<div class="th"><a href="/posts/splunk-vs-elk/" tabindex="-1" aria-hidden="true"><img src="/assets/img/splunk-vs-elk-t.jpg" srcset="/assets/img/splunk-vs-elk-t150.jpg 150w, /assets/img/splunk-vs-elk-t.jpg 300w" sizes="(min-width:821px) 150px, 110px" alt="" loading="lazy" width="300" height="300"></a></div>
+<p class="k"><span><time datetime="2026-08-31">August 31, 2026</time></span><span>No. 045</span><span>1 min read</span></p>
+<h2><a href="/posts/splunk-vs-elk/">Splunk versus ELK. Put the holy war down, folks.</a></h2>
+<p>I used Splunk at Raymond James and ELK at Sprint and Jabil.</p>
+</article><article class="post">
+<div class="th"><a href="/posts/cron-is-not-a-scheduler/" tabindex="-1" aria-hidden="true"><img src="/assets/img/cron-is-not-a-scheduler-t.jpg" srcset="/assets/img/cron-is-not-a-scheduler-t150.jpg 150w, /assets/img/cron-is-not-a-scheduler-t.jpg 300w" sizes="(min-width:821px) 150px, 110px" alt="" loading="lazy" width="300" height="300"></a></div>
+<p class="k"><span><time datetime="2026-07-25">July 25, 2026</time></span><span>No. 038</span><span>2 min read</span></p>
+<h2><a href="/posts/cron-is-not-a-scheduler/">Cron started the command. What the hell else did you expect?</a></h2>
+<p>Cron starts commands when the clock matches, folks.</p>
+</article><article class="post">
+<div class="th"><a href="/posts/atomic-rename/" tabindex="-1" aria-hidden="true"><img src="/assets/img/atomic-rename-t.jpg" srcset="/assets/img/atomic-rename-t150.jpg 150w, /assets/img/atomic-rename-t.jpg 300w" sizes="(min-width:821px) 150px, 110px" alt="" loading="lazy" width="300" height="300"></a></div>
+<p class="k"><span><time datetime="2026-07-22">July 22, 2026</time></span><span>No. 037</span><span>1 min read</span></p>
+<h2><a href="/posts/atomic-rename/">Atomic rename. Read the damned small print.</a></h2>
+<p>Unix rename can publish a finished file or claim a queue item.</p>
+</article><article class="post">
+<div class="th"><a href="/posts/the-error-queue/" tabindex="-1" aria-hidden="true"><img src="/assets/img/the-error-queue-t.jpg" srcset="/assets/img/the-error-queue-t150.jpg 150w, /assets/img/the-error-queue-t.jpg 300w" sizes="(min-width:821px) 150px, 110px" alt="" loading="lazy" width="300" height="300"></a></div>
+<p class="k"><span><time datetime="2026-07-04">July 04, 2026</time></span><span>No. 034</span><span>1 min read</span></p>
+<h2><a href="/posts/the-error-queue/">The error queue is unfinished accounting. Go get it.</a></h2>
+<p>Your parser rejected the record.</p>
+</article></div></section>
+<footer>
+<div class="foot__l">
+<p>Also at checkout:</p>
+<nav aria-label="Elsewhere">
+<a href="https://patpadgett.com">patpadgett.com</a>
+<a href="https://work.patpadgett.com">work</a>
+<a href="https://music.patpadgett.com">music</a>
+<a href="https://octavitin.patpadgett.com">octavitin</a>
+<a href="https://grime95.com">grime95</a>
+<a href="/index.xml">rss</a>
+</nav>
+<p class="fine">Written by Patrick Padgett. Every word here is mine, including the ones I should have cut. Flat HTML, no trackers, no comments section. If you want to argue, you know where to find me.</p>
+</div>
+<div class="foot__r" aria-hidden="true"><p class="foot__stamp">Printed on<br>flat HTML</p><p class="foot__price">99¢</p></div>
+</footer>
+</div>
+<script>(function(){var rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+if(!rm&&!(window.CSS&&CSS.supports('animation-timeline:view()'))&&'IntersectionObserver'in window){var els=[].slice.call(document.querySelectorAll('.post,.box,.coming,.coupon,.theme,.psychic')).filter(function(e){return e.getBoundingClientRect().top>innerHeight});els.forEach(function(e){e.classList.add('pre')});var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var i=els.indexOf(e.target);setTimeout(function(){e.target.classList.add('in')},(i%3)*70);io.unobserve(e.target)}})},{rootMargin:'0px 0px -5% 0px'});els.forEach(function(e){io.observe(e)});setTimeout(function(){els.forEach(function(e){e.classList.add('in')})},4000)}
+/* the page turns. pageswap names the kind of turn (flip = story to story, back = traversing backwards) and
+   un-names shared elements the reader has scrolled away from, so nothing flies in from off-screen.
+   pagereveal marks a page that arrived by a turn, so its headline does not print off-register a second time. */
+var SHARED='header.masthead,.brand a,.brand small,nav.top,.home>.hero .pic,.home>.hero .pic img,.home>.hero h1,.lede .pic,.lede .pic img,.lede h1,.lede .k,.sheet>.body';
+function kind(a){var t=[];if(!a||!a.from)return t;var f=new URL(a.from.url).pathname,n=new URL(a.entry.url).pathname;if(f.indexOf('/posts/')===0&&n.indexOf('/posts/')===0)t.push('flip');if(a.navigationType==='traverse'&&a.from.index>a.entry.index)t.push('back');return t}
+addEventListener('pageswap',function(e){var vt=e.viewTransition;if(!vt)return;kind(e.activation).forEach(function(t){vt.types.add(t)});[].forEach.call(document.querySelectorAll(SHARED),function(el){var r=el.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)el.style.viewTransitionName='none'})});
+addEventListener('pagereveal',function(e){[].forEach.call(document.querySelectorAll(SHARED),function(el){el.style.viewTransitionName=''});if(e.viewTransition){document.documentElement.classList.add('turned');if(window.navigation)kind(navigation.activation).forEach(function(t){e.viewTransition.types.add(t)})}});
+/* the whole photo: the story picture lifts out of its frame into a full-screen print and settles back */
+var d=document.getElementById('print'),t=document.querySelector('.print-open'),im=d&&d.querySelector('img');
+if(d&&t&&im&&d.showModal){var h=document.documentElement,busy=false;
+function warm(){im.loading='eager'}
+t.addEventListener('pointerenter',warm);t.addEventListener('focus',warm);t.addEventListener('touchstart',warm,{passive:true});
+function turn(dir,fn){h.classList.add('lit','lit--'+dir);var done=function(){h.classList.remove('lit--'+dir);if(dir==='shut')h.classList.remove('lit');busy=false};
+if(rm||!document.startViewTransition){fn();done();return}
+var vt=document.startViewTransition(fn);vt.finished.then(done,done)}
+t.addEventListener('click',function(e){e.preventDefault();if(busy||d.open)return;busy=true;warm();
+var ready=im.decode?im.decode().catch(function(){}):Promise.resolve(),soon=new Promise(function(r){setTimeout(r,450)});
+Promise.race([ready,soon]).then(function(){turn('open',function(){d.showModal()})})});
+function shut(){if(!d.open||busy)return;busy=true;turn('shut',function(){d.close()})}
+d.addEventListener('click',function(e){if(!e.target.closest('.print__k,figcaption'))shut()});
+d.addEventListener('cancel',function(e){e.preventDefault();shut()});}
+})();</script>
+</body></html>
