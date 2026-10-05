@@ -2,6 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel><title>Weekly Padgett</title><link>https://blog.patpadgett.com/</link><description>Stories from thirty years of telecom billing mediation, Unix, corkscrew, bass guitar, Indonesian music, and whatever else Pat Padgett could not shut up about.</description><language>en-us</language>
 <atom:link href="https://blog.patpadgett.com/index.xml" rel="self" type="application/rss+xml"/>
+<item><title>Recording Mantoloking with Steve Fisk. Yes, in Kansas.</title><link>https://blog.patpadgett.com/posts/recording-mantoloking-with-steve-fisk/</link><guid>https://blog.patpadgett.com/posts/recording-mantoloking-with-steve-fisk/</guid>
+<pubDate>Mon, 05 Oct 2026 12:00:00 -0400</pubDate><description>The Sexy Accident made Mantoloking at Black Lodge in Eudora, Kansas, with Steve Fisk. Famous credits, conflicting dates, and a bass player&#x27;s invitation to shut up.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/recording-mantoloking-with-steve-fisk.jpg" alt="A wood-paneled recording studio contains a mixing console, reel-to-reel recorder, bass guitar, speakers, and black swivel chair."></p><p>The Sexy Accident[1] made <em>Mantoloking</em>[2] at Black Lodge in Eudora, Kansas[3], and Steve Fisk[4] produced, engineered and mixed it.</p>
+<p>The <a href="https://music.sexyaccident.com/album/mantoloking">album credits</a> spell out who did what, which I appreciate. Production, recording and mixing are related jobs, but those descriptions aren't interchangeable just because somebody happened to be sitting nearest the console.</p>
+<p>On the <em>Mantoloking</em> album, I am credited with &quot;bass and attitude&quot;.  Which is true.  I played bass and was a crabby curmudgeon, HUZZAH!</p>
+<p>Meanwhile, the dates are being a pain in the ass. The band's <a href="https://www.sexyaccident.com/press-manto.html">contemporary press page</a>[5] announced August 21, 2009. Bandcamp now says July 31, 2009. They're in the same summer, but they don't agree.</p>
+<p>A bass part does one thing under your hands and another thing coming out of the speakers with everybody else. That difficult transition can feel like the whole point while you're playing it. You got through the bastard! Then you listen back and the useful thing might be a held note that lets the singer finish a sentence. It's a little annoying when you've been so pleased with your fingers.</p>
+<p>This is my opinion about recording, by the way. I am not sneaking it into Fisk's mouth because it would sound more impressive coming out of there. Blame me for this part, he has enough credits already.</p>
+<p>I can read the credits and know who did the work. I'm still curious about how fast a take came together and what somebody was listening for, or which little choice made the band recognize itself on playback. A name printed next to a job doesn't tell you any of that.</p>
+<p>Next time you're recording, try listening once without chasing your own instrument. The song might get better when you stop following your part. Your fingers can file a fucking complaint.</p>
+<h2>References</h2>
+<ol>
+<li>The Sexy Accident: https://www.sexyaccident.com/</li>
+<li>Mantoloking: https://music.sexyaccident.com/album/mantoloking</li>
+<li>Eudora, Kansas: https://en.wikipedia.org/wiki/Eudora,_Kansas</li>
+<li>Steve Fisk: https://en.wikipedia.org/wiki/Steve_Fisk</li>
+<li>contemporary press page: https://www.sexyaccident.com/press-manto.html</li>
+</ol>
+]]></content:encoded></item>
 <item><title>RSS still works. Let the damned reader remember.</title><link>https://blog.patpadgett.com/posts/rss-still-works/</link><guid>https://blog.patpadgett.com/posts/rss-still-works/</guid>
 <pubDate>Mon, 28 Sep 2026 12:00:00 -0400</pubDate><description>grime95 and this blog have RSS feeds, folks. Two real addresses, no invented subscriber army, and one author who still has to write the next entry.</description>
 <content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/rss-still-works.jpg" alt="A curved roller conveyor carrying a metal tray stands in a wood-paneled office beside a wicker basket."></p><p>I can give you a page address and hope you remember to come back, or I can give you a feed address and let your reader remember. For a site publishing a fictional booking every day, I'd rather not assign you homework.</p>
@@ -472,27 +491,6 @@ Check the configured public URL and deployment mapping before retrying.
 <li>Python: https://www.python.org/</li>
 <li>robots.txt: https://www.rfc-editor.org/rfc/rfc9309.html</li>
 <li>Never post twice: https://blog.patpadgett.com/posts/never-post-twice/</li>
-</ol>
-]]></content:encoded></item>
-<item><title>Why my sites are flat HTML. Yes, still.</title><link>https://blog.patpadgett.com/posts/why-flat-html/</link><guid>https://blog.patpadgett.com/posts/why-flat-html/</guid>
-<pubDate>Wed, 06 May 2026 12:00:00 -0400</pubDate><description>My sites ship HTML, CSS and a little JavaScript on GitHub Pages. The hosting bill is zero, folks. The maintenance isn&#x27;t. Generated files still count.</description>
-<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/why-flat-html.jpg" alt="Two people hold a sheet across a wooden counter beside a dismantled machine and scattered components."></p><p>My sites run on files.</p>
-<p>I have a personal hub, a work site, a music site, this blog, a site for my children's book, and grime95.com[1]. They look very different and do different jobs, but they all deliver HTML[2], CSS, images, and JavaScript where the page needs it. GitHub Pages[3] serves the files. There isn't an application framework or a CMS behind the page, and I don't have my own build server to babysit.</p>
-<p>The hosting bill is zero. Domain registration still costs money, unfortunately. Apparently having strong opinions about JavaScript doesn't get you out of that bill. Damned shame.</p>
-<p>Before somebody catches me with a Python script and declares the whole thing a fraud: some of the files are generated. There is a build step.</p>
-<p>The build happens <em>before</em> publication. You don't need Python working on my machine to read what it produced. GitHub Pages still has deployment machinery, too, so I haven't abolished computers. I've taken my own application runtime out of the request path.</p>
-<p>A generator can need repairs while yesterday's generated page keeps serving. My authoring environment can get out of date without taking the content down with it, and I want to keep those failures separate. I'd rather change a paragraph because I have something to change than because a dashboard grew another warning badge.</p>
-<p>My sites are <a href="https://patpadgett.com/">patpadgett.com</a>[4], <a href="https://work.patpadgett.com/">work</a>[5], <a href="https://music.patpadgett.com/">music</a>[6], <a href="https://blog.patpadgett.com/">blog</a>[7], <a href="https://octavitin.patpadgett.com/">Octavitin</a>[8], and <a href="https://grime95.com/">grime95</a>. They publish things to read, hear, or look at. Sending you a file works fine for that.</p>
-<h2>References</h2>
-<ol>
-<li>grime95.com: https://grime95.com/</li>
-<li>HTML: https://developer.mozilla.org/en-US/docs/Web/HTML</li>
-<li>GitHub Pages: https://pages.github.com/</li>
-<li>patpadgett.com: https://patpadgett.com/</li>
-<li>work: https://work.patpadgett.com/</li>
-<li>music: https://music.patpadgett.com/</li>
-<li>blog: https://blog.patpadgett.com/</li>
-<li>Octavitin: https://octavitin.patpadgett.com/</li>
 </ol>
 ]]></content:encoded></item>
 </channel></rss>
