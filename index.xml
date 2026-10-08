@@ -2,6 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel><title>Weekly Padgett</title><link>https://blog.patpadgett.com/</link><description>Stories from thirty years of telecom billing mediation, Unix, corkscrew, bass guitar, Indonesian music, and whatever else Pat Padgett could not shut up about.</description><language>en-us</language>
 <atom:link href="https://blog.patpadgett.com/index.xml" rel="self" type="application/rss+xml"/>
+<item><title>undo for the shell, because rm has never once asked me if I was sure</title><link>https://blog.patpadgett.com/posts/undo-for-the-shell/</link><guid>https://blog.patpadgett.com/posts/undo-for-the-shell/</guid>
+<pubDate>Thu, 08 Oct 2026 12:00:00 -0400</pubDate><description>I gave myself a dumb challenge: make the shell undo the last mv, cp or rm with no daemon, no root and no snapshots. It works. Read the damned limitations first.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/undo-for-the-shell.jpg" alt="A person lifts a floppy disk out of a metal wastebasket with barbecue tongs beside a beige computer."></p><p>I gave myself a dumb challenge on a slow night: make a shell that can undo the last thing you did, with no snapshotting filesystem[1], no daemon, no root, and nothing installed but <code>python3</code>. You type <code>mv</code>, you type <code>undo</code>, the file goes back. That was the whole spec.</p>
+<p>It came out to 410 lines of Python and 54 lines of bash, and you source it into your shell. It's on GitHub[2]. There is no PyPI package, because the thing is a shell function and <code>pip</code> can't reach into your <code>.bashrc</code> for you.</p>
+<p>Before <code>mv</code>, <code>cp</code>, <code>rm</code>, <code>chmod</code>, <code>chown</code>, <code>mkdir</code>, <code>rmdir</code> or <code>ln</code> runs, a wrapper computes the inverse, writes it to a journal under <code>~/.undo</code>, and then runs the real command. <code>rm</code>[3] is the special one: nothing gets destroyed. The file moves into a trash directory[4] and the journal remembers where it lived. Seven days later it's purged for real. <code>undo -n</code> shows you what would happen, <code>undo -y</code> does it, and <code>undo -l</code> lists the last ten so you can pick one.</p>
+<p>The price: every <code>mv</code> now costs me 85 milliseconds instead of one, because two Python interpreters start up so I can feel safe. I measured it. I'm fine with it.</p>
+<p>Things it will NOT save you from, and I wrote every one of them down in the README because I'd rather annoy you now than surprise you later: editor saves, redirects, anything under <code>sudo</code>, anything run from a script, and <code>\rm</code>, which bypasses an alias[5] and does nothing at all to a shell function. If you want the real <code>rm</code>, type <code>command rm</code>. The README says best-effort recovery, in bold, and it is not a backup. Keep making backups, nimrod.</p>
+<p>I have been typing <code>rm</code> for thirty years and it has never once asked me if I was fucking sure. Now I don't have to be.</p>
+<h2>References</h2>
+<ol>
+<li>snapshotting filesystem: https://en.wikipedia.org/wiki/Snapshot_(computer_storage)</li>
+<li>undo on GitHub: https://github.com/patpadgett/undo</li>
+<li>rm(1): https://man7.org/linux/man-pages/man1/rm.1.html</li>
+<li>trash directory: https://en.wikipedia.org/wiki/Trash_(computing)</li>
+<li>alias: https://en.wikipedia.org/wiki/Alias_(command)</li>
+</ol>
+]]></content:encoded></item>
 <item><title>Recording Mantoloking with Steve Fisk. Yes, in Kansas.</title><link>https://blog.patpadgett.com/posts/recording-mantoloking-with-steve-fisk/</link><guid>https://blog.patpadgett.com/posts/recording-mantoloking-with-steve-fisk/</guid>
 <pubDate>Mon, 05 Oct 2026 12:00:00 -0400</pubDate><description>The Sexy Accident made Mantoloking at Black Lodge in Eudora, Kansas, with Steve Fisk. Famous credits, conflicting dates, and a bass player&#x27;s invitation to shut up.</description>
 <content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/recording-mantoloking-with-steve-fisk.jpg" alt="A wood-paneled recording studio contains a mixing console, reel-to-reel recorder, bass guitar, speakers, and black swivel chair."></p><p>The Sexy Accident[1] made <em>Mantoloking</em>[2] at Black Lodge in Eudora, Kansas[3], and Steve Fisk[4] produced, engineered and mixed it.</p>
@@ -472,25 +489,6 @@ Check the configured public URL and deployment mapping before retrying.
 <li>website: https://octavitin.patpadgett.com/</li>
 <li>focus: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus</li>
 <li>live region: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions</li>
-</ol>
-]]></content:encoded></item>
-<item><title>Generating grime95, without leaking tomorrow&#x27;s arrest</title><link>https://blog.patpadgett.com/posts/generating-grime95/</link><guid>https://blog.patpadgett.com/posts/generating-grime95/</guid>
-<pubDate>Mon, 11 May 2026 12:00:00 -0400</pubDate><description>A fake county, real HTML, and two files called content.json. How grime95 publishes daily bookings without handing you tomorrow&#x27;s story, folks.</description>
-<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/generating-grime95.jpg" alt="Handcuffs connect hanging folders to a filing cabinet beside a desk with a computer, folder, and stamp."></p><p>You can visit a fictional booking terminal stuck on Saturday, December 2, 1995 at <a href="https://grime95.com/">grime95.com</a>[1]. A new booking appears every day at noon Eastern, with a mugshot and charge sheet, plus an incident report. I've given Ponder County a damned filing system even though the county doesn't exist.</p>
-<p>The browser looks like a terminal. Underneath, it's flat HTML[2] on GitHub Pages[3], with Python[4] rendering the records before you ask for them. There's a private schedule and a public subset, and the builder makes pages from that subset. Most of the design is keeping those separate.</p>
-<p>The private release schedule stays outside the public web root. The publisher reads it and appends due records to the public site's <code>content.json</code>. The public one has the same filename, but it holds published data and feeds the builder, and it's the publisher's verification artifact. The browser doesn't load it.</p>
-<p>Generated <code>robots.txt</code>[5] disallows <code>/content.json</code>. That asks crawlers nicely; it doesn't make the file private. A file in the public web root is public even if you put a polite note beside it. Tomorrow's story stays in the private schedule.</p>
-<p>The builder doesn't choose today's record. It renders whatever you hand it. Its <code>today</code> value supplies sitemap dates and does nothing to gate releases. Feed it the private schedule and it can do its job perfectly while you leak the whole thing. Well, fuck.</p>
-<p>I covered the retry ledger in <a href="/posts/never-post-twice/">Never post twice</a>[6]. A successful Git push doesn't prove GitHub Pages is serving the new record, so the publisher checks the live site. The generated file can be sitting right there on disk while nobody can read it.</p>
-<p>Tomorrow's criminals have an appointment. They can wait.</p>
-<h2>References</h2>
-<ol>
-<li>grime95.com: https://grime95.com/</li>
-<li>HTML: https://developer.mozilla.org/en-US/docs/Web/HTML</li>
-<li>GitHub Pages: https://pages.github.com/</li>
-<li>Python: https://www.python.org/</li>
-<li>robots.txt: https://www.rfc-editor.org/rfc/rfc9309.html</li>
-<li>Never post twice: https://blog.patpadgett.com/posts/never-post-twice/</li>
 </ol>
 ]]></content:encoded></item>
 </channel></rss>
