@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>huh. What is this string, exactly? · Weekly Padgett</title>
+<meta name="description" content="A timestamp, a cron line, an exit code, an invisible Unicode character. huh ranks the plausible readings and prints the Unix one-liner that proves each one.">
+<link rel="canonical" href="https://blog.patpadgett.com/posts/huh-what-is-this-string/">
+<link rel="alternate" type="application/rss+xml" title="Weekly Padgett" href="https://blog.patpadgett.com/index.xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#dd0000">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Weekly Padgett">
+<meta property="og:title" content="huh. What is this string, exactly? · Weekly Padgett">
+<meta property="og:description" content="A timestamp, a cron line, an exit code, an invisible Unicode character. huh ranks the plausible readings and prints the Unix one-liner that proves each one.">
+<meta property="og:url" content="https://blog.patpadgett.com/posts/huh-what-is-this-string/">
+<meta property="og:image" content="https://blog.patpadgett.com/assets/og/huh-what-is-this-string.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="huh. What is this string, exactly? · Weekly Padgett">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="huh. What is this string, exactly? · Weekly Padgett">
+<meta name="twitter:description" content="A timestamp, a cron line, an exit code, an invisible Unicode character. huh ranks the plausible readings and prints the Unix one-liner that proves each one.">
+<meta name="twitter:image" content="https://blog.patpadgett.com/assets/og/huh-what-is-this-string.jpg">
+<link rel="preload" href="/assets/fonts/Bangers-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Nunito-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/tabloid.css">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.xml"}}]},"eagerness":"moderate"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "huh. What is this string, exactly?", "description": "A timestamp, a cron line, an exit code, an invisible Unicode character. huh ranks the plausible readings and prints the Unix one-liner that proves each one.", "datePublished": "2026-10-13", "dateModified": "2026-10-13", "wordCount": 665, "keywords": "unix, python, corkscrew, shell", "url": "https://blog.patpadgett.com/posts/huh-what-is-this-string/", "image": "https://blog.patpadgett.com/assets/og/huh-what-is-this-string.jpg", "mainEntityOfPage": "https://blog.patpadgett.com/posts/huh-what-is-this-string/", "author": {"@type": "Person", "name": "Patrick Padgett", "url": "https://patpadgett.com"}, "publisher": {"@type": "Person", "name": "Patrick Padgett", "url": "https://patpadgett.com"}, "isPartOf": {"@type": "Blog", "name": "Weekly Padgett", "url": "https://blog.patpadgett.com/"}}</script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to the stories</a>
+<div class="wrap">
+<header class="masthead small">
+<p class="brand"><a href="/">Weekly Padgett</a></p>
+<nav class="top" aria-label="Site">
+<a href="/">All stories</a>
+<a href="/start-here/">Start here!</a>
+<a href="/tags/">Topics</a>
+<a href="/about/">About</a>
+<a href="/index.xml">RSS</a>
+</nav>
+</header>
+<main class="sheet" id="main" tabindex="-1">
+<header class="lede">
+<p class="k hot"><span><time datetime="2026-10-13">October 13, 2026</time></span><span>No. 054</span><span>3 min read</span></p>
+<h1>huh. What is this string, exactly?</h1>
+<p class="dek">A timestamp, a cron line, an exit code, an invisible Unicode character. huh ranks the plausible readings and prints the Unix one-liner that proves each one.</p>
+<figure class="hero"><div class="pic"><a class="print-open" href="/assets/img/huh-what-is-this-string.jpg" aria-label="See the whole photo"><img src="/assets/img/huh-what-is-this-string.jpg" srcset="/assets/img/huh-what-is-this-string-240.jpg 240w, /assets/img/huh-what-is-this-string-480.jpg 480w, /assets/img/huh-what-is-this-string-600.jpg 600w, /assets/img/huh-what-is-this-string-780.jpg 780w, /assets/img/huh-what-is-this-string.jpg 1200w" sizes="(min-width:821px) 240px, 100vw" alt="A hand holds a strip of receipt paper printed with dense gibberish on a cluttered desk beside a CRT monitor." width="1200" height="805" fetchpriority="high"></a></div><figcaption><b>File photo</b>Dramatization. No unix was harmed.</figcaption></figure>
+</header>
+<article class="body">
+<p>I keep a browser tab open to decode some string. An epoch timestamp, a JWT, a cron line, a color hex, an exit code. Open a converter site, paste, squint at ads, close the tab, forget what the site assumed. Then do it again tomorrow for the same kind of string.</p>
+<p>So I wrote <code>huh</code><a class="cite" id="cite-1" href="#ref-1" aria-label="Reference 1" aria-describedby="clip-1" style="anchor-name:--c1">[1]</a><span class="clip" id="clip-1" role="tooltip" style="position-anchor:--c1"><b>Ref. 1</b><a href="https://github.com/patpadgett/huh" rel="noopener">huh</a> <small>github.com</small></span>. Paste a string in, get the plausible readings ranked, each one carrying the conversions you actually came for and the plain Unix one-liner — the receipt — that would have told you the same thing. The point is not to depend on it. The point is to stop needing it.</p>
+<pre><code>$ huh 1696500000
+epoch seconds    Thu 2023-10-05 06:00:00 EDT, 3 years ago
+                 ISO 2023-10-05T10:00:00Z
+                 $ date -u -d @1696500000
+</code></pre>
+<p>One file, standard library only, Python 3.10+. Offline. Nothing leaves the machine, nothing is written, and it never runs the receipts — it only prints them.</p>
+<h2>The ambiguity is the feature</h2>
+<p>Here is the thing that made me build it instead of just using a converter. A number like <code>137</code> is not one thing. It is an exit code, and a port, and a chmod mode, and probably two more readings I hid behind <code>--all</code>. A converter picks one and pretends it was sure. <code>huh</code> shows you all of them and tags how confident it is: <code>kind</code> means likely, <code>kind?</code> maybe, <code>kind??</code> a long shot it shows because nothing better matched.</p>
+<pre><code>$ huh 137
+exit code        exit code 137: killed with SIGKILL (128 + 9)
+                 often the OOM killer or a memory limit
+port?            port 137: NetBIOS name service
+chmod?           chmod 137 = ---x-wxrwx
+</code></pre>
+<p>It is a decoder ring, not an oracle. When it is wrong, the receipt shows you exactly what it assumed, so you can see the seam.</p>
+<h2>The one that costs people an afternoon</h2>
+<p>My favorite reading is the invisible one. You paste <code>café</code> and it looks fine, and the build fails anyway, and you spend an hour on it. Somewhere in there is a ZERO WIDTH SPACE<a class="cite" id="cite-2" href="#ref-2" aria-label="Reference 2" aria-describedby="clip-2" style="anchor-name:--c2">[2]</a><span class="clip" id="clip-2" role="tooltip" style="position-anchor:--c2"><b>Ref. 2</b><a href="https://en.wikipedia.org/wiki/Zero-width_space" rel="noopener">Zero-width space</a> <small>en.wikipedia.org</small></span>, and <code>huh</code> finds it, tells you the offset, the codepoint, the UTF-8 bytes, and shows you the string with the ghost stripped out.</p>
+<pre><code>$ huh 'café'
+unicode          1 hidden character (ZERO WIDTH SPACE)
+                 offset 3: U+200B  &lt;- invisible
+                 without the invisible characters: café
+</code></pre>
+<p>It catches bidi overrides, Cyrillic and Greek lookalike letters in hostnames, and mojibake<a class="cite" id="cite-3" href="#ref-3" aria-label="Reference 3" aria-describedby="clip-3" style="anchor-name:--c3">[3]</a><span class="clip" id="clip-3" role="tooltip" style="position-anchor:--c3"><b>Ref. 3</b><a href="https://en.wikipedia.org/wiki/Mojibake" rel="noopener">Mojibake</a> <small>en.wikipedia.org</small></span> — the <code>cafÃ©</code> that means somebody decoded UTF-8 as Latin-1 somewhere upstream.</p>
+<h2>Recursive, and honest about secrets</h2>
+<p>Base64 that holds JSON that holds a timestamp: <code>huh</code> follows it down, three levels deep, and dates the timestamp at the bottom. But a JWT<a class="cite" id="cite-4" href="#ref-4" aria-label="Reference 4" aria-describedby="clip-4" style="anchor-name:--c4">[4]</a><span class="clip" id="clip-4" role="tooltip" style="position-anchor:--c4"><b>Ref. 4</b><a href="https://en.wikipedia.org/wiki/JSON_Web_Token" rel="noopener">JSON Web Token</a> <small>en.wikipedia.org</small></span> gets decoded and never trusted — the claims are whatever the issuer, or an attacker, put there, and it says so right in the output. A PEM private key gets a warning. An API token gets read but gets no receipt at all, because the whole point is that some strings you decode in your head and never paste into a website.</p>
+<h2>Why a receipt for everything</h2>
+<p>Every reading ends with a <code>$</code> line: the command that produces the same answer with tools that already exist on your box — <code>date</code>, <code>base64</code>, <code>xxd</code>, <code>numfmt</code>, <code>stat</code>, <code>kill -l</code>, <code>ssh-keygen</code>. They are printed, never run. When the input has invisible characters, the receipt spells them as octal escapes, the one form every POSIX printf understands, so it stays copy-pasteable in bash, zsh and dash.</p>
+<p>The receipts are the actual product. <code>huh</code> is the training wheels. Learn the one-liner, delete the training wheels. That is the whole design.</p>
+<p>It is on GitHub<a class="cite" id="cite-5" href="#ref-5" aria-label="Reference 5" aria-describedby="clip-5" style="anchor-name:--c5">[5]</a><span class="clip" id="clip-5" role="tooltip" style="position-anchor:--c5"><b>Ref. 5</b><a href="https://github.com/patpadgett/huh" rel="noopener">huh on GitHub</a> <small>github.com</small></span>, installable as <code>whatsthis</code> on PyPI (the name <code>huh</code> was taken), or just grab the one file — it has no dependencies.</p>
+<section class="refs"><h2 id="references">References</h2>
+<ol>
+<li id="ref-1" value="1" tabindex="-1"><a href="https://github.com/patpadgett/huh" rel="noopener">huh</a> <small>github.com</small> <a class="backref" href="#cite-1" aria-label="Back to citation 1">&#8617;</a></li>
+<li id="ref-2" value="2" tabindex="-1"><a href="https://en.wikipedia.org/wiki/Zero-width_space" rel="noopener">Zero-width space</a> <small>en.wikipedia.org</small> <a class="backref" href="#cite-2" aria-label="Back to citation 2">&#8617;</a></li>
+<li id="ref-3" value="3" tabindex="-1"><a href="https://en.wikipedia.org/wiki/Mojibake" rel="noopener">Mojibake</a> <small>en.wikipedia.org</small> <a class="backref" href="#cite-3" aria-label="Back to citation 3">&#8617;</a></li>
+<li id="ref-4" value="4" tabindex="-1"><a href="https://en.wikipedia.org/wiki/JSON_Web_Token" rel="noopener">JSON Web Token</a> <small>en.wikipedia.org</small> <a class="backref" href="#cite-4" aria-label="Back to citation 4">&#8617;</a></li>
+<li id="ref-5" value="5" tabindex="-1"><a href="https://github.com/patpadgett/huh" rel="noopener">huh on GitHub</a> <small>github.com</small> <a class="backref" href="#cite-5" aria-label="Back to citation 5">&#8617;</a></li>
+</ol>
+</section>
+</article>
+<div class="tail"><div class="tags"><a href="/tags/unix/">unix</a><a href="/tags/python/">python</a><a href="/tags/corkscrew/">corkscrew</a><span>shell</span></div><span class="byline">&ndash; Pat</span></div>
+<nav class="pn" aria-label="Adjacent stories"><a href="/posts/undo-for-the-shell/"><b>Previous exclusive</b><span>undo for the shell, because rm has never once asked me if I was sure</span></a><div class="pn--next"><b>Next issue · October 15</b><span>whom. Who do I ask about this file, and are they awake?</span><p><a class="rss-btn" href="/index.xml">Get it by RSS</a> <a class="rss-how" href="/about/#rss">What is RSS?</a></p></div></nav>
+</main>
+<dialog class="print" id="print" aria-label="The whole photo">
+<div class="print__in">
+<div class="print__bar"><p class="print__k"><b>File photo</b>Uncropped. Straight off the wire.</p><button class="print__close" type="button" autofocus>Close<small>Esc</small></button></div>
+<figure class="print__fig"><span class="print__frame"><img src="/assets/img/huh-what-is-this-string.jpg" srcset="/assets/img/huh-what-is-this-string-240.jpg 240w, /assets/img/huh-what-is-this-string-480.jpg 480w, /assets/img/huh-what-is-this-string-600.jpg 600w, /assets/img/huh-what-is-this-string-780.jpg 780w, /assets/img/huh-what-is-this-string.jpg 1200w" sizes="(min-width:1240px) 1200px, 100vw" alt="" width="1200" height="805" loading="lazy" decoding="async"></span>
+<figcaption><b>Photo desk</b>A hand holds a strip of receipt paper printed with dense gibberish on a cluttered desk beside a CRT monitor. Dramatization; no unix was harmed.</figcaption></figure>
+</div>
+</dialog>
+<section class="more" aria-label="Related stories"><h2>More on this beat</h2><div class="posts"><article class="post">
+<div class="th"><a href="/posts/undo-for-the-shell/" tabindex="-1" aria-hidden="true"><img src="/assets/img/undo-for-the-shell-t.jpg" srcset="/assets/img/undo-for-the-shell-t150.jpg 150w, /assets/img/undo-for-the-shell-t.jpg 300w" sizes="(min-width:821px) 150px, 110px" alt="" loading="lazy" width="300" height="300"></a></div>
+<p class="k"><span><time datetime="2026-10-08">October 08, 2026</time></span><span>No. 053</span><span>1 min read</span></p>
+<h2><a href="/posts/undo-for-the-shell/">undo for the shell, because rm has never once asked me if I was sure</a></h2>
+<p>A shell that can undo the last thing you did.</p>
+</article><article class="post">
+<div class="th"><a href="/posts/small-programs-survive/" tabindex="-1" aria-hidden="true"><img src="/assets/img/small-programs-survive-t.jpg" srcset="/assets/img/small-programs-survive-t150.jpg 150w, /assets/img/small-programs-survive-t.jpg 300w" sizes="(min-width:821px) 150px, 110px" alt="" loading="lazy" width="300" height="300"></a></div>
+<p class="k"><span><time datetime="2026-08-26">August 26, 2026</time></span><span>No. 044</span><span>1 min read</span></p>
+<h2><a href="/posts/small-programs-survive/">Small programs survive. Their bugs do too.</a></h2>
+<p>Corkscrew fits in 291 lines, folks.</p>
+</article><article class="post">
+<div class="th"><a href="/posts/exit-codes-are-an-api/" tabindex="-1" aria-hidden="true"><img src="/assets/img/exit-codes-are-an-api-t.jpg" srcset="/assets/img/exit-codes-are-an-api-t150.jpg 150w, /assets/img/exit-codes-are-an-api-t.jpg 300w" sizes="(min-width:821px) 150px, 110px" alt="" loading="lazy" width="300" height="300"></a></div>
+<p class="k"><span><time datetime="2026-08-19">August 19, 2026</time></span><span>No. 043</span><span>1 min read</span></p>
+<h2><a href="/posts/exit-codes-are-an-api/">Exit codes are an API. Yes, that little integer.</a></h2>
+<p>Corkscrew reported success without establishing a tunnel.</p>
+</article><article class="post">
+<div class="th"><a href="/posts/atomic-rename/" tabindex="-1" aria-hidden="true"><img src="/assets/img/atomic-rename-t.jpg" srcset="/assets/img/atomic-rename-t150.jpg 150w, /assets/img/atomic-rename-t.jpg 300w" sizes="(min-width:821px) 150px, 110px" alt="" loading="lazy" width="300" height="300"></a></div>
+<p class="k"><span><time datetime="2026-07-22">July 22, 2026</time></span><span>No. 037</span><span>1 min read</span></p>
+<h2><a href="/posts/atomic-rename/">Atomic rename. Read the damned small print.</a></h2>
+<p>Unix rename can publish a finished file or claim a queue item.</p>
+</article></div></section>
+<footer>
+<div class="foot__l">
+<p>Also at checkout:</p>
+<nav aria-label="Elsewhere">
+<a href="https://patpadgett.com">patpadgett.com</a>
+<a href="https://work.patpadgett.com">work</a>
+<a href="https://music.patpadgett.com">music</a>
+<a href="https://octavitin.patpadgett.com">octavitin</a>
+<a href="https://grime95.com">grime95</a>
+<a href="/index.xml">rss</a>
+</nav>
+<p class="fine">Written by Patrick Padgett. Every word here is mine, including the ones I should have cut. Flat HTML, no trackers, no comments section. If you want to argue, you know where to find me.</p>
+</div>
+<div class="foot__r" aria-hidden="true"><p class="foot__stamp">Printed on<br>flat HTML</p><p class="foot__price">99¢</p></div>
+</footer>
+</div>
+<script>(function(){var rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+if(!rm&&!(window.CSS&&CSS.supports('animation-timeline:view()'))&&'IntersectionObserver'in window){var els=[].slice.call(document.querySelectorAll('.post,.box,.coming,.coupon,.theme,.psychic')).filter(function(e){return e.getBoundingClientRect().top>innerHeight});els.forEach(function(e){e.classList.add('pre')});var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var i=els.indexOf(e.target);setTimeout(function(){e.target.classList.add('in')},(i%3)*70);io.unobserve(e.target)}})},{rootMargin:'0px 0px -5% 0px'});els.forEach(function(e){io.observe(e)});setTimeout(function(){els.forEach(function(e){e.classList.add('in')})},4000)}
+/* the page turns. pageswap names the kind of turn (flip = story to story, back = traversing backwards) and
+   un-names shared elements the reader has scrolled away from, so nothing flies in from off-screen.
+   pagereveal marks a page that arrived by a turn, so its headline does not print off-register a second time. */
+var SHARED='header.masthead,.brand a,.brand small,nav.top,.home>.hero .pic,.home>.hero .pic img,.home>.hero h1,.lede .pic,.lede .pic img,.lede h1,.lede .k,.sheet>.body';
+function kind(a){var t=[];if(!a||!a.from)return t;var f=new URL(a.from.url).pathname,n=new URL(a.entry.url).pathname;if(f.indexOf('/posts/')===0&&n.indexOf('/posts/')===0)t.push('flip');if(a.navigationType==='traverse'&&a.from.index>a.entry.index)t.push('back');return t}
+addEventListener('pageswap',function(e){var vt=e.viewTransition;if(!vt)return;kind(e.activation).forEach(function(t){vt.types.add(t)});[].forEach.call(document.querySelectorAll(SHARED),function(el){var r=el.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)el.style.viewTransitionName='none'})});
+addEventListener('pagereveal',function(e){[].forEach.call(document.querySelectorAll(SHARED),function(el){el.style.viewTransitionName=''});if(e.viewTransition){document.documentElement.classList.add('turned');if(window.navigation)kind(navigation.activation).forEach(function(t){e.viewTransition.types.add(t)})}});
+/* the whole photo: the story picture lifts out of its frame into a full-screen print and settles back */
+var d=document.getElementById('print'),t=document.querySelector('.print-open'),im=d&&d.querySelector('img');
+if(d&&t&&im&&d.showModal){var h=document.documentElement,busy=false;
+function warm(){im.loading='eager'}
+t.addEventListener('pointerenter',warm);t.addEventListener('focus',warm);t.addEventListener('touchstart',warm,{passive:true});
+function turn(dir,fn){h.classList.add('lit','lit--'+dir);var done=function(){h.classList.remove('lit--'+dir);if(dir==='shut')h.classList.remove('lit');busy=false};
+if(rm||!document.startViewTransition){fn();done();return}
+var vt=document.startViewTransition(fn);vt.finished.then(done,done)}
+t.addEventListener('click',function(e){e.preventDefault();if(busy||d.open)return;busy=true;warm();
+var ready=im.decode?im.decode().catch(function(){}):Promise.resolve(),soon=new Promise(function(r){setTimeout(r,450)});
+Promise.race([ready,soon]).then(function(){turn('open',function(){d.showModal()})})});
+function shut(){if(!d.open||busy)return;busy=true;turn('shut',function(){d.close()})}
+d.addEventListener('click',function(e){if(!e.target.closest('.print__k,figcaption'))shut()});
+d.addEventListener('cancel',function(e){e.preventDefault();shut()});}
+})();</script>
+</body></html>

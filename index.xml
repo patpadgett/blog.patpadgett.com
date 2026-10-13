@@ -2,6 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel><title>Weekly Padgett</title><link>https://blog.patpadgett.com/</link><description>Stories from thirty years of telecom billing mediation, Unix, corkscrew, bass guitar, Indonesian music, and whatever else Pat Padgett could not shut up about.</description><language>en-us</language>
 <atom:link href="https://blog.patpadgett.com/index.xml" rel="self" type="application/rss+xml"/>
+<item><title>huh. What is this string, exactly?</title><link>https://blog.patpadgett.com/posts/huh-what-is-this-string/</link><guid>https://blog.patpadgett.com/posts/huh-what-is-this-string/</guid>
+<pubDate>Tue, 13 Oct 2026 12:00:00 -0400</pubDate><description>A timestamp, a cron line, an exit code, an invisible Unicode character. huh ranks the plausible readings and prints the Unix one-liner that proves each one.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/huh-what-is-this-string.jpg" alt="A hand holds a strip of receipt paper printed with dense gibberish on a cluttered desk beside a CRT monitor."></p><p>I keep a browser tab open to decode some string. An epoch timestamp, a JWT, a cron line, a color hex, an exit code. Open a converter site, paste, squint at ads, close the tab, forget what the site assumed. Then do it again tomorrow for the same kind of string.</p>
+<p>So I wrote <code>huh</code>[1]. Paste a string in, get the plausible readings ranked, each one carrying the conversions you actually came for and the plain Unix one-liner — the receipt — that would have told you the same thing. The point is not to depend on it. The point is to stop needing it.</p>
+<pre><code>$ huh 1696500000
+epoch seconds    Thu 2023-10-05 06:00:00 EDT, 3 years ago
+                 ISO 2023-10-05T10:00:00Z
+                 $ date -u -d @1696500000
+</code></pre>
+<p>One file, standard library only, Python 3.10+. Offline. Nothing leaves the machine, nothing is written, and it never runs the receipts — it only prints them.</p>
+<h2>The ambiguity is the feature</h2>
+<p>Here is the thing that made me build it instead of just using a converter. A number like <code>137</code> is not one thing. It is an exit code, and a port, and a chmod mode, and probably two more readings I hid behind <code>--all</code>. A converter picks one and pretends it was sure. <code>huh</code> shows you all of them and tags how confident it is: <code>kind</code> means likely, <code>kind?</code> maybe, <code>kind??</code> a long shot it shows because nothing better matched.</p>
+<pre><code>$ huh 137
+exit code        exit code 137: killed with SIGKILL (128 + 9)
+                 often the OOM killer or a memory limit
+port?            port 137: NetBIOS name service
+chmod?           chmod 137 = ---x-wxrwx
+</code></pre>
+<p>It is a decoder ring, not an oracle. When it is wrong, the receipt shows you exactly what it assumed, so you can see the seam.</p>
+<h2>The one that costs people an afternoon</h2>
+<p>My favorite reading is the invisible one. You paste <code>café</code> and it looks fine, and the build fails anyway, and you spend an hour on it. Somewhere in there is a ZERO WIDTH SPACE[2], and <code>huh</code> finds it, tells you the offset, the codepoint, the UTF-8 bytes, and shows you the string with the ghost stripped out.</p>
+<pre><code>$ huh 'café'
+unicode          1 hidden character (ZERO WIDTH SPACE)
+                 offset 3: U+200B  &lt;- invisible
+                 without the invisible characters: café
+</code></pre>
+<p>It catches bidi overrides, Cyrillic and Greek lookalike letters in hostnames, and mojibake[3] — the <code>cafÃ©</code> that means somebody decoded UTF-8 as Latin-1 somewhere upstream.</p>
+<h2>Recursive, and honest about secrets</h2>
+<p>Base64 that holds JSON that holds a timestamp: <code>huh</code> follows it down, three levels deep, and dates the timestamp at the bottom. But a JWT[4] gets decoded and never trusted — the claims are whatever the issuer, or an attacker, put there, and it says so right in the output. A PEM private key gets a warning. An API token gets read but gets no receipt at all, because the whole point is that some strings you decode in your head and never paste into a website.</p>
+<h2>Why a receipt for everything</h2>
+<p>Every reading ends with a <code>$</code> line: the command that produces the same answer with tools that already exist on your box — <code>date</code>, <code>base64</code>, <code>xxd</code>, <code>numfmt</code>, <code>stat</code>, <code>kill -l</code>, <code>ssh-keygen</code>. They are printed, never run. When the input has invisible characters, the receipt spells them as octal escapes, the one form every POSIX printf understands, so it stays copy-pasteable in bash, zsh and dash.</p>
+<p>The receipts are the actual product. <code>huh</code> is the training wheels. Learn the one-liner, delete the training wheels. That is the whole design.</p>
+<p>It is on GitHub[5], installable as <code>whatsthis</code> on PyPI (the name <code>huh</code> was taken), or just grab the one file — it has no dependencies.</p>
+<h2>References</h2>
+<ol>
+<li>huh: https://github.com/patpadgett/huh</li>
+<li>Zero-width space: https://en.wikipedia.org/wiki/Zero-width_space</li>
+<li>Mojibake: https://en.wikipedia.org/wiki/Mojibake</li>
+<li>JSON Web Token: https://en.wikipedia.org/wiki/JSON_Web_Token</li>
+<li>huh on GitHub: https://github.com/patpadgett/huh</li>
+</ol>
+]]></content:encoded></item>
 <item><title>undo for the shell, because rm has never once asked me if I was sure</title><link>https://blog.patpadgett.com/posts/undo-for-the-shell/</link><guid>https://blog.patpadgett.com/posts/undo-for-the-shell/</guid>
 <pubDate>Thu, 08 Oct 2026 12:00:00 -0400</pubDate><description>A shell that can undo the last thing you did. No snapshotting filesystem, no daemon, no root, just python3 and a journal. 410 lines of Python and 54 of bash.</description>
 <content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/undo-for-the-shell.jpg" alt="A terminal window showing a command-line interface with undo commands."></p><p>I gave myself a dumb challenge on a slow night: make a shell that can undo the last thing you did, with no snapshotting filesystem[1], no daemon, no root, and nothing installed but <code>python3</code>. You type <code>mv</code>, you type <code>undo</code>, the file goes back. That was the whole spec.</p>
@@ -472,23 +514,6 @@ Check the configured public URL and deployment mapping before retrying.
 <li>SEO: https://developers.google.com/search/docs/fundamentals/seo-starter-guide</li>
 <li>curl: https://curl.se/</li>
 <li>structured data: https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data</li>
-</ol>
-]]></content:encoded></item>
-<item><title>Eight arms, a hundred years of hiding, and now he needs a website</title><link>https://blog.patpadgett.com/posts/a-website-for-a-picture-book/</link><guid>https://blog.patpadgett.com/posts/a-website-for-a-picture-book/</guid>
-<pubDate>Sat, 16 May 2026 12:00:00 -0400</pubDate><description>Octavitin would rather stay under the bed. I gave him a website with a silent bell, a complete first chapter, and a leave button that means it.</description>
-<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/a-website-for-a-picture-book.jpg" alt="A brass bell with a knitted cover stands beside a wooden bed, with shoes underneath and books nearby."></p><p>I wrote a children's book about a nervous eight-armed creature who tidies socks under beds, and now you can invite him out on the internet.</p>
-<p>He has spent a hundred years practicing being invisible. One of his arms wants to wave hello. You put a century into your profession and one of your own appendages starts fucking with the job description. Poor guy.</p>
-<p>The book is <em>Octavitin: The Rules of Under</em>, an illustrated read-aloud for ages six to nine. It's finished and seeking a publisher. The <a href="https://octavitin.patpadgett.com/">website</a>[1] is one page, with the first chapter and a small interaction. There's a printable set of rules too.</p>
-<p>The interaction is a bell. Press it and you invite him out. You can also ask him to leave, and the second button matters just as much.</p>
-<p>There is no bell sound. The script changes the images and caption, along with the status message. The page promises no sudden sounds, and I mean it literally. I am not making your speaker ring at bedtime just because I drew a bell on a button.</p>
-<p>It moves focus[2], too. Invite him out and focus goes to the leave button. Send him away and it returns to the bell, without scrolling the page. A polite live region[3] carries the status text (polite being a useful quality in something hanging around a child's bedroom). If I tell a child they can withdraw the invitation, I had better put that control where they can find it without hunting through my interface.</p>
-<p>The footer says: &quot;Illustrations are author-directed concept art rendered with AI.&quot;</p>
-<p>Let the poor guy get back to his socks.</p>
-<h2>References</h2>
-<ol>
-<li>website: https://octavitin.patpadgett.com/</li>
-<li>focus: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus</li>
-<li>live region: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions</li>
 </ol>
 ]]></content:encoded></item>
 </channel></rss>
