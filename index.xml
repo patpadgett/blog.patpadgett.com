@@ -3,8 +3,8 @@
 <channel><title>Weekly Padgett</title><link>https://blog.patpadgett.com/</link><description>Stories from thirty years of telecom billing mediation, Unix, corkscrew, bass guitar, Indonesian music, and whatever else Pat Padgett could not shut up about.</description><language>en-us</language>
 <atom:link href="https://blog.patpadgett.com/index.xml" rel="self" type="application/rss+xml"/>
 <item><title>undo for the shell, because rm has never once asked me if I was sure</title><link>https://blog.patpadgett.com/posts/undo-for-the-shell/</link><guid>https://blog.patpadgett.com/posts/undo-for-the-shell/</guid>
-<pubDate>Thu, 08 Oct 2026 12:00:00 -0400</pubDate><description>I gave myself a dumb challenge: make the shell undo the last mv, cp or rm with no daemon, no root and no snapshots. It works. Read the damned limitations first.</description>
-<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/undo-for-the-shell.jpg" alt="A person lifts a floppy disk out of a metal wastebasket with barbecue tongs beside a beige computer."></p><p>I gave myself a dumb challenge on a slow night: make a shell that can undo the last thing you did, with no snapshotting filesystem[1], no daemon, no root, and nothing installed but <code>python3</code>. You type <code>mv</code>, you type <code>undo</code>, the file goes back. That was the whole spec.</p>
+<pubDate>Thu, 08 Oct 2026 12:00:00 -0400</pubDate><description>A shell that can undo the last thing you did. No snapshotting filesystem, no daemon, no root, just python3 and a journal. 410 lines of Python and 54 of bash.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/undo-for-the-shell.jpg" alt="A terminal window showing a command-line interface with undo commands."></p><p>I gave myself a dumb challenge on a slow night: make a shell that can undo the last thing you did, with no snapshotting filesystem[1], no daemon, no root, and nothing installed but <code>python3</code>. You type <code>mv</code>, you type <code>undo</code>, the file goes back. That was the whole spec.</p>
 <p>It came out to 410 lines of Python and 54 lines of bash, and you source it into your shell. It's on GitHub[2]. There is no PyPI package, because the thing is a shell function and <code>pip</code> can't reach into your <code>.bashrc</code> for you.</p>
 <p>Before <code>mv</code>, <code>cp</code>, <code>rm</code>, <code>chmod</code>, <code>chown</code>, <code>mkdir</code>, <code>rmdir</code> or <code>ln</code> runs, a wrapper computes the inverse, writes it to a journal under <code>~/.undo</code>, and then runs the real command. <code>rm</code>[3] is the special one: nothing gets destroyed. The file moves into a trash directory[4] and the journal remembers where it lived. Seven days later it's purged for real. <code>undo -n</code> shows you what would happen, <code>undo -y</code> does it, and <code>undo -l</code> lists the last ten so you can pick one.</p>
 <p>The price: every <code>mv</code> now costs me 85 milliseconds instead of one, because two Python interpreters start up so I can feel safe. I measured it. I'm fine with it.</p>
@@ -12,11 +12,11 @@
 <p>I have been typing <code>rm</code> for thirty years and it has never once asked me if I was fucking sure. Now I don't have to be.</p>
 <h2>References</h2>
 <ol>
-<li>snapshotting filesystem: https://en.wikipedia.org/wiki/Snapshot_(computer_storage)</li>
+<li>Snapshot (computer storage): https://en.wikipedia.org/wiki/Snapshot_(computer_storage)</li>
 <li>undo on GitHub: https://github.com/patpadgett/undo</li>
 <li>rm(1): https://man7.org/linux/man-pages/man1/rm.1.html</li>
-<li>trash directory: https://en.wikipedia.org/wiki/Trash_(computing)</li>
-<li>alias: https://en.wikipedia.org/wiki/Alias_(command)</li>
+<li>Trash (computing): https://en.wikipedia.org/wiki/Trash_(computing)</li>
+<li>Alias (command): https://en.wikipedia.org/wiki/Alias_(command)</li>
 </ol>
 ]]></content:encoded></item>
 <item><title>Recording Mantoloking with Steve Fisk. Yes, in Kansas.</title><link>https://blog.patpadgett.com/posts/recording-mantoloking-with-steve-fisk/</link><guid>https://blog.patpadgett.com/posts/recording-mantoloking-with-steve-fisk/</guid>

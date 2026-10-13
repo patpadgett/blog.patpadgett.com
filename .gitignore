@@ -1,0 +1,6 @@
+# build.py temporary artifacts
+.imgcache/
+*.tmp
+*.bak
+flyer*
+tear.js
