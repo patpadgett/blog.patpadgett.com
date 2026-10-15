@@ -2,6 +2,40 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel><title>Weekly Padgett</title><link>https://blog.patpadgett.com/</link><description>Stories from thirty years of telecom billing mediation, Unix, corkscrew, bass guitar, Indonesian music, and whatever else Pat Padgett could not shut up about.</description><language>en-us</language>
 <atom:link href="https://blog.patpadgett.com/index.xml" rel="self" type="application/rss+xml"/>
+<item><title>whom. Who do I ask about this file, and are they awake?</title><link>https://blog.patpadgett.com/posts/whom-who-to-ask-about-this-file/</link><guid>https://blog.patpadgett.com/posts/whom-who-to-ask-about-this-file/</guid>
+<pubDate>Thu, 15 Oct 2026 12:00:00 -0400</pubDate><description>A file you did not write, a person you need to find. whom ranks contributors from git history and guesses their local time. The guessing is the creepy part, and it says so.</description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/whom-who-to-ask-about-this-file.jpg" alt="A corkboard covered with pinned index cards and red string, a desk phone below, an empty chair pushed back."></p><p>There is a file in the repo you did not write, and it is wrong, and you need the person who knows why. <code>git blame</code>[1] gives you a name and an email from three years ago. It does not tell you whether that person still works here, whether they were the one who actually understood it, or whether it is three in the morning where they are.</p>
+<p>So I wrote <code>whom</code>[2]. Point it at a file or a directory and it ranks the contributors from git history, shows each one's inferred current local time, and cautiously guesses whether they are probably awake.</p>
+<pre><code>$ whom src/billing.py
+1. alice@corp.com     41%   18 commits   local 14:32  probably awake
+2. bob@corp.com       27%   11 commits   local 23:05  probably asleep
+3. carol@corp.com     16%    7 commits   local 09:14  probably awake
+   Ask alice
+</code></pre>
+<p>Python 3.9+ and git. Standard library only. It runs locally, reads history, changes nothing, sends nothing anywhere.</p>
+<h2>The ranking</h2>
+<p>For each commit the score decays with age — <code>0.5 ** (age_days / 180)</code>, so something from six months ago counts half as much as something from today — and grows with the size of the change. Recent, substantial work ranks higher. But the README is blunt about it: lines changed are not expertise. A one-line fix to the heart of the parser outranks a thousand-line reformat, and that is correct, because the reformat told you nothing.</p>
+<p>Co-authors[3] get half credit. Bots are ignored. Identity is grouped by email after mailmap[4] normalization, because the same human commits as <code>Alice</code>, <code>alice</code>, and <code>A. Smith</code> and you want them to be one person.</p>
+<h2>The creepy part, stated plainly</h2>
+<p>The sleep guess is the feature people will misuse, so the tool argues with itself about it in its own README[5]. It infers sleep from commit timestamps. That is a little creepy. It is an uncertain convenience, not presence detection, and it tells you: do not use this to monitor staff, assess productivity, or decide someone owes you a reply.</p>
+<p>Here is how shaky the inference is, honestly. It takes the most common UTC offset[6] in someone's twenty newest commits as their current zone — never mapped to a real IANA zone, never predicting daylight saving. It buckets their commit hours and finds the longest run of at least four hours with no commits, and calls that the guessed sleep window. That is it. No gap means it prints <code>commits at all hours</code>, which means no long quiet stretch, not literal round-the-clock activity.</p>
+<p>Someone who moved time zones, traveled, shares an account, or commits from a train undermines all of it. A timestamp is not a presence signal. There is a <code>--no-sleep</code> flag that turns the whole inference off and still shows local time, and I would not blame you for leaving it off.</p>
+<h2>The one detail I like</h2>
+<p>If the top-ranked person is probably asleep and someone else in the top three is probably awake, it prints an <code>Ask ...</code> line pointing at the awake one. Not because the second person knows more — because the first person is asleep, and the bug is not going to sleep until morning. It is a small thing. It is the reason I built the whole tool.</p>
+<p>The README lists the failure modes at length, on purpose. CI bots slip through. Squash merges[7] concentrate all the credit and all the timing on whoever hit the button. Copied code and vendored files skew the ranking. Sparse repos offer no useful second person. I would rather the tool tell you where it is wrong than pretend the ranking is a fact.</p>
+<p>It is on GitHub[8], installable as <code>whom-cli</code> on PyPI (the name <code>whom</code> was taken).</p>
+<h2>References</h2>
+<ol>
+<li>git blame: https://git-scm.com/docs/git-blame</li>
+<li>whom: https://github.com/patpadgett/whom</li>
+<li>Co-authored-by: https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors</li>
+<li>git mailmap: https://git-scm.com/docs/gitmailmap</li>
+<li>whom README: https://github.com/patpadgett/whom</li>
+<li>UTC offset: https://en.wikipedia.org/wiki/UTC_offset</li>
+<li>Squash merge: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-commits</li>
+<li>whom on GitHub: https://github.com/patpadgett/whom</li>
+</ol>
+]]></content:encoded></item>
 <item><title>huh. What is this string, exactly?</title><link>https://blog.patpadgett.com/posts/huh-what-is-this-string/</link><guid>https://blog.patpadgett.com/posts/huh-what-is-this-string/</guid>
 <pubDate>Tue, 13 Oct 2026 12:00:00 -0400</pubDate><description>A timestamp, a cron line, an exit code, an invisible Unicode character. huh ranks the plausible readings and prints the Unix one-liner that proves each one.</description>
 <content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/huh-what-is-this-string.jpg" alt="A hand holds a strip of receipt paper printed with dense gibberish on a cluttered desk beside a CRT monitor."></p><p>I keep a browser tab open to decode some string. An epoch timestamp, a JWT, a cron line, a color hex, an exit code. Open a converter site, paste, squint at ads, close the tab, forget what the site assumed. Then do it again tomorrow for the same kind of string.</p>
@@ -500,20 +534,6 @@ Check the configured public URL and deployment mapping before retrying.
 <li>Bass player: https://en.wikipedia.org/wiki/Bass_guitar</li>
 <li>root: https://en.wikipedia.org/wiki/Root_(chord)</li>
 <li>attack: https://en.wikipedia.org/wiki/Envelope_(music)</li>
-</ol>
-]]></content:encoded></item>
-<item><title>The SEO floor: check the damned deployed site</title><link>https://blog.patpadgett.com/posts/the-seo-floor/</link><guid>https://blog.patpadgett.com/posts/the-seo-floor/</guid>
-<pubDate>Sat, 23 May 2026 12:00:00 -0400</pubDate><description>Thirty checks for the technical floor beneath a static site: reachable pages, honest metadata, working assets, and verification against the deployed URLs.</description>
-<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/the-seo-floor.jpg" alt="A person lies across a desk, reaching toward a glass door beside a computer and stool."></p><p>Your static site can look lovely on your own computer while the copy people can actually reach has problems. That's the copy I want to check.</p>
-<p>I use a thirty-check floor. It won't make a dull page interesting or persuade a search engine to rank it. It catches publishing screwups, like a title copied from another project or a canonical[1] pointing at the wrong host. Or that social image sitting on disk that never got committed. These are basic SEO[2] checks.</p>
-<p>I use curl[3] for response codes and headers and fetch the source, then parse it for metadata and structured data[4]. A headless browser checks rendered content at the deployed URL, including image loading and interactions. Text can exist but stay hidden, controls can look finished and do fuck-all when clicked.</p>
-<p>That last request goes to the public hostname, after deployment.</p>
-<h2>References</h2>
-<ol>
-<li>canonical: https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls</li>
-<li>SEO: https://developers.google.com/search/docs/fundamentals/seo-starter-guide</li>
-<li>curl: https://curl.se/</li>
-<li>structured data: https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data</li>
 </ol>
 ]]></content:encoded></item>
 </channel></rss>
