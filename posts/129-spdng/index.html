@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Your ISP is Lying to You · Weekly Padgett</title>
+<meta name="description" content="">
+<link rel="canonical" href="https://blog.patpadgett.com/posts/129-spdng/">
+<link rel="alternate" type="application/rss+xml" title="Weekly Padgett" href="https://blog.patpadgett.com/index.xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#dd0000">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Weekly Padgett">
+<meta property="og:title" content="Your ISP is Lying to You · Weekly Padgett">
+<meta property="og:description" content="">
+<meta property="og:url" content="https://blog.patpadgett.com/posts/129-spdng/">
+<meta property="og:image" content="https://blog.patpadgett.com/assets/og/129-spdng.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Your ISP is Lying to You · Weekly Padgett">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your ISP is Lying to You · Weekly Padgett">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://blog.patpadgett.com/assets/og/129-spdng.jpg">
+<link rel="preload" href="/assets/fonts/Bangers-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Nunito-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/tabloid.css">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/*.xml"}}]},"eagerness":"moderate"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Your ISP is Lying to You", "description": "", "datePublished": "2026-10-23", "dateModified": "2026-10-23", "wordCount": 254, "keywords": "networking, python, tools", "url": "https://blog.patpadgett.com/posts/129-spdng/", "image": "https://blog.patpadgett.com/assets/og/129-spdng.jpg", "mainEntityOfPage": "https://blog.patpadgett.com/posts/129-spdng/", "author": {"@type": "Person", "name": "Patrick Padgett", "url": "https://patpadgett.com"}, "publisher": {"@type": "Person", "name": "Patrick Padgett", "url": "https://patpadgett.com"}, "isPartOf": {"@type": "Blog", "name": "Weekly Padgett", "url": "https://blog.patpadgett.com/"}}</script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to the stories</a>
+<div class="wrap">
+<header class="masthead small">
+<p class="brand"><a href="/">Weekly Padgett</a></p>
+<nav class="top" aria-label="Site">
+<a href="/">All stories</a>
+<a href="/start-here/">Start here!</a>
+<a href="/tags/">Topics</a>
+<a href="/about/">About</a>
+<a href="/index.xml">RSS</a>
+</nav>
+</header>
+<main class="sheet" id="main" tabindex="-1">
+<header class="lede">
+<p class="k hot"><span><time datetime="2026-10-23">October 23, 2026</time></span><span>No. 056</span><span>1 min read</span></p>
+<h1>Your ISP is Lying to You</h1>
+<p class="dek"></p>
+<figure class="hero"><div class="pic"><a class="print-open" href="/assets/img/129-spdng.jpg" aria-label="See the whole photo"><img src="/assets/img/129-spdng.jpg" srcset="/assets/img/129-spdng-240.jpg 240w, /assets/img/129-spdng-480.jpg 480w, /assets/img/129-spdng-600.jpg 600w, /assets/img/129-spdng-780.jpg 780w, /assets/img/129-spdng.jpg 1200w" sizes="(min-width:821px) 240px, 100vw" alt="Analog speedometer taped to a CRT monitor" width="1200" height="805" fetchpriority="high"></a></div><figcaption><b>File photo</b>Dramatization. No networking was harmed.</figcaption></figure>
+</header>
+<article class="body">
+<p>Your ISP is lying to you. Here is how to prove it.</p>
+<p>Most speedtest tools are fucking useless.</p>
+<p>The industry standard, speedtest-cli, has been dead since 2021. Homebrew is currently in the process of tossing it in the trash because it is unmaintained. For years, we have been relying on a tool that, when a probe failed, simply reported it as taking exactly 30 minutes.</p>
+<p>Thirty minutes.</p>
+<p>Because that is a perfectly reasonable number for a ping.</p>
+<p>I got tired of it, so I wrote spdng. It is a from-scratch replacement that does everything the old one did, but actually correctly.</p>
+<p>It does not measure latency on a cold connection, so you get the real round trip instead of the TCP handshake cost. It follows HTTP redirects, so the probes actually land. And it picks the nearest server instead of some random node 1,700km away just because it felt like it.</p>
+<p>I also added an mtr-style per-hop trace. Now you can see exactly which router in some godforsaken data center is eating your packets. You can also test against Ookla, Cloudflare, and LibreSpeed side-by-side to figure out if your link is actually slow or if the route just sucks.</p>
+<p>The best part? It has zero dependencies. It is just Python and spite.</p>
+<p>It is on PyPI. It is in a Homebrew tap.</p>
+<p>Use it, or keep believing your ISP is giving you the gigabit you pay for. Your call.</p>
+<section class="refs"><h2 id="references">References</h2>
+<ol>
+<li id="ref-1" value="1" tabindex="-1"><a href="https://pypi.org/project/spdng/" rel="noopener">spdng</a> <small>pypi.org</small> <a class="backref" href="#cite-1" aria-label="Back to citation 1">&#8617;</a></li>
+<li id="ref-2" value="2" tabindex="-1"><a href="https://github.com/sivel/speedtest-cli" rel="noopener">speedtest-cli</a> <small>github.com</small> <a class="backref" href="#cite-2" aria-label="Back to citation 2">&#8617;</a></li>
+</ol>
+</section>
+</article>
+<div class="tail"><div class="tags"><span>networking</span><a href="/tags/python/">python</a><span>tools</span></div><span class="byline">&ndash; Pat</span></div>
+<nav class="pn" aria-label="Adjacent stories"><a href="/posts/whom-who-to-ask-about-this-file/"><b>Previous exclusive</b><span>whom. Who do I ask about this file, and are they awake?</span></a><div class="pn--next"><b>Next issue · December 06</b><span>What a producer hears while you&#x27;re thinking about your finger</span><p><a class="rss-btn" href="/index.xml">Get it by RSS</a> <a class="rss-how" href="/about/#rss">What is RSS?</a></p></div></nav>
+</main>
+<dialog class="print" id="print" aria-label="The whole photo">
+<div class="print__in">
+<div class="print__bar"><p class="print__k"><b>File photo</b>Uncropped. Straight off the wire.</p><button class="print__close" type="button" autofocus>Close<small>Esc</small></button></div>
+<figure class="print__fig"><span class="print__frame"><img src="/assets/img/129-spdng.jpg" srcset="/assets/img/129-spdng-240.jpg 240w, /assets/img/129-spdng-480.jpg 480w, /assets/img/129-spdng-600.jpg 600w, /assets/img/129-spdng-780.jpg 780w, /assets/img/129-spdng.jpg 1200w" sizes="(min-width:1240px) 1200px, 100vw" alt="" width="1200" height="805" loading="lazy" decoding="async"></span>
+<figcaption><b>Photo desk</b>Analog speedometer taped to a CRT monitor Dramatization; no networking was harmed.</figcaption></figure>
+</div>
+</dialog>
+<section class="more" aria-label="Related stories"><h2>More on this beat</h2><div class="posts"><article class="post">
+<div class="th"><a href="/posts/whom-who-to-ask-about-this-file/" tabindex="-1" aria-hidden="true"><img src="/assets/img/whom-who-to-ask-about-this-file-t.jpg" srcset="/assets/img/whom-who-to-ask-about-this-file-t150.jpg 150w, /assets/img/whom-who-to-ask-about-this-file-t.jpg 300w" sizes="(min-width:821px) 150px, 110px" alt="" loading="lazy" width="300" height="300"></a></div>
+<p class="k"><span><time datetime="2026-10-15">October 15, 2026</time></span><span>No. 055</span><span>3 min read</span></p>
+<h2><a href="/posts/whom-who-to-ask-about-this-file/">whom. Who do I ask about this file, and are they awake?</a></h2>
+<p>A file you did not write, a person you need to find.</p>
+</article><article class="post">
+<div class="th"><a href="/posts/huh-what-is-this-string/" tabindex="-1" aria-hidden="true"><img src="/assets/img/huh-what-is-this-string-t.jpg" srcset="/assets/img/huh-what-is-this-string-t150.jpg 150w, /assets/img/huh-what-is-this-string-t.jpg 300w" sizes="(min-width:821px) 150px, 110px" alt="" loading="lazy" width="300" height="300"></a></div>
+<p class="k"><span><time datetime="2026-10-13">October 13, 2026</time></span><span>No. 054</span><span>3 min read</span></p>
+<h2><a href="/posts/huh-what-is-this-string/">huh. What is this string, exactly?</a></h2>
+<p>A timestamp, a cron line, an exit code, an invisible Unicode character.</p>
+</article><article class="post">
+<div class="th"><a href="/posts/undo-for-the-shell/" tabindex="-1" aria-hidden="true"><img src="/assets/img/undo-for-the-shell-t.jpg" srcset="/assets/img/undo-for-the-shell-t150.jpg 150w, /assets/img/undo-for-the-shell-t.jpg 300w" sizes="(min-width:821px) 150px, 110px" alt="" loading="lazy" width="300" height="300"></a></div>
+<p class="k"><span><time datetime="2026-10-08">October 08, 2026</time></span><span>No. 053</span><span>1 min read</span></p>
+<h2><a href="/posts/undo-for-the-shell/">undo for the shell, because rm has never once asked me if I was sure</a></h2>
+<p>A shell that can undo the last thing you did.</p>
+</article><article class="post">
+<div class="th"><a href="/posts/cron-is-not-a-scheduler/" tabindex="-1" aria-hidden="true"><img src="/assets/img/cron-is-not-a-scheduler-t.jpg" srcset="/assets/img/cron-is-not-a-scheduler-t150.jpg 150w, /assets/img/cron-is-not-a-scheduler-t.jpg 300w" sizes="(min-width:821px) 150px, 110px" alt="" loading="lazy" width="300" height="300"></a></div>
+<p class="k"><span><time datetime="2026-07-25">July 25, 2026</time></span><span>No. 038</span><span>2 min read</span></p>
+<h2><a href="/posts/cron-is-not-a-scheduler/">Cron started the command. What the hell else did you expect?</a></h2>
+<p>Cron starts commands when the clock matches, folks.</p>
+</article></div></section>
+<footer>
+<div class="foot__l">
+<p>Also at checkout:</p>
+<nav aria-label="Elsewhere">
+<a href="https://patpadgett.com">patpadgett.com</a>
+<a href="https://work.patpadgett.com">work</a>
+<a href="https://music.patpadgett.com">music</a>
+<a href="https://octavitin.patpadgett.com">octavitin</a>
+<a href="https://grime95.com">grime95</a>
+<a href="/index.xml">rss</a>
+</nav>
+<p class="fine">Written by Patrick Padgett. Every word here is mine, including the ones I should have cut. Flat HTML, no trackers, no comments section. If you want to argue, you know where to find me.</p>
+</div>
+<div class="foot__r" aria-hidden="true"><p class="foot__stamp">Printed on<br>flat HTML</p><p class="foot__price">99¢</p></div>
+</footer>
+</div>
+<script>(function(){var rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+if(!rm&&!(window.CSS&&CSS.supports('animation-timeline:view()'))&&'IntersectionObserver'in window){var els=[].slice.call(document.querySelectorAll('.post,.box,.coming,.coupon,.theme,.psychic')).filter(function(e){return e.getBoundingClientRect().top>innerHeight});els.forEach(function(e){e.classList.add('pre')});var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var i=els.indexOf(e.target);setTimeout(function(){e.target.classList.add('in')},(i%3)*70);io.unobserve(e.target)}})},{rootMargin:'0px 0px -5% 0px'});els.forEach(function(e){io.observe(e)});setTimeout(function(){els.forEach(function(e){e.classList.add('in')})},4000)}
+/* the page turns. pageswap names the kind of turn (flip = story to story, back = traversing backwards) and
+   un-names shared elements the reader has scrolled away from, so nothing flies in from off-screen.
+   pagereveal marks a page that arrived by a turn, so its headline does not print off-register a second time. */
+var SHARED='header.masthead,.brand a,.brand small,nav.top,.home>.hero .pic,.home>.hero .pic img,.home>.hero h1,.lede .pic,.lede .pic img,.lede h1,.lede .k,.sheet>.body';
+function kind(a){var t=[];if(!a||!a.from)return t;var f=new URL(a.from.url).pathname,n=new URL(a.entry.url).pathname;if(f.indexOf('/posts/')===0&&n.indexOf('/posts/')===0)t.push('flip');if(a.navigationType==='traverse'&&a.from.index>a.entry.index)t.push('back');return t}
+addEventListener('pageswap',function(e){var vt=e.viewTransition;if(!vt)return;kind(e.activation).forEach(function(t){vt.types.add(t)});[].forEach.call(document.querySelectorAll(SHARED),function(el){var r=el.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)el.style.viewTransitionName='none'})});
+addEventListener('pagereveal',function(e){[].forEach.call(document.querySelectorAll(SHARED),function(el){el.style.viewTransitionName=''});if(e.viewTransition){document.documentElement.classList.add('turned');if(window.navigation)kind(navigation.activation).forEach(function(t){e.viewTransition.types.add(t)})}});
+/* the whole photo: the story picture lifts out of its frame into a full-screen print and settles back */
+var d=document.getElementById('print'),t=document.querySelector('.print-open'),im=d&&d.querySelector('img');
+if(d&&t&&im&&d.showModal){var h=document.documentElement,busy=false;
+function warm(){im.loading='eager'}
+t.addEventListener('pointerenter',warm);t.addEventListener('focus',warm);t.addEventListener('touchstart',warm,{passive:true});
+function turn(dir,fn){h.classList.add('lit','lit--'+dir);var done=function(){h.classList.remove('lit--'+dir);if(dir==='shut')h.classList.remove('lit');busy=false};
+if(rm||!document.startViewTransition){fn();done();return}
+var vt=document.startViewTransition(fn);vt.finished.then(done,done)}
+t.addEventListener('click',function(e){e.preventDefault();if(busy||d.open)return;busy=true;warm();
+var ready=im.decode?im.decode().catch(function(){}):Promise.resolve(),soon=new Promise(function(r){setTimeout(r,450)});
+Promise.race([ready,soon]).then(function(){turn('open',function(){d.showModal()})})});
+function shut(){if(!d.open||busy)return;busy=true;turn('shut',function(){d.close()})}
+d.addEventListener('click',function(e){if(!e.target.closest('.print__k,figcaption'))shut()});
+d.addEventListener('cancel',function(e){e.preventDefault();shut()});}
+})();</script>
+</body></html>

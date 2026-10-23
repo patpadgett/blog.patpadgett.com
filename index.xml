@@ -2,6 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel><title>Weekly Padgett</title><link>https://blog.patpadgett.com/</link><description>Stories from thirty years of telecom billing mediation, Unix, corkscrew, bass guitar, Indonesian music, and whatever else Pat Padgett could not shut up about.</description><language>en-us</language>
 <atom:link href="https://blog.patpadgett.com/index.xml" rel="self" type="application/rss+xml"/>
+<item><title>Your ISP is Lying to You</title><link>https://blog.patpadgett.com/posts/129-spdng/</link><guid>https://blog.patpadgett.com/posts/129-spdng/</guid>
+<pubDate>Fri, 23 Oct 2026 12:00:00 -0400</pubDate><description></description>
+<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/129-spdng.jpg" alt="Analog speedometer taped to a CRT monitor"></p><p>Your ISP is lying to you. Here is how to prove it.</p>
+<p>Most speedtest tools are fucking useless.</p>
+<p>The industry standard, speedtest-cli, has been dead since 2021. Homebrew is currently in the process of tossing it in the trash because it is unmaintained. For years, we have been relying on a tool that, when a probe failed, simply reported it as taking exactly 30 minutes.</p>
+<p>Thirty minutes.</p>
+<p>Because that is a perfectly reasonable number for a ping.</p>
+<p>I got tired of it, so I wrote spdng. It is a from-scratch replacement that does everything the old one did, but actually correctly.</p>
+<p>It does not measure latency on a cold connection, so you get the real round trip instead of the TCP handshake cost. It follows HTTP redirects, so the probes actually land. And it picks the nearest server instead of some random node 1,700km away just because it felt like it.</p>
+<p>I also added an mtr-style per-hop trace. Now you can see exactly which router in some godforsaken data center is eating your packets. You can also test against Ookla, Cloudflare, and LibreSpeed side-by-side to figure out if your link is actually slow or if the route just sucks.</p>
+<p>The best part? It has zero dependencies. It is just Python and spite.</p>
+<p>It is on PyPI. It is in a Homebrew tap.</p>
+<p>Use it, or keep believing your ISP is giving you the gigabit you pay for. Your call.</p>
+<h2>References</h2>
+<ol>
+<li>spdng: https://pypi.org/project/spdng/</li>
+<li>speedtest-cli: https://github.com/sivel/speedtest-cli</li>
+</ol>
+]]></content:encoded></item>
 <item><title>whom. Who do I ask about this file, and are they awake?</title><link>https://blog.patpadgett.com/posts/whom-who-to-ask-about-this-file/</link><guid>https://blog.patpadgett.com/posts/whom-who-to-ask-about-this-file/</guid>
 <pubDate>Thu, 15 Oct 2026 12:00:00 -0400</pubDate><description>A file you did not write, a person you need to find. whom ranks contributors from git history and guesses their local time. The guessing is the creepy part, and it says so.</description>
 <content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/whom-who-to-ask-about-this-file.jpg" alt="A corkboard covered with pinned index cards and red string, a desk phone below, an empty chair pushed back."></p><p>There is a file in the repo you did not write, and it is wrong, and you need the person who knows why. <code>git blame</code>[1] gives you a name and an email from three years ago. It does not tell you whether that person still works here, whether they were the one who actually understood it, or whether it is three in the morning where they are.</p>
@@ -518,22 +537,6 @@ Check the configured public URL and deployment mapping before retrying.
 <li>Koplo: https://en.wikipedia.org/wiki/Koplo</li>
 <li>kendang: https://en.wikipedia.org/wiki/Kendang</li>
 <li>dangdut: https://en.wikipedia.org/wiki/Dangdut</li>
-</ol>
-]]></content:encoded></item>
-<item><title>Bass player first. Yes, the notes have to STOP.</title><link>https://blog.patpadgett.com/posts/bass-player-first/</link><guid>https://blog.patpadgett.com/posts/bass-player-first/</guid>
-<pubDate>Fri, 29 May 2026 12:00:00 -0400</pubDate><description>Bass player first, producer because somebody had to be. Jamerson, Kaye, Weymouth, and why your very impressive extra notes might need to get the hell out.</description>
-<content:encoded><![CDATA[<p><img src="https://blog.patpadgett.com/assets/img/bass-player-first.jpg" alt="A bass guitar lies in an open case beside an amplifier, drum kit, and black padded stool."></p><p>My <a href="https://patpadgett.com/">website</a>[1] says, &quot;Bass player[2] first. Producer because somebody had to be.&quot;</p>
-<p>I'm keeping that first sentence. If there's only room for one, I'd keep the bass player and delete the job titles. I like having a specific thing to do before we start deciding what to call me.</p>
-<p>So when somebody says &quot;just play the root[3],&quot; I have questions. Where does it start? Where does it stop? Ahead of the accent, right on it, a little behind? You've reduced the number of pitches. You haven't removed the part where somebody has to play the damned thing.</p>
-<p>I like that I can still cause this much trouble with one note.</p>
-<p>The end of the note is the bit I want to keep in my production thinking. The attack[4] gets your attention because your hand visibly does something. The release looks like you've quit working. Very impressive, Pat, you stopped!</p>
-<p>And then I have to remember to do it myself, instead of reaching for another note. LET THE FUCKING THING END.</p>
-<h2>References</h2>
-<ol>
-<li>website: https://patpadgett.com/</li>
-<li>Bass player: https://en.wikipedia.org/wiki/Bass_guitar</li>
-<li>root: https://en.wikipedia.org/wiki/Root_(chord)</li>
-<li>attack: https://en.wikipedia.org/wiki/Envelope_(music)</li>
 </ol>
 ]]></content:encoded></item>
 </channel></rss>
